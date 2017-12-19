@@ -159,6 +159,7 @@ public class EmpDetailController {
 		DistributionGroup distroGroupObj = distributionGroupService.findByName(distroGroup.toString());
 		if (null != distroGroupObj) {
 			empDetails.setDistributionGroup(distroGroupObj);
+		    empDetails.setIsActive("1");
 		}
 		}
 		else {
