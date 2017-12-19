@@ -8,5 +8,6 @@ import com.threezebra.domain.SpecialRoleMapping;
 public interface SpecialRoleMappingRepsitory extends MongoRepository<SpecialRoleMapping,String>{
 
 	SpecialRoleMapping findBySpecialRole(SpecialRole specialRole);
+    SpecialRoleMapping findById(long id);
 
 }

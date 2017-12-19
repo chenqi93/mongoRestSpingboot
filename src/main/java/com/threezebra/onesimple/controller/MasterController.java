@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.threezebra.domain.AdditionalLocation;
 import com.threezebra.domain.Application;
 import com.threezebra.domain.BaseLocation;
 import com.threezebra.domain.BaseResponse;
+import com.threezebra.domain.DailyDistributionGroup;
 import com.threezebra.domain.Department;
 import com.threezebra.domain.DeptDocPrivilege;
 import com.threezebra.domain.DeviceInfo;
 import com.threezebra.domain.DistributionGroup;
-import com.threezebra.domain.DistributionGroupMapping;
 import com.threezebra.domain.JobRole;
 import com.threezebra.domain.OtherDocPrivilege;
 import com.threezebra.domain.PermissionGroup;
@@ -30,6 +31,7 @@ import com.threezebra.domain.SpecialRoleMapping;
 import com.threezebra.domain.Unit;
 import com.threezebra.domain.UserType;
 import com.threezebra.domain.XternalDistributionGroup;
+import com.threezebra.onesimple.dto.AdditionalLocationJson;
 import com.threezebra.onesimple.dto.ApplicationJson;
 import com.threezebra.onesimple.dto.DeptDocPrivilegeJson;
 import com.threezebra.onesimple.dto.DeviceInfoJson;
@@ -47,6 +49,7 @@ import com.threezebra.restapi.dto.JobTitleJson;
 import com.threezebra.service.AdditionalLocationService;
 import com.threezebra.service.ApplicationService;
 import com.threezebra.service.BaseLocationService;
+import com.threezebra.service.DailyDistributionGroupService;
 import com.threezebra.service.DepartmentService;
 import com.threezebra.service.DeptDocPrivilegeService;
 import com.threezebra.service.DeviceInfoService;
@@ -106,6 +109,8 @@ public class MasterController {
 	SpecialRoleMappingService specialRoleMappingService;
 	@Autowired
 	XterlDistributionGroupService xterlDistributionGroupService;
+	@Autowired
+	DailyDistributionGroupService dailyDistributionGroupService;
 	Long count = System.currentTimeMillis();
 	private List<UserType> usertypelist;
 
@@ -161,76 +166,95 @@ public class MasterController {
 	public ResponseEntity createDistributionGroup() {
 		List<BaseLocation> baselocationList = baseLocationService.findAll();
 		List<Unit> unitlist = unitService.findAll();
+		List<String> location = new ArrayList<>();
+		List<BaseLocation> baseLocationlst = baseLocationService.findAll();
+		for (BaseLocation locationobj : baseLocationlst) {
+			location.add(locationobj.getName());
+		}
 		List<Department> departmentlist = null;
 		List<UserType> usertypelist = null;
-		List<JobRole> jobRoleList = null;
 		distributionGroupService.deleteAll();
+		dailyDistributionGroupService.deleteAll();
 		for (Unit unit : unitlist) {
 			departmentlist = departmentService.findByUnit(unit);
 			for (Department department : departmentlist) {
-			
 				usertypelist = userTypeService.findByUnit(unit);
-				if (null != usertypelist) {
-					for (UserType userType : usertypelist) {
-						jobRoleList = jobRoleService.findByUserType(userType);
+				DistributionGroup distributionGroup = new DistributionGroup();
+				distributionGroup.setId(System.nanoTime());
+				distributionGroup.setLocation(location);
+				distributionGroup.setUnit(unit);
+			    distributionGroup.setDepartment(department);
+				distributionGroup.setUserType(usertypelist);
+				distributionGroup.setDefaultvalue("true");
+				
+				List<JobRole> jobrolelist = jobRoleService.createJobRoleList(usertypelist);
+				for (JobRole jobRole : jobrolelist) {
+					if (!(jobRole.getName().equals("Daily"))) {
+						List<JobRole> jobLst = new ArrayList<>();
+						jobLst.add(jobRole);
+						distributionGroup.setJobRole(jobLst);
+						StringBuilder distributionGroupname = new StringBuilder();
+						distributionGroupname.append("Distro.").append(department.getName()).append("-Dept-")
+								.append(unit.getName()).append(".").append(baselocationList.get(0).getName());
+						System.out.println("%%%%%%%%%%%%%%" + distributionGroupname + "." + "%%%%%%%%%%%%%%");
+						distributionGroup.setName(distributionGroupname.toString());
+						distributionGroupService.save(distributionGroup);
+					} else {
+						DailyDistributionGroup dailyDistributionGroup = new DailyDistributionGroup();
+						dailyDistributionGroup.setLocation(location);
+						dailyDistributionGroup.setUnit(unit);
+						dailyDistributionGroup.setId(System.nanoTime());
+						dailyDistributionGroup.setDepartment(department);
+						dailyDistributionGroup.setUserType(usertypelist);
+						dailyDistributionGroup.setDefaultvalue("true");
+						List<JobRole> jobLst = new ArrayList<>();
+						jobLst.add(jobRole);
+						dailyDistributionGroup.setJobRole(jobLst);
+						StringBuilder distributionGroupname = new StringBuilder();
+						distributionGroupname.append("Daily.").append(department.getName()).append("-DAILYHIRES-")
+								.append(unit.getName()).append(".").append(baselocationList.get(0).getName());
+						System.out.println("%%%%%%%%%%%%%%" + distributionGroupname + "." + "%%%%%%%%%%%%%%");
+						dailyDistributionGroup.setName(distributionGroupname.toString());
+						dailyDistributionGroupService.save(dailyDistributionGroup);
 					}
-				}
-				if (null != jobRoleList) {
-					for (JobRole jobRole : jobRoleList) {
-						if (!(jobRole.getName().contains("InfoRecipient") || jobRole.getName().contains("Daily"))) {
-							DistributionGroup distributionGroup = new DistributionGroup();
-							StringBuilder distributionGroupname = new StringBuilder();
-							distributionGroup.setId(System.nanoTime());
-							distributionGroup.setUnit(unit);
-							distributionGroup.setJobRole(jobRole);
-							distributionGroup.setDepartment(department);
-							distributionGroupname.append("Distro.").append(department.getName()).append("-Dept-").append(unit.getName()).append(".").append(baselocationList.get(0).getName());
-							System.out.println("%%%%%%%%%%%%%%" + distributionGroupname + "." + jobRole.getName()
-									+ "%%%%%%%%%%%%%%");
-							distributionGroup.setName(distributionGroupname.toString());
-							distributionGroupService.save(distributionGroup);
-						}
-
-					}
 
 				}
+
 			}
-		
 		}
 		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
 	@RequestMapping(value = "/createXternalList", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity createXternalList(@RequestBody XternalListJson xternalListJson) {
-		String xdeparment= xternalListJson.getXdepartment();
-		String xuserType=xternalListJson.getXuserType();
-		String xjobRole=xternalListJson.getXjobrole();
-		Department department=departmentService.findbyName(xdeparment);
-		if(null!=department) {
-			department=departmentService.update(xdeparment, null);
+		String xdeparment = xternalListJson.getXdepartment();
+		String xuserType = xternalListJson.getXuserType();
+		String xjobRole = xternalListJson.getXjobrole();
+		Department department = departmentService.findbyName(xdeparment);
+		if (null != department) {
+			department = departmentService.update(xdeparment, null);
+		} else {
+			department = new Department();
+			department.setId(System.nanoTime());
+			department.setName(xdeparment);
+			department.setUnit(null);
+			department = departmentService.save(department);
 		}
-		else
-		{ department=new Department();
-		   department.setId(System.nanoTime());
-		   department.setName(xdeparment);
-		   department.setUnit(null);
-		   department=departmentService.save(department);
-		}
-		 
-		UserType userType=userTypeService.findByUserType(xuserType);
-		if(null!=userType) {
+
+		UserType userType = userTypeService.findByUserType(xuserType);
+		if (null != userType) {
 			userType.setName(xdeparment);
-			userType=userTypeService.update(userType, null);
+			userType = userTypeService.update(userType, null);
+		} else {
+			userType = new UserType();
+			userType = userTypeService.save(xuserType, null);
 		}
-		else
-		{ userType=new UserType();
-		userType=userTypeService.save(xuserType,null);
-		}
-		
-		 JobRole jobRole=jobRoleService.update(userType,xjobRole);
-		XternalDistributionGroup xterlDistributionGroup=new XternalDistributionGroup();
+
+		JobRole jobRole = jobRoleService.update(userType, xjobRole);
+		XternalDistributionGroup xterlDistributionGroup = new XternalDistributionGroup();
 		xterlDistributionGroup.setId(System.nanoTime());
-		StringBuilder xternalName=new StringBuilder();
+		StringBuilder xternalName = new StringBuilder();
 		xternalName.append("Distro-Xternal").append(xjobRole);
 		xterlDistributionGroup.setName(xternalName.toString());
 		xterlDistributionGroup.setDepartment(department);
@@ -287,10 +311,8 @@ public class MasterController {
 			}
 		}
 
-	
-
-	BaseResponse response = new BaseResponse("200", "SUCCESS");
-	return new ResponseEntity<>(response,HttpStatus.OK);
+		BaseResponse response = new BaseResponse("200", "SUCCESS");
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/createJobRole", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -314,10 +336,10 @@ public class MasterController {
 	public ResponseEntity createJobTitle(@RequestBody JobTitleJson jobTitleJson) {
 		String[] jobTitleArr = jobTitleJson.getJobTitle();
 		Department department = departmentService.findbyName(jobTitleJson.getDepartment());
-		if(null!=department) {
-		for (int i = 0; i < jobTitleArr.length; i++) {
-			jobTitleService.save(jobTitleArr[i], department);
-		   }
+		if (department.getName() != null) {
+			for (int i = 0; i < jobTitleArr.length; i++) {
+				jobTitleService.save(jobTitleArr[i], department);
+			}
 		}
 		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -428,7 +450,7 @@ public class MasterController {
 	public ResponseEntity createPermissionGroupMapping(
 			@RequestBody PermissionGroupMappingJson permissionGroupMappingJson) {
 		String permissionId = permissionGroupMappingJson.getPermissiongroupname();
-		long permissionlong=Long.parseLong(permissionId);
+		long permissionlong = Long.parseLong(permissionId);
 		PermissionGroup permissionGroup = permissionGroupService.findById(permissionlong);
 		PermissionGroupMapping permissionGroupMappingobj = permissionGroupMappingService
 				.findByPermissionGroup(permissionGroup);
@@ -474,126 +496,109 @@ public class MasterController {
 	@RequestMapping(value = "/createDistributionListMapping", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity createDistributionListMapping(
 			@RequestBody DistributionGroupMappingJson distributionGroupMappingJson) {
-		DistributionGroup distributionGroup = distributionGroupService
-				.findByName(distributionGroupMappingJson.getDistributionGroup());
 		long[] deptlst = distributionGroupMappingJson.getDepartment();
 		long[] unitlst = distributionGroupMappingJson.getUnit();
+		long[] userType = distributionGroupMappingJson.getUsertype();
 		long[] jobRolelst = distributionGroupMappingJson.getJobrole();
-		if(null!=distributionGroup) {
-			distributionGroup=distributionGroupService.createDistributionGroup(distributionGroupMappingJson.getDistributionGroup(),unitlst[0],deptlst[0],distributionGroupMappingJson.getUsertype(),jobRolelst[0]);
-		}
-		else {
-		DistributionGroupMapping distributionGroupMapping = distributionGroupMappingService
-				.findBydistributionGroup(distributionGroup);
+		String[] locationlst = distributionGroupMappingJson.getLocation();
+		String defaultvalue = distributionGroupMappingJson.getDefaultvalue();
 		List<Department> departmentlst = new ArrayList<>();
-		List<Unit> untlst = new ArrayList<>();
+		List<String> locationlist = new ArrayList<>();
+		List<UserType> userTypelst = new ArrayList<>();
+		List<Unit> unitlist = new ArrayList<>();
 		List<JobRole> jobRoleslst = new ArrayList<>();
-		if (null != distributionGroupMapping) {
-			
-			for (int i = 0; i < deptlst.length; i++) {
-				Department department = departmentService.findById(deptlst[i]);
-				departmentlst.add(department);
-			}
-			distributionGroupMapping.setDepartment(departmentlst);
-			
-			for (int i = 0; i < unitlst.length; i++) {
-				Unit unit = unitService.findbyId(unitlst[i]);
-				untlst.add(unit);
-			}
-			distributionGroupMapping.setUnit(untlst);
-		
-			for (int i = 0; i < jobRolelst.length; i++) {
-				JobRole jobRole = jobRoleService.findById(jobRolelst[i]);
-				jobRoleslst.add(jobRole);
-			}
-			distributionGroupMapping.setJobrole(jobRoleslst);
-			UserType userType = userTypeService.findById(distributionGroupMappingJson.getUsertype());
-			distributionGroupMapping.setUsertype(userType);
-			distributionGroupMappingService.save(distributionGroupMapping);
 
-		} else {
-			DistributionGroupMapping distributionGroupMappingObj = new DistributionGroupMapping();
-			DistributionGroup distributionGroupObj = distributionGroupService
-					.findByName(distributionGroupMappingJson.getDistributionGroup());
-			distributionGroupMappingObj.setDistributionGroup(distributionGroupObj);
-			distributionGroupMappingObj.setId(System.nanoTime());
-			for (int i = 0; i < deptlst.length; i++) {
-				Department department = departmentService.findById(deptlst[i]);
-				departmentlst.add(department);
-			}
-			distributionGroupMappingObj.setDepartment(departmentlst);
-			for (int i = 0; i < unitlst.length; i++) {
-				Unit unit = unitService.findbyId(unitlst[i]);
-				untlst.add(unit);
-			}
-			distributionGroupMappingObj.setUnit(untlst);
-			
-			for (int i = 0; i < jobRolelst.length; i++) {
-				JobRole jobRole = jobRoleService.findById(jobRolelst[i]);
-				jobRoleslst.add(jobRole);
-			}
-			distributionGroupMappingObj.setJobrole(jobRoleslst);
-			UserType userType = userTypeService.findById(distributionGroupMappingJson.getUsertype());
-			distributionGroupMappingObj.setUsertype(userType);
-			distributionGroupMappingService.save(distributionGroupMappingObj);
+		for (int i = 0; i < locationlst.length; i++) {
+			locationlist.add(locationlst[i]);
 		}
+
+		for (int i = 0; i < userType.length; i++) {
+			UserType userTypeobj = userTypeService.findById(userType[i]);
+			userTypelst.add(userTypeobj);
 		}
+
+		for (int i = 0; i < jobRolelst.length; i++) {
+			JobRole jobRoleObj = jobRoleService.findById(jobRolelst[i]);
+			jobRoleslst.add(jobRoleObj);
+		}
+
+		for (int i = 0; i < deptlst.length; i++) {
+			Department department = departmentService.findById(deptlst[i]);
+			departmentlst.add(department);
+		}
+
+		for (int i = 0; i < unitlst.length; i++) {
+			Unit unit = unitService.findbyId(unitlst[i]);
+			unitlist.add(unit);
+		}
+		if (defaultvalue.equals("false")) {
+			distributionGroupService.createDistributionGroup(defaultvalue, locationlist,
+					distributionGroupMappingJson.getDistributionGroup(), unitlist, departmentlst, userTypelst,
+					jobRoleslst);
+		}
+
 		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/createSpecialRoleMapping", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity createSpecialRoleMapping(@RequestBody SpecialRoleMappingJson  specialRoleMappingJson) {
-		SpecialRole specialRole=specialRoleService.findById(specialRoleMappingJson.getSpecialRoleId());
-		String emplistFlag=specialRoleMappingJson.getEmplistFlag();
-		List<PermissionGroup> permissionGroupList=new ArrayList<>();
-		List<Application> applicationlst=new ArrayList<>();
-	
-		long[] permissiongrouparr=specialRoleMappingJson.getPermissionGroup();
-		String location=null;
-		if(null!=specialRole) {
-		   if(emplistFlag.equals("TRUE") ) {
-			specialRole.setSpecialRoleFlag(emplistFlag);
-		   }
-		 }
-		else {
-			specialRole=specialRoleService.createSpecialRole(location,specialRoleMappingJson.getSpecialRoleName(),emplistFlag,specialRoleMappingJson.getSpecialRoleDesc());
-		}
-		SpecialRoleMapping specialRoleMapping=specialRoleMappingService.findBySpecialRole(specialRole);
-		if(null!=specialRoleMapping) {
-			long[] applications=specialRoleMappingJson.getApplication();
-			for(int i=0;i<applications.length;i++) {
-				Application application=applicationService.findById(applications[i]);
-				applicationlst.add(application);  
+	public ResponseEntity createSpecialRoleMapping(@RequestBody SpecialRoleMappingJson specialRoleMappingJson) {
+		SpecialRole specialRole = specialRoleService.findById(specialRoleMappingJson.getSpecialRoleId());
+		String emplistFlag = specialRoleMappingJson.getEmplistFlag();
+		List<PermissionGroup> permissionGroupList = new ArrayList<>();
+		List<Application> applicationlst = new ArrayList<>();
+
+		long[] permissiongrouparr = specialRoleMappingJson.getPermissionGroup();
+		String location = null;
+		if (null != specialRole) {
+			if (emplistFlag.equals("TRUE")) {
+				specialRole.setSpecialRoleFlag(emplistFlag);
+				specialRoleService.save(specialRole);
 			}
-			
-			for(int i=0;i<permissiongrouparr.length;i++) {
-			PermissionGroup permissionGroup=permissionGroupService.findById(permissiongrouparr[i]);
-			permissionGroupList.add(permissionGroup);
+		} else {
+			specialRole = specialRoleService.createSpecialRole(location, specialRoleMappingJson.getSpecialRoleName(),
+					emplistFlag, specialRoleMappingJson.getSpecialRoleDesc());
+		}
+		SpecialRoleMapping specialRoleMapping = specialRoleMappingService.findBySpecialRole(specialRole);
+		if (null != specialRoleMapping) {
+			long[] applications = specialRoleMappingJson.getApplication();
+			for (int i = 0; i < applications.length; i++) {
+				Application application = applicationService.findById(applications[i]);
+				applicationlst.add(application);
+			}
+			if (null != permissiongrouparr) {
+				for (int i = 0; i < permissiongrouparr.length; i++) {
+					PermissionGroup permissionGroup = permissionGroupService.findById(permissiongrouparr[i]);
+					permissionGroupList.add(permissionGroup);
+				}
 			}
 			specialRoleMapping.setPermissionGroup(permissionGroupList);
-			
+
 			specialRoleMapping.setApplication(applicationlst);
-	        specialRoleMapping.setEgnyteFolder(specialRoleMappingJson.getEgnytePath());;
+			specialRoleMapping.setEgnyteFolder(specialRoleMappingJson.getEgnytePath());
+			;
 			specialRoleMapping.setSpecialPermissionGroup(specialRoleMappingJson.getSpecialPermissionGroup());
 			specialRoleMapping.setSpecialPrivilege(specialRoleMappingJson.getSpecialPrivileges());
 			specialRoleMappingService.save(specialRoleMapping);
-		}
-		else {
-			specialRoleMapping=new SpecialRoleMapping();
+		} else {
+			specialRoleMapping = new SpecialRoleMapping();
 			specialRoleMapping.setId(System.nanoTime());
 			long[] applications = specialRoleMappingJson.getApplication();
 			for (int i = 0; i < applications.length; i++) {
 				Application application = applicationService.findById(applications[i]);
 				applicationlst.add(application);
 			}
-			for(int i=0;i<permissiongrouparr.length;i++) {
-				PermissionGroup permissionGroup=permissionGroupService.findById(permissiongrouparr[i]);
-				permissionGroupList.add(permissionGroup);
+			if (null != permissiongrouparr) {
+				for (int i = 0; i < permissiongrouparr.length; i++) {
+					PermissionGroup permissionGroup = permissionGroupService.findById(permissiongrouparr[i]);
+					permissionGroupList.add(permissionGroup);
 				}
+			}
+			specialRoleMapping.setSpecialRole(specialRole);
 			specialRoleMapping.setPermissionGroup(permissionGroupList);
 			specialRoleMapping.setApplication(applicationlst);
-			specialRoleMapping.setEgnyteFolder(specialRoleMappingJson.getEgnytePath());;
+			specialRoleMapping.setEgnyteFolder(specialRoleMappingJson.getEgnytePath());
+			;
 			specialRoleMapping.setSpecialPermissionGroup(specialRoleMappingJson.getSpecialPermissionGroup());
 			specialRoleMapping.setSpecialPrivilege(specialRoleMappingJson.getSpecialPrivileges());
 			specialRoleMappingService.save(specialRoleMapping);
@@ -601,6 +606,22 @@ public class MasterController {
 		}
 		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
+
 	}
 
+	@RequestMapping(value = "/createAdditionalLocation", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity createAdditionalLocation(@RequestBody AdditionalLocationJson additionalLocationJson) {
+
+		String[] additionallocation = additionalLocationJson.getAdditionallocation();
+		String[] additionallocationdesc = additionalLocationJson.getAdditionallocationDesc();
+		for (int i = 0; i < additionallocation.length; i++) {
+			AdditionalLocation additionalLocation = new AdditionalLocation();
+			additionalLocation.setId(System.nanoTime());
+			additionalLocation.setName(additionallocation[i]);
+			additionalLocation.setDesc(additionallocationdesc[i]);
+			additionalLocationService.save(additionalLocation);
+		}
+		BaseResponse response = new BaseResponse("200", "SUCCESS");
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 }

@@ -10,5 +10,6 @@ import com.threezebra.domain.JobTitle;
 public interface JobTitleRepository   extends MongoRepository<JobTitle,String>{
      JobTitle findByName(String name);
      List<JobTitle> findByDepartment(Department department);
+	JobTitle findById(long id);
 
 }

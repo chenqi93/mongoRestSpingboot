@@ -42,6 +42,11 @@ public class JobTitleService {
 	public JobTitle findByName(String name) {
 		return jobTitleRepository.findByName(name);
 	}
+
+	public JobTitle findById(long id) {
+		// TODO Auto-generated method stub
+		return jobTitleRepository.findById(id);
+	}
 	
 
 }

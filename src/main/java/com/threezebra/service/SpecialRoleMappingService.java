@@ -32,4 +32,11 @@ public class SpecialRoleMappingService {
 		return specialRoleMappingRepository.findAll();
 	}
 
+
+
+	public SpecialRoleMapping findById(long specialRoleId) {
+		// TODO Auto-generated method stub
+		return specialRoleMappingRepository.findById(specialRoleId);
+	}
+
 }

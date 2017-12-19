@@ -38,5 +38,10 @@ public class BaseLocationService {
 	public BaseLocation findByName(String name) {
 		return baseLocationRepository.findByName(name);
 	}
+
+	public BaseLocation findbyId(long baseLocation) {
+		// TODO Auto-generated method stub
+		return baseLocationRepository.findById(baseLocation);
+	}
 	
 }

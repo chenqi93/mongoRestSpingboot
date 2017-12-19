@@ -35,6 +35,9 @@ public class DepartmentService {
 
 		Department department = departmentRepository.findByName(name);
 		if (null != department) {
+			List<Unit> unitlst=department.getUnit();
+			
+			
 			department.setUnit(unitlist);
 			department.setName(name);
 			departmentRepository.save(department);

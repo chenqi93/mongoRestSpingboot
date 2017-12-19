@@ -17,6 +17,7 @@ public class SpecialRoleService {
 	BaseLocationService baseLocationService;
 	
 	public SpecialRole save(SpecialRole specialRole) {
+		
  		return specialRoleRepository.save(specialRole);
  }
 	 public List<SpecialRole> findAll() {

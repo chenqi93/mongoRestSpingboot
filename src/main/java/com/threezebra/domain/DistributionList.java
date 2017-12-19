@@ -4,40 +4,43 @@ import java.util.List;
 
 public class DistributionList {
 	
-    String distroname;
-	String  unit;
-	String deparment;
-	String usertype;
-	List<String> jobRole;
-	public String getDistroname() {
+    DistributionGroup distroname;
+	Unit  unit;
+	Department deparment;
+	UserType usertype;
+	List<JobRole> jobRole;
+	
+	
+	public DistributionGroup getDistroname() {
 		return distroname;
 	}
-	public void setDistroname(String distroname) {
+	public void setDistroname(DistributionGroup distroname) {
 		this.distroname = distroname;
 	}
-	public String getUnit() {
+	public Unit getUnit() {
 		return unit;
 	}
-	public void setUnit(String unit) {
+	public void setUnit(Unit unit) {
 		this.unit = unit;
 	}
-	public String getDeparment() {
+	public Department getDeparment() {
 		return deparment;
 	}
-	public void setDeparment(String deparment) {
+	public void setDeparment(Department deparment) {
 		this.deparment = deparment;
 	}
-	public String getUsertype() {
+	public UserType getUsertype() {
 		return usertype;
 	}
-	public void setUsertype(String usertype) {
+	public void setUsertype(UserType usertype) {
 		this.usertype = usertype;
 	}
-	public List<String> getJobRole() {
+	public List<JobRole> getJobRole() {
 		return jobRole;
 	}
-	public void setJobRole(List<String> jobRole) {
+	public void setJobRole(List<JobRole> jobRole) {
 		this.jobRole = jobRole;
 	}
+	
 
 }

@@ -33,7 +33,9 @@ public class EmpDetail implements Serializable {
     private String personalPhoneNum;
     private String[] uniqueId;
     private String workEmail;
-    private List<Department>  department;
+    private DistributionGroup distributionGroup;
+    private DailyDistributionGroup dialyDistributionGroup;
+    private Department  department;
     private UserType userType;
     private SpecialRole specialRole;
 	private JobRole jobRole;
@@ -49,6 +51,23 @@ public class EmpDetail implements Serializable {
 		this.id = id;
 	}
 	
+	public DistributionGroup getDistributionGroup() {
+		return distributionGroup;
+	}
+
+	public void setDistributionGroup(DistributionGroup distributionGroup) {
+		this.distributionGroup = distributionGroup;
+	}
+	
+
+	public DailyDistributionGroup getDialyDistributionGroup() {
+		return dialyDistributionGroup;
+	}
+
+	public void setDialyDistributionGroup(DailyDistributionGroup dialyDistributionGroup) {
+		this.dialyDistributionGroup = dialyDistributionGroup;
+	}
+
 	public SpecialRole getSpecialRole() {
 		return specialRole;
 	}
@@ -193,11 +212,11 @@ public class EmpDetail implements Serializable {
 		this.workEmail = workEmail;
 	}
 
-	public List<Department>  getDepartment() {
+	public Department  getDepartment() {
 		return department;
 	}
 
-	public void setDepartment(List<Department> department) {
+	public void setDepartment(Department department) {
 		this.department = department;
 	}
 

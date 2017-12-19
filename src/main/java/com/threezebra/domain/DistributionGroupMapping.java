@@ -22,7 +22,7 @@ public class DistributionGroupMapping implements Serializable {
 	private DistributionGroup distributionGroup;
 	private List<JobRole> jobrole;
 	private List<Unit> unit;
-	private UserType usertype;
+	private List<UserType> usertype;
 
 	
 	public DistributionGroup getDistributionGroup() {
@@ -66,11 +66,11 @@ public class DistributionGroupMapping implements Serializable {
 		this.unit = unit;
 	}
 
-	public UserType getUsertype() {
+	public List<UserType> getUsertype() {
 		return usertype;
 	}
 
-	public void setUsertype(UserType usertype) {
+	public void setUsertype(List<UserType> usertype) {
 		this.usertype = usertype;
 	}
 	

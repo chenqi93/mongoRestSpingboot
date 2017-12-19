@@ -51,6 +51,13 @@ public class JobRoleService {
 	public JobRole findById(long jobRole) {
 		return jobRoleRepository.findById(jobRole);
 	}
+	public List<JobRole> createJobRoleList(List<UserType> usertypelist) {
+		List<JobRole> jobRoleList=null;
+		for(UserType userType:usertypelist) {
+		  	jobRoleList =jobRoleRepository.findByUserType(userType);
+		}
+		return jobRoleList;
+	}
 
 	
 	

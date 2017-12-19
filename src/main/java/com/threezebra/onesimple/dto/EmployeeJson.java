@@ -1,7 +1,5 @@
 package com.threezebra.onesimple.dto;
 
-import com.threezebra.domain.UserType;
-
 public class EmployeeJson {
 	
  
@@ -10,19 +8,19 @@ public class EmployeeJson {
 	private String accessStartDate;
     private String accessSusStartDate;
     private long[] additionalLocation;
-    private String baseLocation;
+    private long baseLocation;
     private String deleted;
     private long[] deviceIssued;
     private String firstName;
     private String lastName;
     private String isInvited;
-    private String jobTitle;
+    private long jobTitle;
     private String permittedNumDevices;
     private String  personalEmail;
     private String  personalPhoneNum;
     private String[] uniqueId;
     private String workEmail;
-    private long[] department;
+    private long department;
     private long userType;
     private long specialRole;
     private long jobRole;
@@ -75,10 +73,10 @@ public class EmployeeJson {
 	public void setIsInvited(String isInvited) {
 		this.isInvited = isInvited;
 	}
-	public String getJobTitle() {
+	public long getJobTitle() {
 		return jobTitle;
 	}
-	public void setJobTitle(String jobTitle) {
+	public void setJobTitle(long jobTitle) {
 		this.jobTitle = jobTitle;
 	}
 	public String getPermittedNumDevices() {
@@ -110,11 +108,11 @@ public class EmployeeJson {
 
 	
 
-	public String getBaseLocation() {
+	public long getBaseLocation() {
 		return baseLocation;
 	}
 
-	public void setBaseLocation(String baseLocation) {
+	public void setBaseLocation(long baseLocation) {
 		this.baseLocation = baseLocation;
 	}
 
@@ -143,11 +141,11 @@ public class EmployeeJson {
 		this.workEmail = workEmail;
 	}
 
-	public long[] getDepartment() {
+	public long getDepartment() {
 		return department;
 	}
 
-	public void setDepartment(long[] department) {
+	public void setDepartment(long department) {
 		this.department = department;
 	}
 

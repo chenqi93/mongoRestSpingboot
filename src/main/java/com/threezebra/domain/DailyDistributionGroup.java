@@ -1,22 +1,11 @@
 package com.threezebra.domain;
 
-import java.io.Serializable;
-import javax.persistence.*;
-
-import org.springframework.data.annotation.Id;
-
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
 
-/**
- * The persistent class for the distribution_group database table.
- * 
- */
-
-public class DistributionGroup implements Serializable {
-	private static final long serialVersionUID = 1L;
-
+public class DailyDistributionGroup {
 	@Id
 	private long id;
     private int createBy;
@@ -33,6 +22,8 @@ public class DistributionGroup implements Serializable {
 	private List<Department> deptlist;
 	private List<UserType> userType;
 	
+	public DailyDistributionGroup() {
+	}
 	
 	public List<String> getLocation() {
 		return location;
@@ -87,8 +78,7 @@ public class DistributionGroup implements Serializable {
 	public void setJobRole(List<JobRole> jobRole) {
 		this.jobRole = jobRole;
 	}
-	public DistributionGroup() {
-	}
+	
 	public long getId() {
 		return id;
 	}
@@ -140,5 +130,4 @@ public class DistributionGroup implements Serializable {
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
-
 }

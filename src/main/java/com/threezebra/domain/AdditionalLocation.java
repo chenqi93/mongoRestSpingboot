@@ -24,7 +24,16 @@ public class AdditionalLocation implements Serializable {
     private int modifiedBy;
     private Date modifiedDate;
     private String name;
-    private BaseLocation baseLocation;
+    private String desc;
+    public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	private BaseLocation baseLocation;
 
 	public AdditionalLocation() {
 	}

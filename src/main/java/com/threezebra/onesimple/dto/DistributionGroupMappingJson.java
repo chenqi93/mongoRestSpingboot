@@ -2,11 +2,21 @@ package com.threezebra.onesimple.dto;
 
 public class DistributionGroupMappingJson {
 	
+	private String[] location;
 	private long[] department;
 	private String distributionGroup;
-	private  long[] jobrole;
+	private long[] jobrole;
 	private long[] unit;
-	private  long usertype;
+	private String defaultvalue;
+	private long[] usertype;
+	
+	
+	public String[] getLocation() {
+		return location;
+	}
+	public void setLocation(String[] location) {
+		this.location = location;
+	}
 	public long[] getDepartment() {
 		return department;
 	}
@@ -31,11 +41,17 @@ public class DistributionGroupMappingJson {
 	public void setUnit(long[] unit) {
 		this.unit = unit;
 	}
-	public long getUsertype() {
+	public long[] getUsertype() {
 		return usertype;
 	}
-	public void setUsertype(long usertype) {
+	public void setUsertype(long[] usertype) {
 		this.usertype = usertype;
+	}
+	public String getDefaultvalue() {
+		return defaultvalue;
+	}
+	public void setDefaultvalue(String defaultvalue) {
+		this.defaultvalue = defaultvalue;
 	}
 	
 }

@@ -1,9 +1,7 @@
 package com.threezebra.onesimple.controller;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.threezebra.domain.AdditionalLocation;
 import com.threezebra.domain.Application;
+import com.threezebra.domain.BaseLocation;
 import com.threezebra.domain.BaseResponse;
+import com.threezebra.domain.DailyDistributionGroup;
 import com.threezebra.domain.Department;
 import com.threezebra.domain.DeptDocPrivilege;
 import com.threezebra.domain.DeviceInfo;
 import com.threezebra.domain.DistributionGroup;
 import com.threezebra.domain.DistributionGroupMapping;
-import com.threezebra.domain.DistributionList;
 import com.threezebra.domain.EmpDetail;
 import com.threezebra.domain.JobRole;
 import com.threezebra.domain.JobTitle;
@@ -41,6 +40,7 @@ import com.threezebra.restapi.ValidatingUserRepositoryDecorator;
 import com.threezebra.service.AdditionalLocationService;
 import com.threezebra.service.ApplicationService;
 import com.threezebra.service.BaseLocationService;
+import com.threezebra.service.DailyDistributionGroupService;
 import com.threezebra.service.DepartmentService;
 import com.threezebra.service.DeptDocPrivilegeService;
 import com.threezebra.service.DeviceInfoService;
@@ -93,12 +93,12 @@ public class EmpDetailController {
 	PermissionGroupService permissionGroupService;
 	@Autowired
 	JobTitleService jobTitleService;
-	
+
 	@Autowired
 	SharedDocPrivilegeService sharedDocPrivilegeService;
 	@Autowired
 	AdditionalLocationService additionalLocationService;
-	
+
 	@Autowired
 	DeviceInfoService deviceInfoService;
 	@Autowired
@@ -111,15 +111,26 @@ public class EmpDetailController {
 	SpecialRoleMappingService specialRoleMappingService;
 	@Autowired
 	XterlDistributionGroupService xterlDistributionGroupService;
+	@Autowired
+	DailyDistributionGroupService dailydDistributionGroupService;
 
 	@Autowired
 	private ValidatingUserRepositoryDecorator validatingUserRepositoryDecorator;
 
-	//@PreAuthorize(USER)
+	// @PreAuthorize(USER)
+
+	@RequestMapping(value = "/getBaseLocation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<BaseLocation>> getBaseLocation() {
+		// System.out.println("username::::::" + userName);
+		// validatingUserRepositoryDecorator.findAccountValidated(userName);
+		List<BaseLocation> baseLocationList = baseLocationService.findAll();
+		return new ResponseEntity<List<BaseLocation>>(baseLocationList, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/getEmpDetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EmpDetail>> listAllEmpDetails() {
-		//System.out.println("username::::::" + userName);
-		//validatingUserRepositoryDecorator.findAccountValidated(userName);
+		// System.out.println("username::::::" + userName);
+		// validatingUserRepositoryDecorator.findAccountValidated(userName);
 
 		List<EmpDetail> EmpDetailList = empDetailService.findAll();
 		return new ResponseEntity<List<EmpDetail>>(EmpDetailList, HttpStatus.OK);
@@ -127,7 +138,7 @@ public class EmpDetailController {
 
 	@RequestMapping(value = "/createEmpDetail", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity saveEmpDetailInfo(@RequestBody EmployeeJson employeeJson) {
-		EmpDetail empDetails=new EmpDetail();
+		EmpDetail empDetails = new EmpDetail();
 		empDetails.setId(System.nanoTime());
 		empDetails.setFirstName(employeeJson.getFirstName());
 		empDetails.setLastName(employeeJson.getLastName());
@@ -135,48 +146,67 @@ public class EmpDetailController {
 		empDetails.setAccessRenwStartDate(employeeJson.getAccessRenwStartDate());
 		empDetails.setAccessStartDate(employeeJson.getAccessStartDate());
 		empDetails.setAccessSusStartDate(employeeJson.getAccessSusStartDate());
-		empDetails.setBaseLocation(baseLocationService.findByName(employeeJson.getBaseLocation()));
-		empDetails.setUnit(unitService.findbyId(employeeJson.getUnit()));
-		long [] deptarr=employeeJson.getDepartment();
-		for(int i=0;i<deptarr.length;i++) {
-			Department dept=departmentService.findById(deptarr[i]);
-			List<Department> deptlist=new ArrayList<>();
-	        deptlist.add(dept);
-			empDetails.setDepartment(deptlist);
-			
+		BaseLocation blocation = baseLocationService.findbyId(employeeJson.getBaseLocation());
+		empDetails.setBaseLocation(blocation);
+		Unit unit = unitService.findbyId(employeeJson.getUnit());
+		Department department = departmentService.findById(employeeJson.getDepartment());
+		JobRole jobRole = jobRoleService.findById(employeeJson.getJobRole());
+		empDetails.setJobRole(jobRole);
+		if(jobRole.getName()!="Daily") {
+		StringBuilder distroGroup = new StringBuilder();
+		distroGroup.append("Distro.").append(department.getName()).append("-Dept-").append(unit.getName()).append(".")
+				.append(blocation.getName());
+		DistributionGroup distroGroupObj = distributionGroupService.findByName(distroGroup.toString());
+		if (null != distroGroupObj) {
+			empDetails.setDistributionGroup(distroGroupObj);
 		}
-		long [] additionalarr=employeeJson.getAdditionalLocation();
-		for(int i=0;i<additionalarr.length;i++) {
-			AdditionalLocation addloc=additionalLocationService.findByName(additionalarr[i]);
-	        List<AdditionalLocation> addloclist=new ArrayList<>();
-			addloclist.add(addloc);
-			empDetails.setAdditionalLocation(addloclist);
 		}
-		long [] deviceIssuedarr=employeeJson.getAdditionalLocation();
-		 List<DeviceInfo> deviceIssued=new ArrayList<>();
-		for(int i=0;i<deviceIssuedarr.length;i++) {
-			DeviceInfo deviceInfo=deviceInfoService.findByName(deviceIssuedarr[i]);
-			deviceIssued.add(deviceInfo);
-		 	}
-		
+		if(jobRole.getName()!="Daily") {
+			StringBuilder distributionGroupname = new StringBuilder();
+			distributionGroupname.append("Daily.").append(department.getName()).append("-DAILYHIRES-")
+			.append(unit.getName()).append(".").append(blocation.getName());
+			DailyDistributionGroup distroGroupObj = dailydDistributionGroupService.findByName(distributionGroupname.toString());
+			if (null != distroGroupObj) {
+				empDetails.setDialyDistributionGroup(distroGroupObj);
+			}
+			}
+		empDetails.setUnit(unit);
+		empDetails.setDepartment(department);
+		long[] additionalarr = employeeJson.getAdditionalLocation();
+		if (null != additionalarr) {
+			for (int i = 0; i < additionalarr.length; i++) {
+				AdditionalLocation addloc = additionalLocationService.findByName(additionalarr[i]);
+				List<AdditionalLocation> addloclist = new ArrayList<>();
+				addloclist.add(addloc);
+				empDetails.setAdditionalLocation(addloclist);
+			}
+		}
+		long[] deviceIssuedarr = employeeJson.getAdditionalLocation();
+		List<DeviceInfo> deviceIssued = new ArrayList<>();
+		if (null != deviceIssuedarr) {
+			for (int i = 0; i < deviceIssuedarr.length; i++) {
+				DeviceInfo deviceInfo = deviceInfoService.findByName(deviceIssuedarr[i]);
+				deviceIssued.add(deviceInfo);
+			}
+		}
+
 		empDetails.setDeviceIssued(deviceIssued);
-		UserType userType=userTypeService.findById(employeeJson.getUserType());
-		SpecialRole specialRole=specialRoleService.findByName(employeeJson.getSpecialRole());
+		UserType userType = userTypeService.findById(employeeJson.getUserType());
+		SpecialRole specialRole = specialRoleService.findByName(employeeJson.getSpecialRole());
 		empDetails.setSpecialRole(specialRole);
 		empDetails.setUserType(userType);
 		empDetails.setDeleted(employeeJson.getDeleted());
 		empDetails.setIsInvited(employeeJson.getIsInvited());
-		JobRole jobRole =jobRoleService.findById(employeeJson.getJobRole());
-	    empDetails.setJobRole(jobRole);
-	    JobTitle jobTitle=jobTitleService.findByName(employeeJson.getJobTitle());
-	    empDetails.setJobTitle(jobTitle);
-	    empDetails.setPermittedNumDevices(employeeJson.getPermittedNumDevices());
-	    empDetails.setPersonalEmail(employeeJson.getPersonalEmail());
-	    empDetails.setPersonalPhoneNum(employeeJson.getPersonalPhoneNum());
-	    empDetails.setUniqueId(employeeJson.getUniqueId());
-	    empDetails.setWorkEmail(employeeJson.getWorkEmail());
+		
+		JobTitle jobTitle = jobTitleService.findById(employeeJson.getJobTitle());
+		empDetails.setJobTitle(jobTitle);
+		empDetails.setPermittedNumDevices(employeeJson.getPermittedNumDevices());
+		empDetails.setPersonalEmail(employeeJson.getPersonalEmail());
+		empDetails.setPersonalPhoneNum(employeeJson.getPersonalPhoneNum());
+		empDetails.setUniqueId(employeeJson.getUniqueId());
+		empDetails.setWorkEmail(employeeJson.getWorkEmail());
 		empDetailService.save(empDetails);
-	     BaseResponse response = new BaseResponse("200", "SUCCESS");
+		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -186,16 +216,16 @@ public class EmpDetailController {
 		return new ResponseEntity<>(unitList, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/department/",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Department>> getDepartment(){
+	@RequestMapping(value = "/department/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Department>> getDepartment() {
 		List<Department> deptList = departmentService.findAll();
-		return new ResponseEntity<>(deptList,HttpStatus.OK);
+		return new ResponseEntity<>(deptList, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/department/{unitName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Department>> getDepartmentbyUnit(@PathVariable String unitName) {
-		long id=Long.parseLong(unitName);
-		Unit unit=unitService.findbyId(id);
+		long id = Long.parseLong(unitName);
+		Unit unit = unitService.findbyId(id);
 		List<Department> deptList = departmentService.findByUnit(unit);
 		return new ResponseEntity<>(deptList, HttpStatus.OK);
 	}
@@ -207,9 +237,9 @@ public class EmpDetailController {
 	}
 
 	@RequestMapping(value = "/jobrole/{userTypeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<JobRole>> getJobRoles(@PathVariable String userTypeId) { 
-		long id=Long.parseLong(userTypeId);
-		UserType userType=userTypeService.findById(id);
+	public ResponseEntity<List<JobRole>> getJobRoles(@PathVariable String userTypeId) {
+		long id = Long.parseLong(userTypeId);
+		UserType userType = userTypeService.findById(id);
 		List<JobRole> jobRoleList = jobRoleService.findByUserType(userType);
 		return new ResponseEntity<>(jobRoleList, HttpStatus.OK);
 	}
@@ -219,11 +249,11 @@ public class EmpDetailController {
 		List<JobRole> jobRoleList = jobRoleService.findAll();
 		return new ResponseEntity<>(jobRoleList, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/jobTitle/{departmentId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<JobTitle>> getAllJobTitle(@PathVariable String departmentId) {
-		Long id=Long.parseLong(departmentId);
-		Department department=departmentService.findById(id);
+		Long id = Long.parseLong(departmentId);
+		Department department = departmentService.findById(id);
 		List<JobTitle> jobTitleList = jobTitleService.findByDepartment(department);
 		return new ResponseEntity<>(jobTitleList, HttpStatus.OK);
 	}
@@ -242,25 +272,25 @@ public class EmpDetailController {
 
 	@RequestMapping(value = "/permissiongroups/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity savePermissionGroupDetails(@RequestBody DistributionGroupMapping assignmentsVO) {
-		 distriGroupAssignmentService.save(assignmentsVO);
+		distriGroupAssignmentService.save(assignmentsVO);
 		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/permissiongroups/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PermissionGroup>> getPermissionGroupDetails() {
-		List<PermissionGroup> permissiongrouplist= permissionGroupService.findAll();
+		List<PermissionGroup> permissiongrouplist = permissionGroupService.findAll();
 		return new ResponseEntity<>(permissiongrouplist, HttpStatus.OK);
 	}
 
-/*	@RequestMapping(value = "/addvalue/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity addValue(@RequestBody NewValue valueVO) {
-		baseServiceImpl.addNewValue(valueVO);
-		BaseResponse response = new BaseResponse("200", "SUCCESS");
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}*/
+	/*
+	 * @RequestMapping(value = "/addvalue/", method = RequestMethod.POST, consumes =
+	 * MediaType.APPLICATION_JSON_VALUE) public ResponseEntity addValue(@RequestBody
+	 * NewValue valueVO) { baseServiceImpl.addNewValue(valueVO); BaseResponse
+	 * response = new BaseResponse("200", "SUCCESS"); return new
+	 * ResponseEntity<>(response, HttpStatus.OK); }
+	 */
 
-	
 	@RequestMapping(value = "/saveDistributionGroup/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity saveDistributionGroup(@RequestBody DistributionGroup groupVO) {
 		distributionGroupService.save(groupVO);
@@ -268,53 +298,53 @@ public class EmpDetailController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	
 	@RequestMapping(value = "/distributiongrouplist/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity <List<DistributionGroup>> getDistributionList() {
-		List<DistributionGroup> distributionGroupList=distributionGroupService.findAll();
-		DistributionList distroList=new DistributionList();
-		Set<String> distroSet=new HashSet<>();
-		for(DistributionGroup distributionGroup:distributionGroupList) {
-			distroSet.add(distributionGroup.getName());
-			
-		}
+	public ResponseEntity<List<DistributionGroup>> getDistributionList() {
+		List<DistributionGroup> distributionGroupList = distributionGroupService.findAll();
 		System.out.println(distributionGroupList.size());
 		BaseResponse response = new BaseResponse("200", "SUCCESS");
-		return new ResponseEntity <>(distributionGroupList, HttpStatus.OK);
+		return new ResponseEntity<>(distributionGroupList, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/dailyDistributiongrouplist/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity <List<DistributionGroup> > getDailyDistributionList() {
-		List<DistributionGroup> distributionGroupList =dailyDistributionService.findAll();
+	public ResponseEntity<List<DistributionGroup>> getDailyDistributionList() {
+		List<DistributionGroup> distributionGroupList = dailyDistributionService.findAll();
 		return new ResponseEntity<>(distributionGroupList, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/xternalDistributionlist/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity <List<XternalDistributionGroup> > xternalDistributionlist() {
-		List<XternalDistributionGroup> xterlDistributionGrouplist =xterlDistributionGroupService.findAll();
+	public ResponseEntity<List<XternalDistributionGroup>> xternalDistributionlist() {
+		List<XternalDistributionGroup> xterlDistributionGrouplist = xterlDistributionGroupService.findAll();
 		return new ResponseEntity<>(xterlDistributionGrouplist, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/getSpecialRoleMapping/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity <List<SpecialRoleMapping> > getSpecialRoleMapping() {
-		List<SpecialRoleMapping> distributionGroupList =specialRoleMappingService.findAll();
+	public ResponseEntity<List<SpecialRoleMapping>> getSpecialRoleMapping() {
+		List<SpecialRoleMapping> distributionGroupList = specialRoleMappingService.findAll();
 		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(distributionGroupList, HttpStatus.OK);
 	}
-	
+
+	@RequestMapping(value = "/getSpecialRoleMapping/{specialRoleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SpecialRoleMapping> getSpecialRoleMapping(@PathVariable long specialRoleId) {
+		SpecialRole specialRole = specialRoleService.findById(specialRoleId);
+		SpecialRoleMapping specialRoleMapping = specialRoleMappingService.findBySpecialRole(specialRole);
+		return new ResponseEntity<>(specialRoleMapping, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/getPermissionGroupMapping/{permissiongroupId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PermissionGroupMapping> getPermissionGroupMapping(@PathVariable String permissiongroupId) {	
-		long permissionlong=Long.parseLong(permissiongroupId);
-		 PermissionGroup permissionGroup=permissionGroupService.findById(permissionlong);
-		 PermissionGroupMapping permissionGroupMapping=permissionGroupMappingService.findByPermissionGroup(permissionGroup);
+	public ResponseEntity<PermissionGroupMapping> getPermissionGroupMapping(@PathVariable String permissiongroupId) {
+		long permissionlong = Long.parseLong(permissiongroupId);
+		PermissionGroup permissionGroup = permissionGroupService.findById(permissionlong);
+		PermissionGroupMapping permissionGroupMapping = permissionGroupMappingService
+				.findByPermissionGroup(permissionGroup);
 		return new ResponseEntity<>(permissionGroupMapping, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/inviteUser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity savePermissionGroupDetails(@RequestBody List<EmpDetail> EmpDetailList) {
-		for(EmpDetail emp:EmpDetailList)
-		{
-			EmpDetail empDetailobj=empDetailService.findById(emp.getId());
+		for (EmpDetail emp : EmpDetailList) {
+			EmpDetail empDetailobj = empDetailService.findById(emp.getId());
 			empDetailobj.setIsInvited(emp.getIsInvited());
 			empDetailService.save(empDetailobj);
 		}
@@ -322,36 +352,42 @@ public class EmpDetailController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	
-
-	@RequestMapping(value = "/usertype/{unitId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<UserType>> getUserType(@PathVariable String unitId){
-		long id=Long.parseLong(unitId);
-		Unit unit=unitService.findbyId(id);
+	@RequestMapping(value = "/usertype/{unitId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<UserType>> getUserType(@PathVariable String unitId) {
+		long id = Long.parseLong(unitId);
+		Unit unit = unitService.findbyId(id);
 		List<UserType> userTypesList = userTypeService.findByUnit(unit);
-		return new ResponseEntity<>(userTypesList,HttpStatus.OK);
+		return new ResponseEntity<>(userTypesList, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/sharedDocPrivilege",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<SharedDocPrivilege>> getSharedPrivilegeByInfo(){
+
+	@RequestMapping(value = "/sharedDocPrivilege", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SharedDocPrivilege>> getSharedPrivilegeByInfo() {
 
 		List<SharedDocPrivilege> sharedDocPrivilege = sharedDocPrivilegeService.findAll();
 		return new ResponseEntity<>(sharedDocPrivilege, HttpStatus.OK);
 	}
-	@RequestMapping(value = "/deptDocPrivilege",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DeptDocPrivilege>> deptDocPrivilege(){
+
+	@RequestMapping(value = "/deptDocPrivilege", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<DeptDocPrivilege>> deptDocPrivilege() {
 		List<DeptDocPrivilege> deptDocPrivilege = deptDocPrivilegeService.findAll();
 		return new ResponseEntity<>(deptDocPrivilege, HttpStatus.OK);
 	}
-	@RequestMapping(value = "/otherDocPrivilege",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<OtherDocPrivilege>> otherDocPrivilege(){
+
+	@RequestMapping(value = "/otherDocPrivilege", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<OtherDocPrivilege>> otherDocPrivilege() {
 		List<OtherDocPrivilege> otherDocPrivilege = otherDocPrivilegeService.findAll();
 		return new ResponseEntity<>(otherDocPrivilege, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/getDeviceInfo",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DeviceInfo>> deviceInfo(){
+
+	@RequestMapping(value = "/getDeviceInfo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<DeviceInfo>> deviceInfo() {
 		List<DeviceInfo> deviceInfo = deviceInfoService.findAll();
 		return new ResponseEntity<>(deviceInfo, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/getAdditionalLocation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<AdditionalLocation>> getAdditionalLocation() {
+		List<AdditionalLocation> addtionalLocation = additionalLocationService.findAll();
+		return new ResponseEntity<>(addtionalLocation, HttpStatus.OK);
 	}
 }

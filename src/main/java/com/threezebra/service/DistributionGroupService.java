@@ -11,12 +11,13 @@ import com.threezebra.domain.JobRole;
 import com.threezebra.domain.Unit;
 import com.threezebra.domain.UserType;
 import com.threezebra.repository.DistributionGroupRepository;
+
 @Service
 public class DistributionGroupService {
-	
-	@Autowired  
+
+	@Autowired
 	DistributionGroupRepository distributionGroupRepository;
-	
+
 	@Autowired
 	UnitService unitService;
 	@Autowired
@@ -25,43 +26,51 @@ public class DistributionGroupService {
 	UserTypeService userTypeService;
 	@Autowired
 	JobRoleService jobRoleService;
-	
-	public  DistributionGroup save(DistributionGroup distributionGroup) {
+
+	public DistributionGroup save(DistributionGroup distributionGroup) {
 		return distributionGroupRepository.save(distributionGroup);
 	}
 
 	public List<DistributionGroup> findAll() {
 		return distributionGroupRepository.findAll();
 	}
-	
-	public List<DistributionGroup> findByDaily(String daily) {
-		return distributionGroupRepository.findByDaily(daily);
+
+	public void usertypelist() {
+		distributionGroupRepository.deleteAll();
 	}
-     public void usertypelist() {
-	 distributionGroupRepository.deleteAll();
- }
 
 	public DistributionGroup findByName(String distributionGroup) {
-		// TODO Auto-generated method stub
-		return null;
+		return distributionGroupRepository.findByName(distributionGroup);
 	}
 
 	public void deleteAll() {
 		distributionGroupRepository.deleteAll();
-		
+
 	}
 
-	public DistributionGroup createDistributionGroup(String distributionGroup,long unit,long department,long userType, long jobrole) {
-		DistributionGroup distributionGroupObj=new DistributionGroup();
-		Unit unitObj=unitService.findbyId(unit);
-		Department dept=departmentService.findById(department);
-		UserType userTyp=userTypeService.findById(userType);
-		JobRole jobRoleobj=jobRoleService.findById(jobrole);
-		distributionGroupObj.setId(System.nanoTime());
-		distributionGroupObj.setName(distributionGroup);
-		distributionGroupObj.setUnit(unitObj);
-		distributionGroupObj.setDepartment(dept);
-		distributionGroupObj.setJobRole(jobRoleobj);
+	public DistributionGroup createDistributionGroup(String defaultValue,List<String> location, String distributionGroup, List<Unit> unitlist,
+			List<Department> departmentlst, List<UserType> userTypelst, List<JobRole> jobRolelst) {
+		DistributionGroup distributionGroupObj = distributionGroupRepository.findByName(distributionGroup);
+		if (null != distributionGroupObj) {
+			distributionGroupObj.setDefaultvalue(defaultValue);
+			distributionGroupObj.setLocation(location);
+			distributionGroupObj.setName(distributionGroup);
+			distributionGroupObj.setUnitlist(unitlist);
+			distributionGroupObj.setDeptlist(departmentlst);
+			distributionGroupObj.setUserType(userTypelst);
+			distributionGroupObj.setJobRole(jobRolelst);
+		} else {
+			distributionGroupObj = new DistributionGroup();
+			distributionGroupObj.setId(System.nanoTime());
+			distributionGroupObj.setLocation(location);
+			distributionGroupObj.setDefaultvalue(defaultValue);
+			distributionGroupObj.setName(distributionGroup);
+			distributionGroupObj.setUnitlist(unitlist);
+			distributionGroupObj.setDeptlist(departmentlst);
+			distributionGroupObj.setUserType(userTypelst);
+			distributionGroupObj.setJobRole(jobRolelst);
+		}
+
 		return distributionGroupRepository.save(distributionGroupObj);
 	}
 }
