@@ -228,27 +228,35 @@ public class MasterController {
 
 	@RequestMapping(value = "/createXternalList", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity createXternalList(@RequestBody XternalListJson xternalListJson) {
+		String xunit="xternal";
 		String xdeparment = xternalListJson.getXdepartment();
 		String xuserType = xternalListJson.getXuserType();
 		String xjobRole = xternalListJson.getXjobrole();
 		Department department = departmentService.findbyName(xdeparment);
+		 
+          Unit unit=new Unit();
+          List<Unit> unitlist=new ArrayList<>();
+          unit.setId(System.nanoTime());
+          unit.setName(xunit);
+          unitService.save(unit);
+          unitlist.add(unit);
 		if (null != department) {
-			department = departmentService.update(xdeparment, null);
+			 department = departmentService.update(xdeparment, unitlist);
 		} else {
 			department = new Department();
 			department.setId(System.nanoTime());
 			department.setName(xdeparment);
-			department.setUnit(null);
+			department.setUnit(unitlist);
 			department = departmentService.save(department);
 		}
 
 		UserType userType = userTypeService.findByUserType(xuserType);
 		if (null != userType) {
 			userType.setName(xdeparment);
-			userType = userTypeService.update(userType, null);
+			userType = userTypeService.update(userType, unit);
 		} else {
 			userType = new UserType();
-			userType = userTypeService.save(xuserType, null);
+			userType = userTypeService.save(xuserType, unitlist);
 		}
 
 		JobRole jobRole = jobRoleService.update(userType, xjobRole);
