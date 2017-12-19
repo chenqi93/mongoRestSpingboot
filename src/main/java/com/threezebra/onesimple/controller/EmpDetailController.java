@@ -152,7 +152,7 @@ public class EmpDetailController {
 		Department department = departmentService.findById(employeeJson.getDepartment());
 		JobRole jobRole = jobRoleService.findById(employeeJson.getJobRole());
 		empDetails.setJobRole(jobRole);
-		if(jobRole.getName()!="Daily") {
+		if(!(jobRole.getName().equals("Daily"))) {
 		StringBuilder distroGroup = new StringBuilder();
 		distroGroup.append("Distro.").append(department.getName()).append("-Dept-").append(unit.getName()).append(".")
 				.append(blocation.getName());
@@ -161,14 +161,14 @@ public class EmpDetailController {
 			empDetails.setDistributionGroup(distroGroupObj);
 		}
 		}
-		if(jobRole.getName()!="Daily") {
+		else {
 			StringBuilder distributionGroupname = new StringBuilder();
 			distributionGroupname.append("Daily.").append(department.getName()).append("-DAILYHIRES-")
 			.append(unit.getName()).append(".").append(blocation.getName());
 			DailyDistributionGroup distroGroupObj = dailydDistributionGroupService.findByName(distributionGroupname.toString());
 			if (null != distroGroupObj) {
 				empDetails.setDialyDistributionGroup(distroGroupObj);
-			}
+			 }
 			}
 		empDetails.setUnit(unit);
 		empDetails.setDepartment(department);
