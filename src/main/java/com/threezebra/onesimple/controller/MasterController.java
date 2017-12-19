@@ -274,7 +274,18 @@ public class MasterController {
 		List<Department> departmentlist = null;
 		List<UserType> usertypelist = null;
 		List<JobRole> jobRoleList = null;
-
+        List<String> applications=new ArrayList<>();
+        applications.add("0365");
+        applications.add("EMS");
+        applications.add("LIVETILES");
+        DeptDocPrivilege deptDocPrivilege=deptDocPrivilegeService.findByName("On-Line View, Print, Edit");
+       SharedDocPrivilege sharedDocPrivilege=sharedDocPrivilegeService.findSharedDocPrivilege("On-Line View Only");
+        List<Application> applicationlist=new ArrayList<>();
+        for(String application:applications)
+        {
+        	Application applicationobj=applicationService.findByName(application);
+        	applicationlist.add(applicationobj);
+        }
 		for (Unit unit : unitlist) {
 			departmentlist = departmentService.findByUnit(unit);
 			List<UserType> userTypelst = userTypeService.findByUnit(unit);
@@ -294,10 +305,13 @@ public class MasterController {
 						for (BaseLocation baseLocation : baselocationlist) {
 							PermissionGroup permissionGroup = new PermissionGroup();
 							StringBuilder permissiongroupname = new StringBuilder();
+							permissionGroup.setApplication(applicationlist);
 							permissionGroup.setId(System.nanoTime());
 							permissionGroup.setUnit(unit.getName());
 							permissionGroup.setJobRole(jobRole.getName());
 							permissionGroup.setDepartment(department.getName());
+							permissionGroup.setDeptDocPrivilege(deptDocPrivilege);
+							permissionGroup.setSharedDocPrivilege(sharedDocPrivilege);
 							permissiongroupname.append(baseLocation.getName()).append(".").append(unit.getName())
 									.append(".").append(department.getName()).append(".").append(jobRole.getName());
 							permissionGroup.setName(permissiongroupname.toString());
@@ -447,48 +461,23 @@ public class MasterController {
 	}
 
 	@RequestMapping(value = "/createPermissionGroupMapping", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity createPermissionGroupMapping(
-			@RequestBody PermissionGroupMappingJson permissionGroupMappingJson) {
-		String permissionId = permissionGroupMappingJson.getPermissiongroupname();
-		long permissionlong = Long.parseLong(permissionId);
-		PermissionGroup permissionGroup = permissionGroupService.findById(permissionlong);
-		PermissionGroupMapping permissionGroupMappingobj = permissionGroupMappingService
-				.findByPermissionGroup(permissionGroup);
-		if (null != permissionGroupMappingobj) {
-			permissionGroupMappingobj.setPermissionGroup(permissionGroup);
+	public ResponseEntity createPermissionGroupMapping(@RequestBody PermissionGroupMappingJson permissionGroupMappingJson) {
+		   String permissionId = permissionGroupMappingJson.getPermissiongroupname();
+		    long permissionlong = Long.parseLong(permissionId);
+		   PermissionGroup permissionGroup = permissionGroupService.findById(permissionlong);	
 			long[] application = permissionGroupMappingJson.getApplications();
 			List<Application> appllist = new ArrayList<>();
 			for (int i = 0; i < application.length; i++) {
 				appllist.add(applicationService.findById(application[i]));
 			}
-			permissionGroupMappingobj.setApplications(appllist);
+			permissionGroup.setApplication(appllist);
 			long deptdocprev = permissionGroupMappingJson.getDeptDocPrivilege();
-			permissionGroupMappingobj.setDeptDocPrivileges(deptDocPrivilegeService.findById(deptdocprev));
+			permissionGroup.setDeptDocPrivilege(deptDocPrivilegeService.findById(deptdocprev));
 			long otherdocprev = permissionGroupMappingJson.getOtherDocPrivilege();
-			permissionGroupMappingobj.setOtherDocPrivilege(otherDocPrivilegeService.findById(otherdocprev));
+			permissionGroup.setOtherDocPrivilege(otherDocPrivilegeService.findById(otherdocprev));
 			long sharedDocPrivilege = permissionGroupMappingJson.getSharedDocPrivilege();
-			permissionGroupMappingobj.setSharedDocPrivilege(sharedDocPrivilegeService.findById(sharedDocPrivilege));
-			permissionGroupMappingService.save(permissionGroupMappingobj);
-
-		} else {
-			PermissionGroupMapping permissionGroupMapping = new PermissionGroupMapping();
-			permissionGroupMapping.setId(System.nanoTime());
-			permissionGroupMapping.setPermissionGroup(permissionGroup);
-			long[] application = permissionGroupMappingJson.getApplications();
-			List<Application> appllist = new ArrayList<>();
-			for (int i = 0; i < application.length; i++) {
-				appllist.add(applicationService.findById(application[i]));
-			}
-			permissionGroupMapping.setApplications(appllist);
-			long deptdocprev = permissionGroupMappingJson.getDeptDocPrivilege();
-			permissionGroupMapping.setDeptDocPrivileges(deptDocPrivilegeService.findById(deptdocprev));
-			long otherdocprev = permissionGroupMappingJson.getOtherDocPrivilege();
-			permissionGroupMapping.setOtherDocPrivilege(otherDocPrivilegeService.findById(otherdocprev));
-			long sharedDocPrivilege = permissionGroupMappingJson.getSharedDocPrivilege();
-			permissionGroupMapping.setSharedDocPrivilege(sharedDocPrivilegeService.findById(sharedDocPrivilege));
-			permissionGroupMappingService.save(permissionGroupMapping);
-		}
-
+			permissionGroup.setSharedDocPrivilege(sharedDocPrivilegeService.findById(sharedDocPrivilege));
+			permissionGroupService.save(permissionGroup);
 		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

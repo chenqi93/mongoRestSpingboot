@@ -35,11 +35,29 @@ public class EmpDetail implements Serializable {
     private String workEmail;
     private DistributionGroup distributionGroup;
     private DailyDistributionGroup dialyDistributionGroup;
+    private  XternalDistributionGroup xternalDistributionGroup;
     private Department  department;
     private UserType userType;
     private SpecialRole specialRole;
 	private JobRole jobRole;
     private Unit unit;
+    private String isActive;
+
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+
+	public XternalDistributionGroup getXternalDistributionGroup() {
+		return xternalDistributionGroup;
+	}
+
+	public void setXternalDistributionGroup(XternalDistributionGroup xternalDistributionGroup) {
+		this.xternalDistributionGroup = xternalDistributionGroup;
+	}
 
 	public EmpDetail() {
 	}

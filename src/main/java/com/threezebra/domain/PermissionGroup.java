@@ -1,5 +1,7 @@
 package com.threezebra.domain;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 
 public class PermissionGroup {
@@ -9,7 +11,35 @@ public class PermissionGroup {
 	private String department;
 	private String jobRole;
 	private String name;
-	
+	private List<Application> application;
+	private DeptDocPrivilege deptDocPrivilege;
+	private SharedDocPrivilege  sharedDocPrivilege;
+	private OtherDocPrivilege  otherDocPrivilege;
+
+	public OtherDocPrivilege getOtherDocPrivilege() {
+		return otherDocPrivilege;
+	}
+	public void setOtherDocPrivilege(OtherDocPrivilege otherDocPrivilege) {
+		this.otherDocPrivilege = otherDocPrivilege;
+	}
+	public SharedDocPrivilege getSharedDocPrivilege() {
+		return sharedDocPrivilege;
+	}
+	public void setSharedDocPrivilege(SharedDocPrivilege sharedDocPrivilege) {
+		this.sharedDocPrivilege = sharedDocPrivilege;
+	}
+	public DeptDocPrivilege getDeptDocPrivilege() {
+		return deptDocPrivilege;
+	}
+	public void setDeptDocPrivilege(DeptDocPrivilege deptDocPrivilege) {
+		this.deptDocPrivilege = deptDocPrivilege;
+	}
+	public List<Application> getApplication() {
+		return application;
+	}
+	public void setApplication(List<Application> application) {
+		this.application = application;
+	}
 	public String getName() {
 		return name;
 	}

@@ -151,7 +151,7 @@ public class EmpDetailController {
 		Unit unit = unitService.findbyId(employeeJson.getUnit());
 		Department department = departmentService.findById(employeeJson.getDepartment());
 		JobRole jobRole = jobRoleService.findById(employeeJson.getJobRole());
-		empDetails.setJobRole(jobRole);
+	   empDetails.setJobRole(jobRole);
 		if(!(jobRole.getName().equals("Daily"))) {
 		StringBuilder distroGroup = new StringBuilder();
 		distroGroup.append("Distro.").append(department.getName()).append("-Dept-").append(unit.getName()).append(".")
@@ -170,6 +170,14 @@ public class EmpDetailController {
 				empDetails.setDialyDistributionGroup(distroGroupObj);
 			 }
 			}
+     if(department.getName().equals("Xternal")) {
+	  StringBuilder xternaldistributionGroupname = new StringBuilder();
+	  xternaldistributionGroupname.append("Distro-Xternal").append(jobRole.getName());
+	XternalDistributionGroup xdistroGroupObj = xterlDistributionGroupService.findByName(xternaldistributionGroupname.toString());
+	if (null != xdistroGroupObj) {
+		empDetails.setXternalDistributionGroup(xdistroGroupObj);
+	    }
+		}
 		empDetails.setUnit(unit);
 		empDetails.setDepartment(department);
 		long[] additionalarr = employeeJson.getAdditionalLocation();
@@ -346,6 +354,7 @@ public class EmpDetailController {
 		for (EmpDetail emp : EmpDetailList) {
 			EmpDetail empDetailobj = empDetailService.findById(emp.getId());
 			empDetailobj.setIsInvited(emp.getIsInvited());
+			empDetailobj.setIsActive(emp.getIsActive());
 			empDetailService.save(empDetailobj);
 		}
 		BaseResponse response = new BaseResponse("200", "SUCCESS");

@@ -25,6 +25,11 @@ public class ApplicationService {
 	public Application findById(long applid) {
 		return applicationRepository.findById(applid);
 	}
+
+	public Application findByName(String name) {
+		// TODO Auto-generated method stub
+		return applicationRepository.findByName(name);
+	}
 	
 
 }

@@ -24,4 +24,9 @@ public class XterlDistributionGroupService {
 	public List<XternalDistributionGroup> findAll() {
 		 return xterlDistributionGroupRepository.findAll();
 	}
+
+	public XternalDistributionGroup findByName(String name) {
+		// TODO Auto-generated method stub
+		return xterlDistributionGroupRepository.findByName(name);
+	}
 }
