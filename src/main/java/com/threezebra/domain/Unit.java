@@ -1,19 +1,19 @@
 package com.threezebra.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
-import java.util.Date;
-import java.util.List;
+import io.swagger.annotations.ApiModel;
 
 
 /**
  * The persistent class for the units database table.
  * 
  */
-
+@ApiModel
 public class Unit implements Serializable {
 	
 

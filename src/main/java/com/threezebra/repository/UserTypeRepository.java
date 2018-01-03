@@ -10,5 +10,5 @@ import com.threezebra.domain.UserType;
 public interface UserTypeRepository extends MongoRepository<UserType, String> {
 	UserType findById(long id);
    List<UserType> findByUnit(Unit unit);
-     UserType findByName(String name);
+     UserType findByNameContainingIgnoreCase(String name);
 }

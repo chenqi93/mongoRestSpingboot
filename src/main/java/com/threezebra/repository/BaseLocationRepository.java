@@ -6,7 +6,7 @@ import com.threezebra.domain.BaseLocation;
 
 public interface BaseLocationRepository extends MongoRepository<BaseLocation, String>{
 	
-BaseLocation  findByName(String name);
+BaseLocation  findByNameContainingIgnoreCase(String name);
 
 BaseLocation findById(long baseLocation);	
 

@@ -19,7 +19,7 @@ public class BaseLocationService {
 
 	public BaseLocation save(String name,long count) {
 		BaseLocation baselocation = baseLocationRepository
-				.findByName(name);	
+				.findByNameContainingIgnoreCase(name);	
 			if (null != baselocation) {
 				baselocation.setName(baselocation.getName());
 				return baseLocationRepository.save(baselocation);
@@ -36,7 +36,7 @@ public class BaseLocationService {
 		return baseLocationRepository.findAll();
 	}
 	public BaseLocation findByName(String name) {
-		return baseLocationRepository.findByName(name);
+		return baseLocationRepository.findByNameContainingIgnoreCase(name);
 	}
 
 	public BaseLocation findbyId(long baseLocation) {

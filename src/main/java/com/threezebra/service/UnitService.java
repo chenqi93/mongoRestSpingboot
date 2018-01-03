@@ -26,12 +26,12 @@ public class UnitService {
 	}
 
 	public Unit findbyName(String unitName) {
-		return unitRepository.findByName(unitName);
+		return unitRepository.findByNameContainingIgnoreCase(unitName);
 	}
 
 	public Unit update(String name, BaseLocation baselocation) {
        
-		Unit unitobj = unitRepository.findByName(name);
+		Unit unitobj = unitRepository.findByNameContainingIgnoreCase(name);
 		if (unitobj!=null) {
 			unitobj.setBaselocation(baselocation);
 			unitobj.setName(name);

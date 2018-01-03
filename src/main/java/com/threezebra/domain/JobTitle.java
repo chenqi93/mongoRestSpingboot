@@ -5,11 +5,13 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
+import io.swagger.annotations.ApiModel;
+
 /**
  * The persistent class for the job_title database table.
  * 
  */
-
+@ApiModel
 public class JobTitle implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -31,7 +31,7 @@ public class PermissionGroupService {
 	}
 
 	public PermissionGroup findByName(String permissiongroupname) {
-		return permissionGroupRepository.findByName(permissiongroupname);
+		return permissionGroupRepository.findByNameContainingIgnoreCase(permissiongroupname);
 	}
 
 

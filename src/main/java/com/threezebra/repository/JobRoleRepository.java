@@ -13,7 +13,7 @@ public interface JobRoleRepository extends MongoRepository<JobRole, String> {
 
 	JobRole findById(long id);
 
-	JobRole findByName(String name);
+	JobRole findByNameContainingIgnoreCase(String name);
 
 		
 }

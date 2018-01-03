@@ -8,6 +8,6 @@ public interface DeptDocRepository  extends  MongoRepository<DeptDocPrivilege,St
 
 	DeptDocPrivilege findById(long id);
 
-	DeptDocPrivilege findByName(String deptdoc);
+	DeptDocPrivilege findByNameContainingIgnoreCase(String deptdoc);
 
 }

@@ -24,7 +24,7 @@ public class DailyDistributionGroupService {
 
 	public DailyDistributionGroup findByName(String name) {
 		// TODO Auto-generated method stub
-		return dailyDistributionGroupRepository.findByName(name);
+		return dailyDistributionGroupRepository.findByNameContainingIgnoreCase(name);
 	}
 
 }

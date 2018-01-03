@@ -17,7 +17,7 @@ public class JobRoleService {
 	 
 	 public JobRole update(UserType userType,String name) {
 
-			JobRole jobRole = jobRoleRepository.findByName(name);
+			JobRole jobRole = jobRoleRepository.findByNameContainingIgnoreCase(name);
 			if (null != jobRole) {
 				jobRole.setName(name);
 				jobRole.setUserType(userType);
@@ -45,7 +45,7 @@ public class JobRoleService {
 		
 	}
 	public JobRole findByName(String jobRole) {
-		return jobRoleRepository.findByName(jobRole);
+		return jobRoleRepository.findByNameContainingIgnoreCase(jobRole);
 	}
 	
 	public JobRole findById(long jobRole) {
@@ -54,7 +54,12 @@ public class JobRoleService {
 	public List<JobRole> createJobRoleList(List<UserType> usertypelist) {
 		List<JobRole> jobRoleList=null;
 		for(UserType userType:usertypelist) {
-		  	jobRoleList =jobRoleRepository.findByUserType(userType);
+			if(jobRoleList == null) {
+				jobRoleList =jobRoleRepository.findByUserType(userType);
+			}else {
+				jobRoleList.addAll(jobRoleRepository.findByUserType(userType));
+			}
+		  	
 		}
 		return jobRoleList;
 	}

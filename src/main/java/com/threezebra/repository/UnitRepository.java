@@ -6,5 +6,5 @@ import com.threezebra.domain.Unit;
 
 public interface UnitRepository extends MongoRepository<Unit, String>{
 	Unit findById(long id);	
-	Unit findByName(String name);
+	Unit findByNameContainingIgnoreCase(String name);
 }

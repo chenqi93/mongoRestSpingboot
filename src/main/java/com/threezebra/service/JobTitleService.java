@@ -15,24 +15,26 @@ public class JobTitleService {
 	JobTitleRepository  jobTitleRepository;
 
 	public JobTitle save(String name,Department department) {
-		JobTitle jobTitle=jobTitleRepository.findByName(name);
-		if(null!=jobTitle) {
-			jobTitle.setId(System.nanoTime());
-			jobTitle.setName(name);
-			jobTitle.setDepartment(department);
-			jobTitleRepository.save(jobTitle);
-			return jobTitle;
+		JobTitle jobTitle=jobTitleRepository.findByNameContainingIgnoreCase(name);
+		try {
+			if(null!=jobTitle) {
+				jobTitle.setId(System.nanoTime());
+				jobTitle.setName(name);
+				jobTitle.setDepartment(department);
+				jobTitleRepository.save(jobTitle);
+			}
+			else
+			{
+				JobTitle jobTitleobj = new JobTitle();
+				jobTitleobj.setId(System.nanoTime());
+				jobTitleobj.setName(name);
+				jobTitleobj.setDepartment(department);
+				jobTitleRepository.save(jobTitleobj);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		else
-		{
-			JobTitle jobTitleobj = new JobTitle();
-			jobTitleobj.setId(System.nanoTime());
-			jobTitleobj.setName(name);
-			jobTitleobj.setDepartment(department);
-			jobTitleRepository.save(jobTitleobj);
-			return	jobTitleobj;
-		}
-	
+		return jobTitle;
 	}
 
 	public List<JobTitle> findByDepartment(Department department) {
@@ -40,7 +42,7 @@ public class JobTitleService {
 	}
 
 	public JobTitle findByName(String name) {
-		return jobTitleRepository.findByName(name);
+		return jobTitleRepository.findByNameContainingIgnoreCase(name);
 	}
 
 	public JobTitle findById(long id) {

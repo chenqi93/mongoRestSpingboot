@@ -2,6 +2,8 @@ package com.threezebra.domain;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiModel;
+@ApiModel
 public class DistributionList {
 	
     DistributionGroup distroname;

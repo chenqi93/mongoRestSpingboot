@@ -1,18 +1,18 @@
 package com.threezebra.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
-import java.util.Date;
+import io.swagger.annotations.ApiModel;
 
 
 /**
  * The persistent class for the additional_location database table.
  * 
  */
-
+@ApiModel
 public class AdditionalLocation implements Serializable {
 	private static final long serialVersionUID = 1L;
 

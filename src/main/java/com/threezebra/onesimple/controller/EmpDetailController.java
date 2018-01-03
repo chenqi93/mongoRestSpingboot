@@ -3,6 +3,8 @@ package com.threezebra.onesimple.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -62,6 +64,8 @@ import com.threezebra.service.XterlDistributionGroupService;
 @RestController
 public class EmpDetailController {
 
+	private static final Logger logger = LogManager.getLogger(EmpDetailController.class);
+	
 	@Autowired
 
 	public static final String OWNER = "authentication.name == #userName";
@@ -129,7 +133,7 @@ public class EmpDetailController {
 
 	@RequestMapping(value = "/getEmpDetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EmpDetail>> listAllEmpDetails() {
-		// System.out.println("username::::::" + userName);
+		logger.info("EmpDetailController :: listAllEmpDetails :: start");
 		// validatingUserRepositoryDecorator.findAccountValidated(userName);
 
 		List<EmpDetail> EmpDetailList = empDetailService.findAll();
@@ -138,84 +142,103 @@ public class EmpDetailController {
 
 	@RequestMapping(value = "/createEmpDetail", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity saveEmpDetailInfo(@RequestBody EmployeeJson employeeJson) {
-		EmpDetail empDetails = new EmpDetail();
-		empDetails.setId(System.nanoTime());
-		empDetails.setFirstName(employeeJson.getFirstName());
-		empDetails.setLastName(employeeJson.getLastName());
-		empDetails.setAccessEndDate(employeeJson.getAccessEndDate());
-		empDetails.setAccessRenwStartDate(employeeJson.getAccessRenwStartDate());
-		empDetails.setAccessStartDate(employeeJson.getAccessStartDate());
-		empDetails.setAccessSusStartDate(employeeJson.getAccessSusStartDate());
-		BaseLocation blocation = baseLocationService.findbyId(employeeJson.getBaseLocation());
-		empDetails.setBaseLocation(blocation);
-		Unit unit = unitService.findbyId(employeeJson.getUnit());
-		Department department = departmentService.findById(employeeJson.getDepartment());
-		JobRole jobRole = jobRoleService.findById(employeeJson.getJobRole());
-	   empDetails.setJobRole(jobRole);
-		if(!(jobRole.getName().equals("Daily"))) {
-		StringBuilder distroGroup = new StringBuilder();
-		distroGroup.append("Distro.").append(department.getName()).append("-Dept-").append(unit.getName()).append(".")
-				.append(blocation.getName());
-		DistributionGroup distroGroupObj = distributionGroupService.findByName(distroGroup.toString());
-		if (null != distroGroupObj) {
-			empDetails.setDistributionGroup(distroGroupObj);
-		    empDetails.setIsActive("1");
-		}
-		}
-		else {
-			StringBuilder distributionGroupname = new StringBuilder();
-			distributionGroupname.append("Daily.").append(department.getName()).append("-DAILYHIRES-")
-			.append(unit.getName()).append(".").append(blocation.getName());
-			DailyDistributionGroup distroGroupObj = dailydDistributionGroupService.findByName(distributionGroupname.toString());
-			if (null != distroGroupObj) {
-				empDetails.setDialyDistributionGroup(distroGroupObj);
-			 }
+		BaseResponse response = null;		
+		List<EmpDetail> empExistDetails = null;
+		boolean validationStatus = false;
+		try {
+			empExistDetails = empDetailService.findDuplicateEmployee(employeeJson.getPersonalPhoneNum(), employeeJson.getPersonalEmail());
+			if(empExistDetails != null && empExistDetails.size() > 0) {
+				validationStatus = true;
 			}
-     if(department.getName().equals("Xternal")) {
-	  StringBuilder xternaldistributionGroupname = new StringBuilder();
-	  xternaldistributionGroupname.append("Distro-Xternal").append(jobRole.getName());
-	XternalDistributionGroup xdistroGroupObj = xterlDistributionGroupService.findByName(xternaldistributionGroupname.toString());
-	if (null != xdistroGroupObj) {
-		empDetails.setXternalDistributionGroup(xdistroGroupObj);
-	    }
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		empDetails.setUnit(unit);
-		empDetails.setDepartment(department);
-		long[] additionalarr = employeeJson.getAdditionalLocation();
-		if (null != additionalarr) {
-			for (int i = 0; i < additionalarr.length; i++) {
-				AdditionalLocation addloc = additionalLocationService.findByName(additionalarr[i]);
-				List<AdditionalLocation> addloclist = new ArrayList<>();
-				addloclist.add(addloc);
-				empDetails.setAdditionalLocation(addloclist);
+		if(validationStatus) {
+			response = new BaseResponse("100","Employee already exists.");
+		}else {
+			List<DistributionGroup> distroGroupList = new ArrayList<>();
+			EmpDetail empDetails = new EmpDetail();
+			empDetails.setId(System.nanoTime());
+			empDetails.setFirstName(employeeJson.getFirstName());
+			empDetails.setLastName(employeeJson.getLastName());
+			empDetails.setAccessEndDate(employeeJson.getAccessEndDate());
+			empDetails.setAccessRenwStartDate(employeeJson.getAccessRenwStartDate());
+			empDetails.setAccessStartDate(employeeJson.getAccessStartDate());
+			empDetails.setAccessSusStartDate(employeeJson.getAccessSusStartDate());
+			BaseLocation blocation = null;
+			if (employeeJson.getBaseLocation() != 0) {
+				blocation = baseLocationService.findbyId(employeeJson.getBaseLocation());
+				empDetails.setBaseLocation(blocation);
 			}
-		}
-		long[] deviceIssuedarr = employeeJson.getAdditionalLocation();
-		List<DeviceInfo> deviceIssued = new ArrayList<>();
-		if (null != deviceIssuedarr) {
-			for (int i = 0; i < deviceIssuedarr.length; i++) {
-				DeviceInfo deviceInfo = deviceInfoService.findByName(deviceIssuedarr[i]);
-				deviceIssued.add(deviceInfo);
+			Unit unit = unitService.findbyId(employeeJson.getUnit());
+			Department department = departmentService.findById(employeeJson.getDepartment());
+			JobRole jobRole = jobRoleService.findById(employeeJson.getJobRole());
+			empDetails.setJobRole(jobRole);
+			if (!(jobRole.getName().equals("Daily"))) {
+				StringBuilder distroGroup = new StringBuilder();
+				distroGroup.append("Distro-").append(department.getName()).append("-Dept-").append(unit.getName())
+						.append(".").append(blocation.getName());
+				DistributionGroup distroGroupObj = distributionGroupService.findByName(distroGroup.toString());
+				if (null != distroGroupObj) {
+					distroGroupList.add(distroGroupObj);
+					//empDetails.setDistributionGroup(distroGroupList);
+				}
+			} else {
+				StringBuilder distributionGroupname = new StringBuilder();
+				distributionGroupname.append("Daily.").append(department.getName()).append("-DAILYHIRES-")
+						.append(unit.getName()).append(".").append(blocation.getName());
+				DailyDistributionGroup distroGroupObj = dailydDistributionGroupService
+						.findByName(distributionGroupname.toString());
+				if (null != distroGroupObj) {
+					empDetails.setDialyDistributionGroup(distroGroupObj);
+				}
 			}
-		}
-
-		empDetails.setDeviceIssued(deviceIssued);
-		UserType userType = userTypeService.findById(employeeJson.getUserType());
-		SpecialRole specialRole = specialRoleService.findByName(employeeJson.getSpecialRole());
-		empDetails.setSpecialRole(specialRole);
-		empDetails.setUserType(userType);
-		empDetails.setDeleted(employeeJson.getDeleted());
-		empDetails.setIsInvited(employeeJson.getIsInvited());
-		
-		JobTitle jobTitle = jobTitleService.findById(employeeJson.getJobTitle());
-		empDetails.setJobTitle(jobTitle);
-		empDetails.setPermittedNumDevices(employeeJson.getPermittedNumDevices());
-		empDetails.setPersonalEmail(employeeJson.getPersonalEmail());
-		empDetails.setPersonalPhoneNum(employeeJson.getPersonalPhoneNum());
-		empDetails.setUniqueId(employeeJson.getUniqueId());
-		empDetails.setWorkEmail(employeeJson.getWorkEmail());
-		empDetailService.save(empDetails);
-		BaseResponse response = new BaseResponse("200", "SUCCESS");
+			if (department.getName().equals("Xternal")) {
+				StringBuilder xternaldistributionGroupname = new StringBuilder();
+				xternaldistributionGroupname.append("Distro-Xternal").append(jobRole.getName());
+				XternalDistributionGroup xdistroGroupObj = xterlDistributionGroupService
+						.findByName(xternaldistributionGroupname.toString());
+				if (null != xdistroGroupObj) {
+					empDetails.setXternalDistributionGroup(xdistroGroupObj);
+				}
+			}
+			empDetails.setUnit(unit);
+			empDetails.setDepartment(department);
+			long[] additionalarr = employeeJson.getAdditionalLocation();
+			if (null != additionalarr) {
+				for (int i = 0; i < additionalarr.length; i++) {
+					AdditionalLocation addloc = additionalLocationService.findByName(additionalarr[i]);
+					List<AdditionalLocation> addloclist = new ArrayList<>();
+					addloclist.add(addloc);
+					empDetails.setAdditionalLocation(addloclist);
+				}
+			}
+			long[] deviceIssuedarr = employeeJson.getAdditionalLocation();
+			List<DeviceInfo> deviceIssued = new ArrayList<>();
+			if (null != deviceIssuedarr) {
+				for (int i = 0; i < deviceIssuedarr.length; i++) {
+					DeviceInfo deviceInfo = deviceInfoService.findByName(deviceIssuedarr[i]);
+					deviceIssued.add(deviceInfo);
+				}
+			}
+			empDetails.setDeviceIssued(deviceIssued);
+			UserType userType = userTypeService.findById(employeeJson.getUserType());
+			SpecialRole specialRole = specialRoleService.findByName(employeeJson.getSpecialRole());
+			empDetails.setSpecialRole(specialRole);
+			empDetails.setUserType(userType);
+			empDetails.setDeleted(employeeJson.getDeleted());
+			empDetails.setIsInvited(employeeJson.getIsInvited());
+			JobTitle jobTitle = jobTitleService.findById(employeeJson.getJobTitle());
+			empDetails.setJobTitle(jobTitle);
+			empDetails.setPermittedNumDevices(employeeJson.getPermittedNumDevices());
+			empDetails.setPersonalEmail(employeeJson.getPersonalEmail());
+			empDetails.setPersonalPhoneNum(employeeJson.getPersonalPhoneNum());
+			empDetails.setUniqueId(employeeJson.getUniqueId());
+			empDetails.setWorkEmail(employeeJson.getWorkEmail());
+			empDetails.setSaveFlag(employeeJson.getSaveFlag());
+			empDetailService.save(empDetails);
+			response = new BaseResponse("200","SUCCESS");
+		}		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -399,5 +422,191 @@ public class EmpDetailController {
 	public ResponseEntity<List<AdditionalLocation>> getAdditionalLocation() {
 		List<AdditionalLocation> addtionalLocation = additionalLocationService.findAll();
 		return new ResponseEntity<>(addtionalLocation, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/updateEmpDetail", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity updateEmpDetailInfo(@RequestBody EmployeeJson employeeJson) {
+		BaseResponse response = null;
+		List<EmpDetail> empDetails = null;
+		boolean validationStatus = false;
+		try {
+			empDetails = empDetailService.findDuplicateEmployee(employeeJson.getPersonalPhoneNum(), employeeJson.getPersonalEmail());
+			if(empDetails != null && empDetails.size() > 0 && employeeJson.getId() != empDetails.get(0).getId()) {
+				response = new BaseResponse("100","Employee already exists.");
+			} else {
+				EmpDetail empDetail = new EmpDetail();
+				empDetail.setId(employeeJson.getId());
+				List<DistributionGroup> distroGroupList = new ArrayList<>();
+				empDetail.setFirstName(employeeJson.getFirstName());
+				empDetail.setLastName(employeeJson.getLastName());
+				empDetail.setAccessEndDate(employeeJson.getAccessEndDate());
+				empDetail.setAccessRenwStartDate(employeeJson.getAccessRenwStartDate());
+				empDetail.setAccessStartDate(employeeJson.getAccessStartDate());
+				empDetail.setAccessSusStartDate(employeeJson.getAccessSusStartDate());
+				System.out.println("Before Base location");
+				BaseLocation blocation = baseLocationService.findbyId(employeeJson.getBaseLocation());
+				System.out.println("After Base location");
+				empDetail.setBaseLocation(blocation);
+				System.out.println("Before Unit");
+				Unit unit = unitService.findbyId(employeeJson.getUnit());
+				System.out.println("After Unit");
+				Department department = departmentService.findById(employeeJson.getDepartment());
+				JobRole jobRole = jobRoleService.findById(employeeJson.getJobRole());
+				empDetail.setJobRole(jobRole);
+				if (!(jobRole.getName().equals("Daily"))) {
+					StringBuilder distroGroup = new StringBuilder();
+					distroGroup.append("Distro-").append(department.getName()).append("-Dept-").append(unit.getName())
+							.append(".").append(blocation.getName());
+					DistributionGroup distroGroupObj = distributionGroupService.findByName(distroGroup.toString());
+					if (null != distroGroupObj) {
+						distroGroupList.add(distroGroupObj);
+						// empDetails.setDistributionGroup(distroGroupList);
+					}
+				} else {
+					StringBuilder distributionGroupname = new StringBuilder();
+					distributionGroupname.append("Daily.").append(department.getName()).append("-DAILYHIRES-")
+							.append(unit.getName()).append(".").append(blocation.getName());
+					DailyDistributionGroup distroGroupObj = dailydDistributionGroupService
+							.findByName(distributionGroupname.toString());
+					if (null != distroGroupObj) {
+						empDetail.setDialyDistributionGroup(distroGroupObj);
+					}
+				}
+				if (department.getName().equals("Xternal")) {
+					StringBuilder xternaldistributionGroupname = new StringBuilder();
+					xternaldistributionGroupname.append("Distro-Xternal").append(jobRole.getName());
+					XternalDistributionGroup xdistroGroupObj = xterlDistributionGroupService
+							.findByName(xternaldistributionGroupname.toString());
+					if (null != xdistroGroupObj) {
+						empDetail.setXternalDistributionGroup(xdistroGroupObj);
+					}
+				}
+				empDetail.setUnit(unit);
+				empDetail.setDepartment(department);
+				long[] additionalarr = employeeJson.getAdditionalLocation();
+				if (null != additionalarr) {
+					for (int i = 0; i < additionalarr.length; i++) {
+						AdditionalLocation addloc = additionalLocationService.findByName(additionalarr[i]);
+						List<AdditionalLocation> addloclist = new ArrayList<>();
+						addloclist.add(addloc);
+						empDetail.setAdditionalLocation(addloclist);
+					}
+				}
+				long[] deviceIssuedarr = employeeJson.getAdditionalLocation();
+				List<DeviceInfo> deviceIssued = new ArrayList<>();
+				if (null != deviceIssuedarr) {
+					for (int i = 0; i < deviceIssuedarr.length; i++) {
+						DeviceInfo deviceInfo = deviceInfoService.findByName(deviceIssuedarr[i]);
+						deviceIssued.add(deviceInfo);
+					}
+				}
+				empDetail.setDeviceIssued(deviceIssued);
+				UserType userType = userTypeService.findById(employeeJson.getUserType());
+				SpecialRole specialRole = specialRoleService.findByName(employeeJson.getSpecialRole());
+				empDetail.setSpecialRole(specialRole);
+				empDetail.setUserType(userType);
+				empDetail.setDeleted(employeeJson.getDeleted());
+				empDetail.setIsInvited(employeeJson.getIsInvited());
+				JobTitle jobTitle = jobTitleService.findById(employeeJson.getJobTitle());
+				empDetail.setJobTitle(jobTitle);
+				empDetail.setPermittedNumDevices(employeeJson.getPermittedNumDevices());
+				empDetail.setPersonalEmail(employeeJson.getPersonalEmail());
+				empDetail.setPersonalPhoneNum(employeeJson.getPersonalPhoneNum());
+				empDetail.setUniqueId(employeeJson.getUniqueId());
+				empDetail.setWorkEmail(employeeJson.getWorkEmail());
+				empDetailService.save(empDetail);
+				response = new BaseResponse("200", "SUCCESS");
+				validationStatus = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/saveEmpDetails", method = RequestMethod.POST , consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity tempSaveEmpDetails(@RequestBody EmployeeJson employeeJson){
+		BaseResponse response = null;		
+		List<EmpDetail> empExistDetails = null;
+		boolean validationStatus = false;
+		try {
+			empExistDetails = empDetailService.findDuplicateEmployee(employeeJson.getPersonalPhoneNum(), employeeJson.getPersonalEmail());
+			if(empExistDetails != null && empExistDetails.size() > 0) {
+				validationStatus = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(validationStatus) {
+			response = new BaseResponse("100","Employee already exists.");
+		}else {
+			List<DistributionGroup> distroGroupList = new ArrayList<>();
+			EmpDetail empDetails = new EmpDetail();
+			empDetails.setId(System.nanoTime());
+			empDetails.setFirstName(employeeJson.getFirstName());
+			empDetails.setLastName(employeeJson.getLastName());
+			empDetails.setAccessEndDate(employeeJson.getAccessEndDate());
+			empDetails.setAccessRenwStartDate(employeeJson.getAccessRenwStartDate());
+			empDetails.setAccessStartDate(employeeJson.getAccessStartDate());
+			empDetails.setAccessSusStartDate(employeeJson.getAccessSusStartDate());
+			BaseLocation blocation = null;
+			
+			if (employeeJson.getBaseLocation() != 0) {
+				blocation = baseLocationService.findbyId(employeeJson.getBaseLocation());
+				empDetails.setBaseLocation(blocation);
+			}
+			if (employeeJson.getUnit() != 0) {
+				Unit unit = unitService.findbyId(employeeJson.getUnit());
+				empDetails.setUnit(unit);
+			}			
+			
+			if (employeeJson.getDepartment() != 0) {
+				Department department = departmentService.findById(employeeJson.getDepartment());
+				empDetails.setDepartment(department);
+			}
+			
+			if (employeeJson.getJobRole() != 0) {
+				JobRole jobRole = jobRoleService.findById(employeeJson.getJobRole());
+				empDetails.setJobRole(jobRole);
+			}
+			
+			long[] additionalarr = employeeJson.getAdditionalLocation();
+			if (null != additionalarr) {
+				for (int i = 0; i < additionalarr.length; i++) {
+					AdditionalLocation addloc = additionalLocationService.findByName(additionalarr[i]);
+					List<AdditionalLocation> addloclist = new ArrayList<>();
+					addloclist.add(addloc);
+					empDetails.setAdditionalLocation(addloclist);
+				}
+			}
+			long[] deviceIssuedarr = employeeJson.getAdditionalLocation();
+			List<DeviceInfo> deviceIssued = new ArrayList<>();
+			if (null != deviceIssuedarr) {
+				for (int i = 0; i < deviceIssuedarr.length; i++) {
+					DeviceInfo deviceInfo = deviceInfoService.findByName(deviceIssuedarr[i]);
+					deviceIssued.add(deviceInfo);
+				}
+			}
+			empDetails.setDeviceIssued(deviceIssued);
+			UserType userType = userTypeService.findById(employeeJson.getUserType());
+			SpecialRole specialRole = specialRoleService.findByName(employeeJson.getSpecialRole());
+			empDetails.setSpecialRole(specialRole);
+			empDetails.setUserType(userType);
+			empDetails.setDeleted(employeeJson.getDeleted());
+			empDetails.setIsInvited(employeeJson.getIsInvited());
+			if (employeeJson.getJobTitle() != 0) {
+				JobTitle jobTitle = jobTitleService.findById(employeeJson.getJobTitle());
+				empDetails.setJobTitle(jobTitle);
+			}
+			empDetails.setPermittedNumDevices(employeeJson.getPermittedNumDevices());
+			empDetails.setPersonalEmail(employeeJson.getPersonalEmail());
+			empDetails.setPersonalPhoneNum(employeeJson.getPersonalPhoneNum());
+			empDetails.setUniqueId(employeeJson.getUniqueId());
+			empDetails.setWorkEmail(employeeJson.getWorkEmail());
+			empDetails.setSaveFlag(employeeJson.getSaveFlag());
+			empDetailService.save(empDetails);
+			response = new BaseResponse("200","SUCCESS");
+		}		
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

@@ -7,5 +7,5 @@ import com.threezebra.domain.Application;
 public interface ApplicationRepository  extends MongoRepository<Application, String>{
 	Application findById(long id);
 
-	Application findByName(String name);
+	Application findByNameContainingIgnoreCase(String name);
 }

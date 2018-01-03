@@ -3,16 +3,16 @@ package com.threezebra.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.*;
-
 import org.springframework.data.annotation.Id;
+
+import io.swagger.annotations.ApiModel;
 
 
 /**
  * The persistent class for the group_mapping database table.
  * 
  */
-
+@ApiModel
 public class DistributionGroupMapping implements Serializable {
 	private static final long serialVersionUID = 1L;
 

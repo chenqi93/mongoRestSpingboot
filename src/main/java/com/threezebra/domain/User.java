@@ -1,11 +1,14 @@
 package com.threezebra.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.springframework.data.annotation.Id;
-
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.annotation.Id;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import io.swagger.annotations.ApiModel;
+@ApiModel
 public class User {
 
     @Id

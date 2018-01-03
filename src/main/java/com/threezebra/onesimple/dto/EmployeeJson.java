@@ -2,7 +2,7 @@ package com.threezebra.onesimple.dto;
 
 public class EmployeeJson {
 	
- 
+	private long id;
 	private String accessEndDate;
 	private String accessRenwStartDate;
 	private String accessStartDate;
@@ -25,6 +25,16 @@ public class EmployeeJson {
     private long specialRole;
     private long jobRole;
     private long unit;
+    private String saveFlag;
+    
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public String getAccessEndDate() {
 		return accessEndDate;
 	}
@@ -184,5 +194,14 @@ public class EmployeeJson {
 	public void setDeleted(String deleted) {
 		this.deleted = deleted;
 	}
+
+	public String getSaveFlag() {
+		return saveFlag;
+	}
+
+	public void setSaveFlag(String saveFlag) {
+		this.saveFlag = saveFlag;
+	}
+	
 	
 }

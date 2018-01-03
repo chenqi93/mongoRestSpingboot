@@ -5,12 +5,14 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
+import io.swagger.annotations.ApiModel;
+
 
 /**
  * The persistent class for the special_role database table.
  * 
  */
-
+@ApiModel
 public class SpecialRole implements Serializable {
 	private static final long serialVersionUID = 1L;
   

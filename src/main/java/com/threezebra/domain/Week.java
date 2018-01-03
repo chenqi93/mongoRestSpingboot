@@ -1,10 +1,12 @@
 package com.threezebra.domain;
 
+import io.swagger.annotations.ApiModel;
 
 /**
  * @author vikas.sharma
  *
  */
+@ApiModel
 public class Week {
 
     private Integer number;

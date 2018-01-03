@@ -51,7 +51,7 @@ public class UserTypeService {
 	}
 	
 	public UserType findByUserType(String userType) {
-		return userTypeRepository.findByName(userType);
+		return userTypeRepository.findByNameContainingIgnoreCase(userType);
 	}
 	public UserType findById(long userType) {
 		return userTypeRepository.findById(userType);

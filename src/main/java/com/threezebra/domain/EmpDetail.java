@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
+import io.swagger.annotations.ApiModel;
+
 
 /**
  * The persistent class for the emp_details database table.
  * 
  */
-
+@ApiModel
 public class EmpDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -33,15 +35,19 @@ public class EmpDetail implements Serializable {
     private String personalPhoneNum;
     private String[] uniqueId;
     private String workEmail;
+  //  private List<DistributionGroup> distributionGroup;
     private DistributionGroup distributionGroup;
     private DailyDistributionGroup dialyDistributionGroup;
-    private  XternalDistributionGroup xternalDistributionGroup;
+    private XternalDistributionGroup xternalDistributionGroup;
     private Department  department;
     private UserType userType;
     private SpecialRole specialRole;
 	private JobRole jobRole;
     private Unit unit;
     private String isActive;
+    private String saveFlag;
+
+	
 
 	public String getIsActive() {
 		return isActive;
@@ -260,5 +266,11 @@ public class EmpDetail implements Serializable {
 		this.unit = unit;
 	}
 
-	
+	public String getSaveFlag() {
+		return saveFlag;
+	}
+
+	public void setSaveFlag(String saveFlag) {
+		this.saveFlag = saveFlag;
+	}
 }

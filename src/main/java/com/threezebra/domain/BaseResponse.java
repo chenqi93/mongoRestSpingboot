@@ -1,5 +1,8 @@
 package com.threezebra.domain;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel
 public class BaseResponse {
 
 	String response;

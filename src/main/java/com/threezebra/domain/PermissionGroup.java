@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
+import io.swagger.annotations.ApiModel;
+@ApiModel
 public class PermissionGroup {
 	@Id
 	private long id;

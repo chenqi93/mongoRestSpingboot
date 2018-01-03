@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
+import io.swagger.annotations.ApiModel;
+
 
 /**
  * The persistent class for the department database table.
  * 
  */
-
+@ApiModel
 public class Department implements Serializable {
 	private static final long serialVersionUID = 1L;
 

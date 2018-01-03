@@ -2,10 +2,13 @@ package com.threezebra.domain;
 
 import org.springframework.data.annotation.Id;
 
+import io.swagger.annotations.ApiModel;
+
 /**
  * @author vikas.sharma
  *
  */
+@ApiModel
 public class TimeEntry {
 
     @Id

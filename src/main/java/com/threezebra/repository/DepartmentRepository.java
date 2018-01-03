@@ -10,5 +10,5 @@ import com.threezebra.domain.Unit;
 public interface DepartmentRepository extends MongoRepository<Department, String>{
 	List<Department> findByUnit(Unit unit);	
 	Department findById(long id);	
-	Department findByName(String name);	
+	Department findByNameContainingIgnoreCase(String name);	
 }

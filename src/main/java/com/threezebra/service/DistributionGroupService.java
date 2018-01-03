@@ -40,7 +40,7 @@ public class DistributionGroupService {
 	}
 
 	public DistributionGroup findByName(String distributionGroup) {
-		return distributionGroupRepository.findByName(distributionGroup);
+		return distributionGroupRepository.findByNameContainingIgnoreCase(distributionGroup);
 	}
 
 	public void deleteAll() {
@@ -50,7 +50,7 @@ public class DistributionGroupService {
 
 	public DistributionGroup createDistributionGroup(String defaultValue,List<String> location, String distributionGroup, List<Unit> unitlist,
 			List<Department> departmentlst, List<UserType> userTypelst, List<JobRole> jobRolelst) {
-		DistributionGroup distributionGroupObj = distributionGroupRepository.findByName(distributionGroup);
+		DistributionGroup distributionGroupObj = distributionGroupRepository.findByNameContainingIgnoreCase(distributionGroup);
 		if (null != distributionGroupObj) {
 			distributionGroupObj.setDefaultvalue(defaultValue);
 			distributionGroupObj.setLocation(location);
