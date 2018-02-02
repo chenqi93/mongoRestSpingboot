@@ -24,9 +24,9 @@ public class SpecialRoleService {
 	        return specialRoleRepository.findAll();
 	    }
 	
-	public SpecialRole findByName(long specialRole) {
+	public SpecialRole findByName(String specialRole) {
 	
-		return specialRoleRepository.findById(specialRole);
+		return specialRoleRepository.findByNameContainingIgnoreCase(specialRole);
 	}
 	public SpecialRole findById(Long specialRoleLong) {
 		

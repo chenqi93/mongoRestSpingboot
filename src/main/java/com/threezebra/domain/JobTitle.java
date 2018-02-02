@@ -22,11 +22,20 @@ public class JobTitle implements Serializable {
 	private Date createDate;
 	private int deleted;
 	private Department department;
+	private String departmentName;
 	private int modifiedBy;
 	private Date modifiedDate;
 
 	public long getId() {
 		return id;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 
 	public void setId(long id) {

@@ -8,8 +8,8 @@ import com.threezebra.domain.Department;
 import com.threezebra.domain.JobTitle;
 
 public interface JobTitleRepository   extends MongoRepository<JobTitle,String>{
-     JobTitle findByNameContainingIgnoreCase(String name);
-     List<JobTitle> findByDepartment(Department department);
-	JobTitle findById(long id);
+     JobTitle findByName(String name);
+   	JobTitle findById(long id);
+	List<JobTitle> findByDepartmentName(String name);
 
 }

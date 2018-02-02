@@ -17,7 +17,7 @@ public class DailyDistributionGroup {
     private Date modifiedDate;
     private String defaultvalue;
 	private String name;
-	private   Unit  unit;
+	private  Unit  unit;
 	private  List<String> location;
 	private Department department;
 	private List<Unit> unitlist;

@@ -10,7 +10,7 @@ public class EmployeeJson {
     private long[] additionalLocation;
     private long baseLocation;
     private String deleted;
-    private long[] deviceIssued;
+    private String[] deviceIssued;
     private String firstName;
     private String lastName;
     private String isInvited;
@@ -126,11 +126,11 @@ public class EmployeeJson {
 		this.baseLocation = baseLocation;
 	}
 
-	public long[] getDeviceIssued() {
+	public String[] getDeviceIssued() {
 		return deviceIssued;
 	}
 
-	public void setDeviceIssued(long[] deviceIssued) {
+	public void setDeviceIssued(String[] deviceIssued) {
 		this.deviceIssued = deviceIssued;
 	}
 

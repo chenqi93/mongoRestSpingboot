@@ -19,18 +19,38 @@ public class UserType implements Serializable {
 	@Id
 	private long id;
 	private int createBy;
+	private String checkFlag;
+	
+
 	private Date createDate;
 	private int deleted;
 	private int modifiedBy;
 	private Date modifiedDate;
 	private List<Unit> unit;
 	private String name;
-  
+    private List<JobRole> jobRoleList;
+    
+    
+    
+    public String getCheckFlag() {
+		return checkFlag;
+	}
 
+	public void setCheckFlag(String checkFlag) {
+		this.checkFlag = checkFlag;
+	}
 	
 	
 	public String getName() {
 		return name;
+	}
+
+	public List<JobRole> getJobRoleList() {
+		return jobRoleList;
+	}
+
+	public void setJobRoleList(List<JobRole> jobRoleList) {
+		this.jobRoleList = jobRoleList;
 	}
 
 	public void setName(String name) {

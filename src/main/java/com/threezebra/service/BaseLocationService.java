@@ -17,7 +17,7 @@ public class BaseLocationService {
 	@Autowired
 	private BaseLocationRepository baseLocationRepository;
 
-	public BaseLocation save(String name,long count) {
+	public BaseLocation save(String name) {
 		BaseLocation baselocation = baseLocationRepository
 				.findByNameContainingIgnoreCase(name);	
 			if (null != baselocation) {
@@ -25,7 +25,7 @@ public class BaseLocationService {
 				return baseLocationRepository.save(baselocation);
 			} else {
 				BaseLocation loc=new BaseLocation();
-				loc.setId(count);
+				loc.setId(System.nanoTime());
 				loc.setName(name);
 				return baseLocationRepository.save(loc);
 			}

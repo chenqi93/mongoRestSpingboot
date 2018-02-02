@@ -14,7 +14,12 @@ public class DeviceInfoService {
 	@Autowired
 	DeviceInfoRepository deviceInfoRepository;
 	
-	public DeviceInfo save(DeviceInfo deviceInfo) {
+	public DeviceInfo save(String name) {
+		DeviceInfo deviceInfo=new DeviceInfo();
+	     deviceInfo.setId(System.nanoTime());
+	     String devNo="DEV"+deviceInfo.getId();
+	     deviceInfo.setDeviceno(devNo);
+	     deviceInfo.setName(name);
 		return deviceInfoRepository.save(deviceInfo);
 	}
 	

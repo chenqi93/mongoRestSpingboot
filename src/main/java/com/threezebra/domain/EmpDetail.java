@@ -35,8 +35,7 @@ public class EmpDetail implements Serializable {
     private String personalPhoneNum;
     private String[] uniqueId;
     private String workEmail;
-  //  private List<DistributionGroup> distributionGroup;
-    private DistributionGroup distributionGroup;
+    private List<DistributionGroup> distributionGroup;
     private DailyDistributionGroup dialyDistributionGroup;
     private XternalDistributionGroup xternalDistributionGroup;
     private Department  department;
@@ -44,7 +43,10 @@ public class EmpDetail implements Serializable {
     private SpecialRole specialRole;
 	private JobRole jobRole;
     private Unit unit;
-    private String isActive;
+    private PermissionGroup permissionGroup;
+    
+
+	private String isActive;
     private String saveFlag;
 
 	
@@ -64,7 +66,13 @@ public class EmpDetail implements Serializable {
 	public void setXternalDistributionGroup(XternalDistributionGroup xternalDistributionGroup) {
 		this.xternalDistributionGroup = xternalDistributionGroup;
 	}
+	public PermissionGroup getPermissionGroup() {
+		return permissionGroup;
+	}
 
+	public void setPermissionGroup(PermissionGroup permissionGroup) {
+		this.permissionGroup = permissionGroup;
+	}
 	public EmpDetail() {
 	}
 
@@ -75,11 +83,11 @@ public class EmpDetail implements Serializable {
 		this.id = id;
 	}
 	
-	public DistributionGroup getDistributionGroup() {
+	public List<DistributionGroup> getDistributionGroup() {
 		return distributionGroup;
 	}
 
-	public void setDistributionGroup(DistributionGroup distributionGroup) {
+	public void setDistributionGroup(List<DistributionGroup> distributionGroup) {
 		this.distributionGroup = distributionGroup;
 	}
 	

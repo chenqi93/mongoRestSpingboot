@@ -22,6 +22,7 @@ public class Department implements Serializable {
 
 	private String departmentId;
 	private int createBy;
+	private String checkFlag;
 
 	
 	private Date createDate;
@@ -39,6 +40,15 @@ public class Department implements Serializable {
     private List<UserType> userType;
     
     private List<Unit> unit;
+
+	public String getCheckFlag() {
+		return checkFlag;
+	}
+
+
+	public void setCheckFlag(String checkFlag) {
+		this.checkFlag = checkFlag;
+	}
 
 	private String description;
 	public String getDescription() {

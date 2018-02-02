@@ -35,22 +35,23 @@ public class DepartmentService {
 		Department department=new Department();
 		department.setId(System.nanoTime());
 		department.setUnit(unit);
+		department.setCheckFlag("TRUE");
 		department.setName(name);
 		departmentRepository.save(department);
 		return department;
 	}
-	public Department update(Department department,String name,String  unitname) {
+	public Department update(Department department,String name,Unit  unit) {
 			List<Unit> unitlst=department.getUnit();
 			List<String> untname=new ArrayList<>();
 			for(Unit unitobj:unitlst){
 				untname.add(unitobj.getName());
 			}
-			if(!(untname.contains(unitname))){
-				Unit unit=unitService.findbyName(unitname);
+			if(!(untname.contains(unit.getName()))){
 				unitlst.add(unit);
 			}
 			
 			department.setUnit(unitlst);
+			department.setCheckFlag("TRUE");
 			department.setName(name);
 			departmentRepository.save(department);
 		
@@ -75,12 +76,23 @@ public class DepartmentService {
 
 		}
 	}
-
+     
 	public Department findbyName(String department) {
 		return departmentRepository.findByNameContainingIgnoreCase(department);
 	}
 	
 	public Department findById(long id) {
 		return departmentRepository.findById(id);
+	}
+
+
+
+	public Department updateDepartment(Department departmentobj, String name, List<Unit> unitList) {
+		departmentobj.setUnit(unitList);
+		departmentobj.setName(name);
+		departmentobj.setCheckFlag("FALSE");
+		departmentRepository.save(departmentobj);
+		return departmentobj;
+		
 	}
 }

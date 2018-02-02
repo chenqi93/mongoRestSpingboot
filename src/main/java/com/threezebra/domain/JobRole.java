@@ -2,6 +2,7 @@ package com.threezebra.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
@@ -27,22 +28,40 @@ public class JobRole implements Serializable {
 
 	private int deleted;
 	
+	private UserType userType;
+	
+	private List<Unit> unit;
+	
+	private String checkFlag;
+	
 	private int modifiedBy;
 
 	private Date modifiedDate;
 
 	private String name;
-
-	private UserType userType;
-   
-	 public UserType getUserType() {
+	
+	public UserType getUserType() {
 		return userType;
 	}
-
-    public void setUserType(UserType userType) {
+	public void setUserType(UserType userType) {
 		this.userType = userType;
 	}
+	public List<Unit> getUnit() {
+		return unit;
+	}
+	public void setUnit(List<Unit> unit) {
+		this.unit = unit;
+	}
 
+
+	public String getCheckFlag() {
+		return checkFlag;
+	}
+	public void setCheckFlag(String checkFlag) {
+		this.checkFlag = checkFlag;
+	}
+
+	
 
 
 	public JobRole() {

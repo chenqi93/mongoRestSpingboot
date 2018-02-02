@@ -9,7 +9,55 @@ public class AllInfoJson {
 	List<UserTypeJson> unitUserTypes;
 	List<JobRoleJson> jobRoles;
 	List<JobTitleJson> jobTitles;
-	
+	ApplicationJson applications;
+	DeptDocPrivilegeJson deptDocPrivilegeJson;
+	SpecialJobRoleJson specialJobRoleJson;
+	SharedDocPrivilegeJson sharedDocPrivilegeJson;
+	List<XternalListJson> xternalListJson;
+	AdditionalLocationJson additionalLocationJson;
+	OtherDocPreveligesJson otherDocPreveligesJson;
+	public ApplicationJson getApplications() {
+		return applications;
+	}
+	public void setApplications(ApplicationJson applications) {
+		this.applications = applications;
+	}
+	public DeptDocPrivilegeJson getDeptDocPrivilegeJson() {
+		return deptDocPrivilegeJson;
+	}
+	public void setDeptDocPrivilegeJson(DeptDocPrivilegeJson deptDocPrivilegeJson) {
+		this.deptDocPrivilegeJson = deptDocPrivilegeJson;
+	}
+	public SpecialJobRoleJson getSpecialJobRoleJson() {
+		return specialJobRoleJson;
+	}
+	public void setSpecialJobRoleJson(SpecialJobRoleJson specialJobRoleJson) {
+		this.specialJobRoleJson = specialJobRoleJson;
+	}
+	public SharedDocPrivilegeJson getSharedDocPrivilegeJson() {
+		return sharedDocPrivilegeJson;
+	}
+	public void setSharedDocPrivilegeJson(SharedDocPrivilegeJson sharedDocPrivilegeJson) {
+		this.sharedDocPrivilegeJson = sharedDocPrivilegeJson;
+	}
+	public List<XternalListJson> getXternalListJson() {
+		return xternalListJson;
+	}
+	public void setXternalListJson(List<XternalListJson> xternalListJson) {
+		this.xternalListJson = xternalListJson;
+	}
+	public AdditionalLocationJson getAdditionalLocationJson() {
+		return additionalLocationJson;
+	}
+	public void setAdditionalLocationJson(AdditionalLocationJson additionalLocationJson) {
+		this.additionalLocationJson = additionalLocationJson;
+	}
+	public OtherDocPreveligesJson getOtherDocPreveligesJson() {
+		return otherDocPreveligesJson;
+	}
+	public void setOtherDocPreveligesJson(OtherDocPreveligesJson otherDocPreveligesJson) {
+		this.otherDocPreveligesJson = otherDocPreveligesJson;
+	}
 	public List<UnitDepartmentJson> getUnitsDepartments() {
 		return unitsDepartments;
 	}

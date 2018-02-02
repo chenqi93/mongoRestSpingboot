@@ -3,6 +3,7 @@ package com.threezebra.onesimple.dto;
 public class JobRoleJson {
 	private String[] usertype;
 	private String[] jobRole;
+	
 	public String[] getUsertype() {
 		return usertype;
 	}
