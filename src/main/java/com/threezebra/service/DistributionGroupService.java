@@ -49,7 +49,7 @@ public class DistributionGroupService {
 	}
 
 	public DistributionGroup createDistributionGroup(String defaultValue,List<String> location, String distributionGroup, List<Unit> unitlist,
-			List<Department> departmentlst, List<UserType> userTypelst, List<JobRole> jobRolelst) {
+			List<Department> departmentlst, List<UserType> userTypelst, List<JobRole> jobRolelst, String employeeListflag,String isActive) {
 		DistributionGroup distributionGroupObj = distributionGroupRepository.findByNameContainingIgnoreCase(distributionGroup);
 		if (null != distributionGroupObj) {
 			distributionGroupObj.setDefaultvalue(defaultValue);
@@ -58,7 +58,9 @@ public class DistributionGroupService {
 			distributionGroupObj.setUnitlist(unitlist);
 			distributionGroupObj.setDeptlist(departmentlst);
 			distributionGroupObj.setUserType(userTypelst);
+			distributionGroupObj.setEmployeeListflag(employeeListflag);
 			distributionGroupObj.setJobRole(jobRolelst);
+			distributionGroupObj.setIsActive(isActive);
 		} else {
 			distributionGroupObj = new DistributionGroup();
 			distributionGroupObj.setId(System.nanoTime());
@@ -67,8 +69,10 @@ public class DistributionGroupService {
 			distributionGroupObj.setName(distributionGroup);
 			distributionGroupObj.setUnitlist(unitlist);
 			distributionGroupObj.setDeptlist(departmentlst);
+			distributionGroupObj.setEmployeeListflag(employeeListflag);
 			distributionGroupObj.setUserType(userTypelst);
 			distributionGroupObj.setJobRole(jobRolelst);
+			distributionGroupObj.setIsActive(isActive);
 		}
 
 		return distributionGroupRepository.save(distributionGroupObj);

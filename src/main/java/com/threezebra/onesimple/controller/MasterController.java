@@ -1,6 +1,7 @@
 package com.threezebra.onesimple.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -138,6 +139,10 @@ public class MasterController {
 	private String blocationFlag;
 	@Value("${prefix.jobRoleFlag}")
 	private String jobRoleFlag;
+	@Value("${mapping.message}")
+	private String mappingmessage;
+	@Value("${prefix.userType}")
+	private String userTypeflag;
 
 	@RequestMapping(value = "/createUnitandDepartment", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity saveDepartmentInfo(@RequestBody UnitDepartmentJson unitDepartmentJson) {
@@ -166,38 +171,52 @@ public class MasterController {
 
 	@RequestMapping(value = "/updateUnitandDepartment", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity updateDepartmentInfo(@RequestBody UnitDepartmentObjectJson unitDepartmentObject) {
+		BaseResponse response = null;
 		Unit unit = unitDepartmentObject.getUnit();
 		List<Department> departmentlist = unitDepartmentObject.getDepartment();
 		List<UserType> usertypeList = unitDepartmentObject.getUsertype();
-		for (Department department : departmentlist) {
-			if (department.getCheckFlag().equals("TRUE")) {
-				departmentService.update(department, department.getName(), unit);
-			} else {
-				List<Unit> unitList = department.getUnit();
-				unitList.remove(unit);
-				departmentService.updateDepartment(department, department.getName(), unitList);
+		List<JobRole> jobRoleList = unitDepartmentObject.getJobRole();
+		List<EmpDetail> employeeList = new ArrayList<>();
+		for (JobRole jobRole : jobRoleList) {
+			List<EmpDetail> employeeLst = employeeService.findByJobRole(jobRole);
+			for (EmpDetail empDetail : employeeLst) {
+				employeeList.add(empDetail);
 			}
 
 		}
-
-		for (UserType userType : usertypeList) {
-			List<Unit> untlst = userType.getUnit();
-			List<JobRole> jobRoleList = userType.getJobRoleList();
-			List<JobRole> jobRolelst = new ArrayList<>();
-			if (userType.getCheckFlag().equals("TRUE")) {
-				for (JobRole jobrole : jobRoleList) {
-					JobRole jobRole = jobRoleService.findByName(jobrole.getName());
-					jobRoleService.update(jobRole, unit, userType, jobrole.getCheckFlag());
-					jobRolelst.add(jobRole);
-
+		if (employeeList.size() > 0) {
+			response = new BaseResponse("200", mappingmessage + "" + employeeList.size());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			for (Department department : departmentlist) {
+				if (department.getCheckFlag().equals("TRUE")) {
+					departmentService.update(department, department.getName(), unit);
+				} else {
+					List<Unit> unitList = department.getUnit();
+					unitList.remove(unit);
+					departmentService.updateDepartment(department, department.getName(), unitList);
 				}
+
 			}
+			for (UserType userType : usertypeList) {
+				if (userType.getCheckFlag().equals("TRUE")) {
+					userTypeService.addUnit(userType, unit);
+				} else {
+					userTypeService.removeUnit(userType, unit);
+				}
+
+			}
+
+			for (JobRole jobRoleObj : jobRoleList) {
+				UserType userType = jobRoleObj.getUserType();
+				jobRoleService.update(jobRoleObj, unit, userType);
+			}
+			createPermissionGroup();
+			createDistributionGroup();
+			createDailyDistributionGroup();
+			createCallSheet();
 		}
-		createPermissionGroup();
-		createDistributionGroup();
-		createDailyDistributionGroup();
-		createCallSheet();
-		BaseResponse response = new BaseResponse("200", "SUCCESS");
+
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -214,7 +233,9 @@ public class MasterController {
 			UserType userType = userTypeService.findByUserType(userTypearr[i]);
 
 			if (null != userType) {
-				userTypeService.update(userType, unitlist);
+				for (Unit unit : unitlist) {
+					userTypeService.addUnit(userType, unit);
+				}
 			} else {
 				userTypeService.save(userTypearr[i], unitlist);
 			}
@@ -247,7 +268,7 @@ public class MasterController {
 
 			for (Department department : departmentlist) {
 				for (UserType userType : usertypelist) {
-					jobRoleList = userType.getJobRoleList();
+					jobRoleList = jobRoleService.findByUserType(userType);
 					for (JobRole jobRole : jobRoleList) {
 						if (!(jobRole.getName().contains("InfoRecipient") || jobRole.getName().contains("Daily"))) {
 							List<BaseLocation> baselocationlist = baseLocationService.findAll();
@@ -273,7 +294,6 @@ public class MasterController {
 								}
 								if (jobRoleFlag.equals("TRUE")) {
 									permissiongroupname.append(".").append(jobRole.getName());
-									;
 								}
 
 								log.info("%%%%%%%%%%%%%%" + permissiongroupname, "group name is");
@@ -299,13 +319,19 @@ public class MasterController {
 	public ResponseEntity saveJobRoleInfo(@RequestBody JobRoleJson jobRolesJson) {
 		String[] usertType = jobRolesJson.getUsertype();
 		String[] jobRolearr = jobRolesJson.getJobRole();
+		List<JobRole> jobrolelist = new ArrayList<>();
+		UserType userType = userTypeService.findByUserType(usertType[0]);
 		for (int i = 0; i < jobRolearr.length; i++) {
-			for (int j = 0; j < usertType.length; i++) {
-				UserType usertype = userTypeService.findByUserType(usertType[j]);
-				List<Unit> unitlist = usertype.getUnit();
-				jobRoleService.save(jobRolearr[i], usertype, unitlist, "TRUE");
-			}
+			List<Unit> unitlist = userType.getUnit();
+			JobRole jobRole=jobRoleService.findByName(jobRolearr[i]);
+            if(null!=jobRole) {
+            	return null;
+            }
+			jobrolelist.add(jobRoleService.save(jobRolearr[i], userType, unitlist, "TRUE"));
+
 		}
+		userType.setJobRoleList(jobrolelist);
+		// userTypeService.updateJobRole(userType);
 		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -560,6 +586,7 @@ public class MasterController {
 		List<Unit> unitlist = unitService.findAll();
 		List<String> location = new ArrayList<>();
 		List<BaseLocation> baseLocationlst = baseLocationService.findAll();
+		List<JobRole> jobrolelist = new ArrayList<>();
 		for (BaseLocation locationobj : baseLocationlst) {
 			location.add(locationobj.getName());
 		}
@@ -569,37 +596,45 @@ public class MasterController {
 
 		for (Unit unit : unitlist) {
 			departmentlist = departmentService.findByUnit(unit);
+			usertypelist = userTypeService.findByUnit(unit);
 			for (Department department : departmentlist) {
-				DistributionGroup distributionGroup = new DistributionGroup();
-				distributionGroup.setId(System.nanoTime());
-				distributionGroup.setLocation(location);
-				distributionGroup.setUnit(unit);
-				distributionGroup.setDepartment(department);
-				distributionGroup.setDefaultvalue("true");
-				usertypelist = userTypeService.findByUnit(unit);
-				distributionGroup.setUserType(usertypelist);
-				for (UserType userType : usertypelist) {
-					List<JobRole> jobrolelist = userType.getJobRoleList();
-					for (JobRole jobRole : jobrolelist) {
-						if (!((jobRole.getName().equals("Daily")) || (department.getName().equals("Xternal")))) {
-
-							distributionGroup.setJobRole(userType.getJobRoleList());
-							StringBuilder distributionGroupname = new StringBuilder();
-							distributionGroupname.append(distroname);
-							if (deptflag.equals("TRUE")) {
-								distributionGroupname.append(department.getName()).append("-Dept-");
+				if (!(department.getName().equals("Xternal"))) {
+					for (UserType userType : usertypelist) {
+						DistributionGroup distributionGroup = new DistributionGroup();
+						distributionGroup.setId(System.nanoTime());
+						distributionGroup.setLocation(location);
+						distributionGroup.setUnit(unit);
+						distributionGroup.setEmployeeListflag("FALSE");
+						distributionGroup.setUserTypeObj(userType);
+						;
+						distributionGroup.setDepartment(department);
+						jobrolelist = jobRoleService.findByUserType(userType);
+						Iterator<JobRole> itr = jobrolelist.iterator();
+						while (itr.hasNext()) {
+							JobRole jobRoleobj = (JobRole) itr.next();
+							if (jobRoleobj.getName().equals("Daily")) {
+								itr.remove();
 							}
-							if (unitflag.equals("TRUE")) {
-								distributionGroupname.append(unit.getName());
-							}
-							if (blocationFlag.equals("TRUE")) {
-								distributionGroupname.append(".").append(baselocationList.get(0).getName());
-							}
-							log.info("%%%%%%%%%%%%%%" + distributionGroupname, "distro group name");
-							distributionGroup.setName(distributionGroupname.toString());
-							distributionGroupService.save(distributionGroup);
-							count++;
 						}
+						distributionGroup.setJobRole(jobrolelist);
+						StringBuilder distributionGroupname = new StringBuilder();
+						distributionGroupname.append(distroname);
+						if (deptflag.equals("TRUE")) {
+							distributionGroupname.append(department.getName()).append("-Dept-");
+						}
+						if (unitflag.equals("TRUE")) {
+							distributionGroupname.append(unit.getName()).append(".");
+						}
+						if (userTypeflag.equals("TRUE")) {
+							distributionGroupname.append(userType.getName());
+						}
+						if (blocationFlag.equals("TRUE")) {
+							distributionGroupname.append(".").append(baselocationList.get(0).getName());
+						}
+						log.info("%%%%%%%%%%%%%%" + distributionGroupname, "distro group name");
+						distributionGroup.setName(distributionGroupname.toString());
+						distributionGroupService.save(distributionGroup);
+						count++;
 					}
 
 				}
@@ -629,19 +664,17 @@ public class MasterController {
 			for (Department department : departmentlist) {
 				if (!(department.getName().equals("Xternal"))) {
 					for (UserType userType : usertypelist) {
-						List<JobRole> jobrolelist = userType.getJobRoleList();
+						DailyDistributionGroup dailyDistributionGroup = new DailyDistributionGroup();
+						dailyDistributionGroup.setLocation(location);
+						dailyDistributionGroup.setUnit(unit);
+						dailyDistributionGroup.setId(System.nanoTime());
+						dailyDistributionGroup.setDepartment(department);
+						dailyDistributionGroup.setUserTypeObj(userType);
+						dailyDistributionGroup.setDefaultvalue("true");
+						List<JobRole> jobrolelist = jobRoleService.findByUserType(userType);
+						dailyDistributionGroup.setJobRole(jobrolelist);
 						for (JobRole jobRole : jobrolelist) {
 							if (jobRole.getName().equals("Daily")) {
-								DailyDistributionGroup dailyDistributionGroup = new DailyDistributionGroup();
-								dailyDistributionGroup.setLocation(location);
-								dailyDistributionGroup.setUnit(unit);
-								dailyDistributionGroup.setId(System.nanoTime());
-								dailyDistributionGroup.setDepartment(department);
-								dailyDistributionGroup.setUserType(usertypelist);
-								dailyDistributionGroup.setDefaultvalue("true");
-								List<JobRole> dailyjob = new ArrayList<>();
-								dailyjob.add(jobRole);
-								dailyDistributionGroup.setJobRole(dailyjob);
 								StringBuilder distributionGroupname = new StringBuilder();
 								distributionGroupname.append(distroname);
 								if (deptflag.equals("TRUE")) {
@@ -699,10 +732,10 @@ public class MasterController {
 			departmentlist = departmentService.findByUnit(unit);
 			for (Department department : departmentlist) {
 				for (UserType userType : userTypeService.findByUnit(unit)) {
-					List<JobRole> jobrolelist = userType.getJobRoleList();
+					List<JobRole> jobrolelist = jobRoleService.findByUserType(userType);
 					for (JobRole jobRole : jobrolelist) {
 						if (((jobRole.getName().equals("Daily")) || (department.getName().equals("Xternal")))) {
-							callSheet.setJobRole(userType.getJobRoleList());
+							callSheet.setJobRole(jobrolelist);
 							StringBuilder distributionGroupname = new StringBuilder();
 							distributionGroupname.append("Distro-CallSheet").append(department.getName()).append("")
 									.append(unit.getName()).append(".").append(baselocationList.get(0).getName());
@@ -732,6 +765,7 @@ public class MasterController {
 		long[] jobRolelst = distributionGroupMappingJson.getJobrole();
 		String[] locationlst = distributionGroupMappingJson.getLocation();
 		String defaultvalue = distributionGroupMappingJson.getDefaultvalue();
+		String employeeListflag=distributionGroupMappingJson.getEmployeeListflag();
 		List<Department> departmentlst = new ArrayList<>();
 		List<String> locationlist = new ArrayList<>();
 		List<UserType> userTypelst = new ArrayList<>();
@@ -764,7 +798,7 @@ public class MasterController {
 		if (defaultvalue.equals("false")) {
 			distributionGroupService.createDistributionGroup(defaultvalue, locationlist,
 					distributionGroupMappingJson.getDistributionGroup(), unitlist, departmentlst, userTypelst,
-					jobRoleslst);
+					jobRoleslst,employeeListflag,"FALSE");
 		}
 		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -892,12 +926,12 @@ public class MasterController {
 			unitlist.add(unit);
 		}
 
-		UserType userType = userTypeService.findByUserType(xuserType);
-		JobRole jobRole = jobRoleService.save(xjobRole,userType,unitlist,"TRUE");
+		UserType userType = userTypeService.save(xuserType,unitlist);
+		JobRole jobRole = jobRoleService.save(xjobRole, userType, unitlist, "TRUE");
 		jobroleList.add(jobRole);
 		if (null != userType) {
 			System.out.println("jobrole::::size:::" + jobroleList.get(0).getName());
-		
+
 		} else {
 			System.out.println("jobrole::::size:::" + jobroleList.get(0).getName());
 			userType = userTypeService.saveXternal(xuserType, unitlist, jobroleList);
@@ -905,12 +939,13 @@ public class MasterController {
 		}
 
 		XternalDistributionGroup xterlDistributionGroup = new XternalDistributionGroup();
+
 		xterlDistributionGroup.setId(System.nanoTime());
 		StringBuilder xternalName = new StringBuilder();
 		xternalName.append("Distro-Xternal").append(xjobRole);
 		xterlDistributionGroup.setName(xternalName.toString());
 		xterlDistributionGroup.setDepartment(department);
-		xterlDistributionGroup.setUserType(userType);
+		xterlDistributionGroup.setUserTypeObj(userType);
 		xterlDistributionGroup.setJobRole(jobRole);
 		xterlDistributionGroupService.save(xterlDistributionGroup);
 		BaseResponse response = new BaseResponse("200", "SUCCESS");

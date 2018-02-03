@@ -30,6 +30,8 @@ public class JobRole implements Serializable {
 	
 	private UserType userType;
 	
+	private String userTypeName;
+	
 	private List<Unit> unit;
 	
 	private String checkFlag;
@@ -40,6 +42,13 @@ public class JobRole implements Serializable {
 
 	private String name;
 	
+	
+	public String getUserTypeName() {
+		return userTypeName;
+	}
+	public void setUserTypeName(String userTypeName) {
+		this.userTypeName = userTypeName;
+	}
 	public UserType getUserType() {
 		return userType;
 	}

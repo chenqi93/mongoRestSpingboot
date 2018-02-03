@@ -2,7 +2,6 @@ package com.threezebra.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.hssf.util.HSSFColor;
@@ -17,22 +16,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.threezebra.domain.DailyDistributionGroup;
 import com.threezebra.domain.DistributionGroup;
 import com.threezebra.domain.EmpDetail;
+import com.threezebra.domain.XternalDistributionGroup;
 import com.threezebra.exception.ThreeZebraException;
+
 @Service
 public class EmployeeExportService {
 	Logger log = LoggerFactory.getLogger(ExcelWriterService.class);
 
 	@Autowired
 	EmployeeService employeeService;
-	
+
 	public byte[] generateExcel() throws ThreeZebraException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-	
+
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet1 = workbook.createSheet("Employee Data sheet");
-		
+
 		CellStyle style = workbook.createCellStyle();
 		Font font = workbook.createFont();
 		font.setFontName("Arial");
@@ -41,8 +43,8 @@ public class EmployeeExportService {
 		font.setBold(true);
 		font.setColor(HSSFColor.WHITE.index);
 		style.setFont(font);
-	 
-	    Row header = ((org.apache.poi.ss.usermodel.Sheet) sheet1).createRow(0);
+
+		Row header = ((org.apache.poi.ss.usermodel.Sheet) sheet1).createRow(0);
 		header.createCell(0).setCellValue("Empployee Id");
 		header.getCell(0).setCellStyle(style);
 		header.createCell(1).setCellValue("firstName");
@@ -79,19 +81,19 @@ public class EmployeeExportService {
 		header.getCell(16).setCellStyle(style);
 		header.createCell(17).setCellValue("Permitted Devices");
 		header.getCell(17).setCellStyle(style);
-				
+
 		int rowCount = 1;
-		
+
 		List<EmpDetail> employeeList = employeeService.findAll();
-	
+
 		for (EmpDetail employee : employeeList) {
 			Row empRow = ((org.apache.poi.ss.usermodel.Sheet) sheet1).createRow(rowCount++);
 			empRow.createCell(0).setCellValue(employee.getId());
 			empRow.createCell(1).setCellValue(employee.getFirstName());
-			empRow.createCell(2).setCellValue(employee.getLastName());	
-			if(null!=employee.getSpecialRole()) {
-			empRow.createCell(3).setCellValue(employee.getSpecialRole().getName());	
-			 }
+			empRow.createCell(2).setCellValue(employee.getLastName());
+			if (null != employee.getSpecialRole()) {
+				empRow.createCell(3).setCellValue(employee.getSpecialRole().getName());
+			}
 			empRow.createCell(4).setCellValue(employee.getUnit().getName());
 			empRow.createCell(5).setCellValue(employee.getDepartment().getName());
 			empRow.createCell(6).setCellValue(employee.getUserType().getName());
@@ -100,38 +102,46 @@ public class EmployeeExportService {
 			empRow.createCell(9).setCellValue(employee.getWorkEmail());
 			empRow.createCell(10).setCellValue(employee.getPersonalEmail());
 			empRow.createCell(11).setCellValue(employee.getPersonalPhoneNum());
-			List<DistributionGroup> distrogroup=employee.getDistributionGroup();
-			StringBuilder distributiongroup=new StringBuilder();
-			if(null!=distrogroup) {
-			for(DistributionGroup distGroup:distrogroup) {
-				distributiongroup.append(distGroup.getName()).append("|");
-			
-			}}
-			
-			empRow.createCell(12).setCellValue(distributiongroup.toString());
-			empRow.createCell(13).setCellValue(employee.getPermissionGroup().getName());
+			if (!((employee.getDepartment().getName()).equals("Xternal"))) {
+				if (!((employee.getJobRole().getName()).equals("Daily"))) {
+					List<DistributionGroup> distrogroup = employee.getDistributionGroup();
+					StringBuilder distributiongroup = new StringBuilder();
+					for (DistributionGroup distGroup : distrogroup) {
+						distributiongroup.append(distGroup.getName()).append("|");
+					}
+					empRow.createCell(12).setCellValue(distributiongroup.toString());
+				} else {
+					DailyDistributionGroup distrgroup = employee.getDialyDistributionGroup();
+					empRow.createCell(12).setCellValue(distrgroup.toString());
+				}
+			} else {
+				XternalDistributionGroup distrgroup = employee.getXternalDistributionGroup();
+				empRow.createCell(12).setCellValue(distrgroup.toString());
+			}
+
+			if (!((employee.getJobRole().getName()).equals("Daily"))) {
+				empRow.createCell(13).setCellValue(employee.getPermissionGroup().getName());
+			}
 			empRow.createCell(14).setCellValue(employee.getIsActive());
 			empRow.createCell(15).setCellValue(employee.getBaseLocation().getName());
 			empRow.createCell(16).setCellValue(employee.getAccessStartDate());
 			empRow.createCell(17).setCellValue(employee.getPermittedNumDevices());
 		}
-		
+
 		try {
 			workbook.write(bos);
-		    } 
-		catch(IOException ex) {
+		} catch (IOException ex) {
 			throw new ThreeZebraException(ex);
-		}
-		finally {
+		} finally {
 			try {
 				bos.close();
 			} catch (IOException ex) {
 				throw new ThreeZebraException(ex);
 			}
-		 }
+		}
 		byte[] bytes = bos.toByteArray();
 		return bytes;
-		
-		}
-		
+
+	}
+
 }

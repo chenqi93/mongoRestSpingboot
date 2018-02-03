@@ -1,5 +1,6 @@
 package com.threezebra.service;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class JobRoleService {
 		jobRole.setId(System.nanoTime());
 		jobRole.setUnit(unit);
 		jobRole.setUserType(userType);
+		jobRole.setUserTypeName(userType.getName());
 		jobRole.setCheckFlag(checkFlag);
 		jobRole.setName(name);
 		return jobRoleRepository.save(jobRole);
@@ -29,18 +31,31 @@ public class JobRoleService {
 		return unitlist.stream().filter(o -> o.getName().equals(name)).findFirst().isPresent();
 	}
 
-	public JobRole update(JobRole jobRole,Unit unit, UserType userType, String checkFlag) {
+	public JobRole update(JobRole jobRole,Unit unit, UserType userType) {
 		List<Unit> unitlist = jobRole.getUnit();
-		if (checkFlag.equals("TRUE")) {
-			unitlist.add(unit);
-			jobRole.setUnit(unitlist);
-		} else {
-			unitlist.remove(unit);
-			jobRole.setUnit(unitlist);
-		}
+		if (jobRole.getCheckFlag().equals("TRUE")){ 
+			if(containsName(unitlist, unit.getName())==false) {
+		
+			    unitlist.add(unit);
+				jobRole.setUnit(unitlist);
+			}
+			
+			}
+		else {
+				Iterator<Unit> itr=unitlist.iterator();
+                while(itr.hasNext()) {
+                 Unit unitobj=(Unit)itr.next();
+                 if(unitobj.getName().equals(unit.getName())){
+                	 itr.remove();
+                 }
+                
+                }
+                jobRole.setUnit(unitlist);	
+				
+			  }
+			
 		jobRole.setUserType(userType);
-		jobRole.setCheckFlag(checkFlag);
-		return jobRoleRepository.save(jobRole);
+        return jobRoleRepository.save(jobRole);
 	}
 
 	public List<JobRole> findAll() {
@@ -58,6 +73,16 @@ public class JobRoleService {
 
 	public JobRole findById(long jobRole) {
 		return jobRoleRepository.findById(jobRole);
+	}
+
+	public List<JobRole> findByUserType(UserType userType) {
+		// TODO Auto-generated method stub
+		return jobRoleRepository.findByUserTypeName(userType.getName());
+	}
+
+	public JobRole updateFlag(JobRole jobRole, String flag) {
+		jobRole.setCheckFlag(flag);
+		return jobRoleRepository.save(jobRole);
 	}
 
 }

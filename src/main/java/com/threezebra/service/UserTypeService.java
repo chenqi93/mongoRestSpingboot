@@ -1,5 +1,6 @@
 package com.threezebra.service;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,17 +51,31 @@ public class UserTypeService {
 	public boolean containsName(final List<Unit> unitlist, final String name){
 	    return unitlist.stream().filter(o -> o.getName().equals(name)).findFirst().isPresent();
 	}
-	public UserType update(UserType userType, List<Unit> unitlst) {
+	public UserType addUnit(UserType userType, Unit unit) {
 		List<Unit> unitlist=userType.getUnit();
-		for(Unit unitobj:unitlst) {
-			boolean flag=containsName(unitlist, unitobj.getName());
+	    boolean flag=containsName(unitlist, unit.getName());
 			if(flag==false) {
-				unitlist.add(unitobj);
-				userType.setUnit(unitlst);
+				unitlist.add(unit);
+				userType.setUnit(unitlist);
 		    }
-		   }
-		userType.setCheckFlag("TRUE");
-		userTypeRepository.save(userType);
+		 userTypeRepository.save(userType);
+		return userType;
+	}
+	public UserType removeUnit(UserType userType, Unit unit) {
+		List<Unit> unitlist=userType.getUnit();
+	    boolean flag=containsName(unitlist, unit.getName());
+			if(flag==true) {
+				Iterator<Unit> itr = unitlist.iterator();
+				while (itr.hasNext()) {
+					Unit unitobj = (Unit) itr.next();
+					if (unitobj.getName().equals(unit.getName())) {
+						itr.remove();
+					}
+				}
+				unitlist.remove(unit);
+				userType.setUnit(unitlist);
+		    }
+		 userTypeRepository.save(userType);
 		return userType;
 	}
 
@@ -88,6 +103,16 @@ public class UserTypeService {
 		userTypeRepository.save(userType);
 		return userType;
 		
+	}
+
+	public UserType updateJobRole(UserType userType) {
+		return	userTypeRepository.save(userType);
+		
+	}
+
+	public UserType updateFlag(UserType userType, String flag) {
+		userType.setCheckFlag(flag);
+		return	userTypeRepository.save(userType);
 	}
 
 }

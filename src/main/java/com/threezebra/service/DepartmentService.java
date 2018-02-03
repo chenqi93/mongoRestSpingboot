@@ -90,7 +90,6 @@ public class DepartmentService {
 	public Department updateDepartment(Department departmentobj, String name, List<Unit> unitList) {
 		departmentobj.setUnit(unitList);
 		departmentobj.setName(name);
-		departmentobj.setCheckFlag("FALSE");
 		departmentRepository.save(departmentobj);
 		return departmentobj;
 		

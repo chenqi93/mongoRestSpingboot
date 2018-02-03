@@ -8,12 +8,13 @@ public class XternalDistributionGroup {
 	private long id;
 	private String name;
 	private Department department;
-	private UserType userType;
-	public UserType getUserType() {
-		return userType;
+	private UserType userTypeObj;
+	
+	public UserType getUserTypeObj() {
+		return userTypeObj;
 	}
-	public void setUserType(UserType userType) {
-		this.userType = userType;
+	public void setUserTypeObj(UserType userTypeObj) {
+		this.userTypeObj = userTypeObj;
 	}
 	private JobRole jobRole;
 	public long getId() {

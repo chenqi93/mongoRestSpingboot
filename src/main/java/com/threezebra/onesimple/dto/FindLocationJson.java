@@ -6,9 +6,25 @@ import com.threezebra.domain.AdditionalLocation;
 import com.threezebra.domain.BaseLocation;
 
 public class FindLocationJson {
-	String distributionGroup;
-	String defaultvalue;
+	private String distributionGroup;
+	private String defaultvalue;
+	private String employeeListflag;
+	private String isActive;
 	
+	
+	
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	public String getEmployeeListflag() {
+		return employeeListflag;
+	}
+	public void setEmployeeListflag(String employeeListflag) {
+		this.employeeListflag = employeeListflag;
+	}
 	List<AdditionalLocation> additionalLocation;
 	BaseLocation baseLocation;
 	public List<AdditionalLocation> getAdditionalLocation() {

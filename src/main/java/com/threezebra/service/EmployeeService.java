@@ -4,21 +4,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Service;
-
-import com.threezebra.configuration.ApplicationConfigurationProperties;
-import com.threezebra.domain.AdditionalLocation;
-import com.threezebra.domain.BaseLocation;
-import com.threezebra.domain.EmpDetail;
-import com.threezebra.onesimple.controller.MasterController;
-import com.threezebra.onesimple.dto.EmployeeJson;
-import com.threezebra.repository.EmployeeRepository;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,6 +22,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
+
+import com.microsoft.aad.adal4j.AuthenticationResult;
+import com.threezebra.common.TokenGeneratorUtil;
+import com.threezebra.configuration.ApplicationConfigurationProperties;
+import com.threezebra.domain.AdditionalLocation;
+import com.threezebra.domain.BaseLocation;
+import com.threezebra.domain.Department;
+import com.threezebra.domain.EmpDetail;
+import com.threezebra.domain.JobRole;
+import com.threezebra.onesimple.dto.EmployeeJson;
+import com.threezebra.repository.EmployeeRepository;
 
 @Service("employeeService")
 public class EmployeeService {
@@ -153,21 +156,23 @@ public class EmployeeService {
 	public List<EmpDetail> findByBaselLocation(BaseLocation baseLocation) {
 		 return employeeRepository.findByBaseLocation(baseLocation);
 	}
-
 	
-	public List<String> createUserInAD(String accessToken, EmployeeJson employeeJson){
+	public String createUserInAD(String accessToken, EmpDetail empDetail){
 		HttpClient httpclient = HttpClients.createDefault();
 		StringEntity entity = null;
+		String responseString = null;
+		String userObjectID = null;
 		try {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("accountEnabled", true);
-			jsonObject.put("displayName",employeeJson.getFirstName()+""+employeeJson.getLastName());
-			jsonObject.put("mailNickname", employeeJson.getFirstName());
+			jsonObject.put("displayName",empDetail.getFirstName()+""+empDetail.getLastName());
+			jsonObject.put("mailNickname", empDetail.getFirstName());
 			JSONObject passwordProfileObj = new JSONObject();
 			passwordProfileObj.put("password", "Welcome@123");
 			passwordProfileObj.put("forceChangePasswordNextLogin", false);
 			jsonObject.put("passwordProfile",passwordProfileObj);
-			jsonObject.put("userPrincipalName", employeeJson.getFirstName()+"."+employeeJson.getLastName()+"@DemonstrationOneSimple.onmicrosoft.com");
+			jsonObject.put("userPrincipalName", empDetail.getWorkEmail());
+			jsonObject.put("usageLocation", "US");
 			entity = new StringEntity(jsonObject.toString());
 			URIBuilder builder = new URIBuilder("https://graph.windows.net/myorganization/users");
 			// Specify values for the following required parameters
@@ -179,6 +184,12 @@ public class EmployeeService {
 			request.addHeader("Authorization", accessToken);
 			request.setEntity(entity);
 			HttpResponse response = httpclient.execute(request);
+			if (response != null) {
+				responseString = EntityUtils.toString(response.getEntity());
+			}
+			System.out.println(responseString);
+			JSONObject jsonResObject = new JSONObject(responseString);
+			userObjectID = jsonResObject.getString("objectId");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		} catch (JSONException e1) {
@@ -186,13 +197,13 @@ public class EmployeeService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return userObjectID;
 	}
 	
 	public List<String> getUsersFromAD(String accessToken){
 		HttpClient httpclient = HttpClients.createDefault();
 		String userInfo = null;
-		List<String> userList = null;
+		List<String> userList = new ArrayList<>();
 		try
 		{
 			URIBuilder builder = new URIBuilder("https://graph.windows.net/myorganization/users");
@@ -222,7 +233,7 @@ public class EmployeeService {
 		}
 		catch (Exception e)
 		{
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return userList;
 	}
@@ -272,6 +283,109 @@ public class EmployeeService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return statusCode;
+	}
+
+	
+
+	public List<EmpDetail> findByJobRole(JobRole jobRole) {
+		return employeeRepository.findByJobRole(jobRole);
+	}
+	
+	
+	public int mapUserAndGroup(String empObjID,String groupObjID,String accessToken) {
+		HttpClient httpclient = HttpClients.createDefault();
+		StringEntity entity = null;
+		int statusCode = 0;
+		try {
+			JSONObject rootJsonObject = new JSONObject();
+			rootJsonObject.put("url", "https://graph.windows.net/DemonstrationOneSimple.onmicrosoft.com/directoryObjects/"+empObjID);
+			entity = new StringEntity(rootJsonObject.toString());
+			URIBuilder builder = new URIBuilder("https://graph.windows.net/DemonstrationOneSimple.onmicrosoft.com/groups/"+groupObjID+"/$links/members");
+			// Specify values for the following required parameters
+			builder.setParameter("api-version", "1.6");
+			
+			URI uri = builder.build();
+			HttpPost request = new HttpPost(uri);
+			request.addHeader("Content-Type","application/json");
+			request.addHeader("Authorization", accessToken);
+			request.setEntity(entity);
+			HttpResponse response = httpclient.execute(request);
+			statusCode = response.getStatusLine().getStatusCode();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return statusCode;
+	}
+
+	public int inviteToManager(String accessToken) {
+		HttpClient httpclient = HttpClients.createDefault();
+		StringEntity entity = null;
+		int statusCode = 0;
+		Query query = new Query();
+		query.addCriteria(Criteria.where("isInvited").is("0"));
+		query.addCriteria(Criteria.where("saveFlag").is("0"));
+		List<EmpDetail> empList = mongoTemplate.find(query, EmpDetail.class);
+		StringBuilder htmlBuilder = new StringBuilder();
+		
+		if (empList != null) {
+			htmlBuilder.append("<table border='0'><tbody>");
+			htmlBuilder.append("<tr><th>Name &amp; Email Address</th><th>Job Title</th><th>Location</th></tr><tr>");
+			for (EmpDetail empDetail : empList) {
+				htmlBuilder.append("<tr><td>" + empDetail.getFirstName() + " " + empDetail.getLastName() + "("
+						+ empDetail.getPersonalEmail() + ")</td><td>" + empDetail.getJobTitle().getName() + "</td><td>"
+						+ empDetail.getBaseLocation().getName() + "</td></tr>");
+			}
+			htmlBuilder.append("</tbody></table>");
+		}
+		
+		try {
+			JSONObject rootObj = new JSONObject();
+			JSONObject messageObj = new JSONObject();
+			JSONObject emailBody = new JSONObject();
+			emailBody.put("ContentType","HTML");
+			emailBody.put("Content",htmlBuilder.toString());			
+			JSONArray ToRecipients = new JSONArray();
+			JSONObject toObject = new JSONObject();
+			toObject.put("EmailAddress", new JSONObject().put("Address", "pramod.chandra@valuelabs.com"));
+			ToRecipients.put(toObject);
+			messageObj.put("Subject","Pending users list");
+			messageObj.put("Body", emailBody);
+			messageObj.put("ToRecipients", ToRecipients);
+			rootObj.put("Message", messageObj);
+			entity = new StringEntity(rootObj.toString());
+			URIBuilder builder = new URIBuilder("https://outlook.office.com/api/v2.0/me/sendmail");
+			URI uri = builder.build();
+			HttpPost request = new HttpPost(uri);
+			request.addHeader("Content-Type","application/json");
+			request.addHeader("Authorization", "Bearer "+accessToken);
+			request.setEntity(entity);
+			HttpResponse response = httpclient.execute(request);
+			statusCode = response.getStatusLine().getStatusCode();
+			System.out.println(EntityUtils.toString(response.getEntity()));
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {

@@ -17,6 +17,7 @@ public class PermissionGroup {
 	private DeptDocPrivilege deptDocPrivilege;
 	private SharedDocPrivilege  sharedDocPrivilege;
 	private OtherDocPrivilege  otherDocPrivilege;
+	private String aadObjectId;
 
 	public OtherDocPrivilege getOtherDocPrivilege() {
 		return otherDocPrivilege;
@@ -72,6 +73,12 @@ public class PermissionGroup {
 	}
 	public void setJobRole(String jobRole) {
 		this.jobRole = jobRole;
+	}
+	public String getAadObjectId() {
+		return aadObjectId;
+	}
+	public void setAadObjectId(String aadObjectId) {
+		this.aadObjectId = aadObjectId;
 	}
 	
 	

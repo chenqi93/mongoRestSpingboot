@@ -8,9 +8,16 @@ public class DistributionGroupMappingJson {
 	private long[] jobrole;
 	private long[] unit;
 	private String defaultvalue;
-	private long[] usertype;
+	private long[] usertype; 
+	private String employeeListflag;
 	
 	
+	public String getEmployeeListflag() {
+		return employeeListflag;
+	}
+	public void setEmployeeListflag(String employeeListflag) {
+		this.employeeListflag = employeeListflag;
+	}
 	public String[] getLocation() {
 		return location;
 	}

@@ -23,7 +23,16 @@ public class DailyDistributionGroup {
 	private List<Unit> unitlist;
 	private List<Department> deptlist;
 	private List<UserType> userType;
+	private UserType userTypeObj;
 	
+	public UserType getUserTypeObj() {
+		return userTypeObj;
+	}
+
+	public void setUserTypeObj(UserType userTypeObj) {
+		this.userTypeObj = userTypeObj;
+	}
+
 	public DailyDistributionGroup() {
 	}
 	

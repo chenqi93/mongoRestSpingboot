@@ -23,8 +23,8 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-      http.authorizeRequests().anyRequest().permitAll();
-    //http.requestMatchers().antMatchers("/").and().authorizeRequests().antMatchers("/").access("#oauth2.hasScope('read')");
+        http.authorizeRequests().anyRequest().permitAll();
+      // http.requestMatchers().antMatchers("/").and().authorizeRequests().antMatchers("/").access("#oauth2.hasScope('read')");
     }
 
 }

@@ -21,8 +21,6 @@ import com.threezebra.exception.ThreeZebraException;
 @Service
 public class TokenAuthenticationService {
 
-    private long EXPIRATIONTIME = 1000 * 60 * 60 * 24 * 10; // 10 days
-    private String secret = "+2lD7X/pCWOm684RN3XhD1OpXMhCLKEoTATN2pkLbd8=";
     private String tokenPrefix = "Bearer";
     private String headerString = "Authorization";
     
@@ -48,11 +46,11 @@ public class TokenAuthenticationService {
 	            .setAllowedClockSkewInSeconds(3600) // allow some leeway in validating time based claims to account for clock skew
 	            .setRequireSubject() // the JWT must have a subject claim
 	            .setExpectedIssuer("https://sts.windows.net/bb66bde2-6356-44da-9fe5-806ac1af46ea/") // whom the JWT needs to have been issued by
-	            .setExpectedAudience("https://graph.windows.net") // to whom the JWT is intended for
+	            .setExpectedAudience("c0e45e04-99e1-42fa-86a9-442cd894832b") // to whom the JWT is intended for
 	            .setVerificationKeyResolver(httpsJwksKeyResolver)
 	            .build();
         String username = null;
-        if (authHeaderVal.startsWith("Bearer")) {
+        if (authHeaderVal.startsWith(tokenPrefix)) {
         	String authHeaderValue = authHeaderVal.substring(OAuth2AccessToken.BEARER_TYPE.length()).trim();
         	//  Validate the JWT and process it to the Claims
 			  JwtClaims jwtClaims;

@@ -32,7 +32,29 @@ public class DistributionGroup implements Serializable {
 	private List<Unit> unitlist;
 	private List<Department> deptlist;
 	private List<UserType> userType;
-	
+	private  UserType userTypeObj;
+	private String employeeListflag;
+	private String isActive;
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	public String getEmployeeListflag() {
+		return employeeListflag;
+	}
+	public void setEmployeeListflag(String employeeListflag) {
+		this.employeeListflag = employeeListflag;
+	}
+	public UserType getUserTypeObj() {
+		return userTypeObj;
+	}
+	public void setUserTypeObj(UserType userTypeObj) {
+		this.userTypeObj = userTypeObj;
+	}
+
+	private List<JobRole>  jobRole;
 	
 	public List<String> getLocation() {
 		return location;
@@ -64,11 +86,6 @@ public class DistributionGroup implements Serializable {
 	public void setUserType(List<UserType> userType) {
 		this.userType = userType;
 	}
-
-
-	private List<JobRole>  jobRole;
-
-	
 	public Unit getUnit() {
 		return unit;
 	}

@@ -35,6 +35,8 @@ public class ExcelWriterService {
 	@Autowired
 	UserTypeService userTypeService;
 	@Autowired
+	JobRoleService jobRoleService;
+	@Autowired
 	JobTitleService jobTitleService;
 
 	public byte[] generateExcel() throws IOException {
@@ -70,7 +72,7 @@ public class ExcelWriterService {
 			List<Department> departmentList = departmentService.findByUnit(unit);
 			List<UserType> usertypelst = userTypeService.findByUnit(unit);
 			for (UserType usertype : usertypelst) {
-				List<JobRole> listJobRole = usertype.getJobRoleList();
+				List<JobRole> listJobRole = jobRoleService.findByUserType(usertype);
 				for (Department department : departmentList) {
 					for (JobRole jobRole : listJobRole) {
 							Row unitRow = ((org.apache.poi.ss.usermodel.Sheet) sheet1).createRow(rowCountjobrole++);
