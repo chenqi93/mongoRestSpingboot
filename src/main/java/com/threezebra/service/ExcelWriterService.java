@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.threezebra.domain.BaseLocation;
 import com.threezebra.domain.Department;
 import com.threezebra.domain.JobRole;
 import com.threezebra.domain.JobTitle;
@@ -38,6 +39,8 @@ public class ExcelWriterService {
 	JobRoleService jobRoleService;
 	@Autowired
 	JobTitleService jobTitleService;
+	@Autowired
+	BaseLocationService baseLocationService;
 
 	public byte[] generateExcel() throws IOException {
 	
@@ -57,16 +60,21 @@ public class ExcelWriterService {
 		style.setFont(font);
 		// create header row
 		Row header = ((org.apache.poi.ss.usermodel.Sheet) sheet1).createRow(0);
-		header.createCell(0).setCellValue("Unit");
+		header.createCell(0).setCellValue("Location");
 		header.getCell(0).setCellStyle(style);
-		header.createCell(1).setCellValue("Department");
+		header.createCell(1).setCellValue("Unit");
 		header.getCell(1).setCellStyle(style);
-		header.createCell(2).setCellValue("UserType");
+		header.createCell(2).setCellValue("Department");
 		header.getCell(2).setCellStyle(style);
-		header.createCell(3).setCellValue("JobRole");
+		header.createCell(3).setCellValue("UserType");
 		header.getCell(3).setCellStyle(style);
+		header.createCell(4).setCellValue("UserTypeDesc");
+		header.getCell(4).setCellStyle(style);
+		header.createCell(5).setCellValue("JobRole");
+		header.getCell(5).setCellStyle(style);
 		int rowCountjobrole = 1;
 		int rowCountjobtitle = 1;
+		List<BaseLocation> blocationlist=baseLocationService.findAll();
 		List<Unit> unitlist = unitService.findAll();
 		for (Unit unit : unitlist) {
 			List<Department> departmentList = departmentService.findByUnit(unit);
@@ -76,10 +84,12 @@ public class ExcelWriterService {
 				for (Department department : departmentList) {
 					for (JobRole jobRole : listJobRole) {
 							Row unitRow = ((org.apache.poi.ss.usermodel.Sheet) sheet1).createRow(rowCountjobrole++);
-							unitRow.createCell(0).setCellValue(unit.getName());
-							unitRow.createCell(1).setCellValue(department.getName());
-							unitRow.createCell(2).setCellValue(usertype.getName());			
-							unitRow.createCell(3).setCellValue(jobRole.getName());
+							unitRow.createCell(0).setCellValue(blocationlist.get(0).getName());
+							unitRow.createCell(1).setCellValue(unit.getName());
+							unitRow.createCell(2).setCellValue(department.getName());			
+							unitRow.createCell(3).setCellValue(usertype.getName());
+							unitRow.createCell(4).setCellValue(usertype.getDesc());
+							unitRow.createCell(5).setCellValue(jobRole.getName());
 						
 
 					}

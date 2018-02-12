@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +29,7 @@ public class DownloadManagerController {
 	ExcelReaderService excelReaderService;
 	@Autowired
 	EmployeeExportService employeeExportService;
-	private static String UPLOADED_FOLDER = "D://temp//";
+	private static String UPLOADED_FOLDER = "..//temp//";
 	// @Autowired
 	// ServletContext context;
 	Logger logger = LoggerFactory.getLogger("DownloadManagerController.class");
@@ -67,10 +68,8 @@ public class DownloadManagerController {
 		return response;
 	}
 
-	@RequestMapping(value = "/uploadExcel", headers=("content-type=multipart/*"), method = RequestMethod.POST)
+	@PostMapping(value = "/uploadExcel", headers=("content-type=multipart/*"))
 	 public ResponseEntity<FileInfo> upload(@RequestParam("file") MultipartFile inputFile) {
-		
-		
 	  FileInfo fileInfo = new FileInfo();
 	  HttpHeaders headers = new HttpHeaders();
 	  if (!inputFile.isEmpty()) {
@@ -81,13 +80,13 @@ public class DownloadManagerController {
 	    fileInfo.setFileName(destinationFile.getPath());
 	    fileInfo.setFileSize(inputFile.getSize());
 	    headers.add("File Uploaded Successfully - ", originalFilename);
-	    excelReaderService.read();
+	    excelReaderService.read(originalFilename);
 	    return new ResponseEntity<FileInfo>(fileInfo, headers, HttpStatus.OK);
 	   } catch (Exception e) {    
 	    return new ResponseEntity<FileInfo>(HttpStatus.BAD_REQUEST);
 	   }
 	  }else{
-	   return new ResponseEntity<FileInfo>(HttpStatus.BAD_REQUEST);
+	   return new ResponseEntity<FileInfo>(HttpStatus.OK);
 	  }
 	 }
 

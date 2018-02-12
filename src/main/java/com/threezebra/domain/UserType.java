@@ -28,11 +28,21 @@ public class UserType implements Serializable {
 	private Date modifiedDate;
 	private List<Unit> unit;
 	private String name;
+	private String desc;
+	
     private List<JobRole> jobRoleList;
     
     
     
-    public String getCheckFlag() {
+    public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	public String getCheckFlag() {
 		return checkFlag;
 	}
 

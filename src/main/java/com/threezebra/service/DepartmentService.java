@@ -78,7 +78,7 @@ public class DepartmentService {
 	}
      
 	public Department findbyName(String department) {
-		return departmentRepository.findByNameContainingIgnoreCase(department);
+		return departmentRepository.findByName(department);
 	}
 	
 	public Department findById(long id) {

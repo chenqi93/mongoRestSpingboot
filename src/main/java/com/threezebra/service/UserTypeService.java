@@ -20,12 +20,13 @@ public class UserTypeService {
 	private UserTypeRepository userTypeRepository;
 	
 	
-	public UserType save(String usertype, List<Unit> unitlst) {
+	public UserType save(String usertype,String userTypeDesc, List<Unit> unitlst) {
 		UserType userType = new UserType();
 		userType.setId(System.nanoTime());
 		userType.setUnit(unitlst);
 		userType.setCheckFlag("TRUE");
 		userType.setName(usertype);
+		userType.setDesc(userTypeDesc);
 		userTypeRepository.save(userType);
 		return userType;
 	}

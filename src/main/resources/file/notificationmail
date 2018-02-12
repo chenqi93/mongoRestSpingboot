@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head><META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"><META NAME="referrer" CONTENT="no-referrer">
+<style>
+    a {text-decoration:none;}
+    a:hover {text-decoration:underline;}
+    .afooter {color:#0044cc !important;}
+    body {
+        background:#fff;
+        margin:0;
+        padding:0;
+        -ms-text-size-adjust:100%;
+    }
+    .bodywrap{
+        max-width:640px !important;
+        margin:auto;
+        overflow-x:hidden;
+    }
+    table {max-width:640px;}
+    table td {border-collapse:collapse;margin:0;padding:0;}
+    img {border:none;}
+    p {margin-bottom:1em;} /* Yahoo! Mail fix. */
+    @media only screen and (max-width: 480px) {
+        .block{
+            display:block;
+            width:100%;
+            padding: 5px 0px 5px 0px;
+            box-sizing:border-box;
+        }
+        .mobileAdjust {
+            font-size:24px !important;
+            line-height:28px !important;
+        }
+        .mobileBlock {
+            display:block !important;
+            width:100% !important;
+            box-sizing:border-box;
+        }
+        .mobileHidden {
+            display:none !important;
+        }
+        .autoSize {
+            width:100% !important;
+            height:auto !important;
+        }
+        h1.h1Header {
+            font-size:28px !important;
+            line-height:28px !important;
+        }
+    }
+</style>
+</head>
+<body leftmargin="0" topmargin="0"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;"><strong>Attention:</strong> A user account was created or modified. Retrieve your user's temporary password.</div>
+
+<!--  -->
+
+<table cellpadding="0" cellspacing="0" border="0" align="center">
+    <tr>
+        <td align="center" valign="top" width="640" class="bodywrap">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+    <tr>
+        <td width="640" align="right" valign="middle" style="color:#3d3d3d; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; font-weight:bold; padding:12px 0;">
+
+<p>
+    <span class="mobileBlock"><strong>Attention:</strong> A user account was created or modified. Retrieve your user's temporary password.</span><span class="mobileHidden">&nbsp;|&nbsp;</span><span class="mobileBlock"><a style="color:#0044cc; text-decoration:underline;" href="https://view.email.microsoftonline.com/?qs=9385ec8387c92e41470ac8b6d602dd6c21f08f34081eb4c3850c27efef7ca6093f33f9453d69a453b37f5005c6af7c16c920765498747e3b9bb065ebb6428ef31a426eb8b4d3121df8d205a9b03c6a7f4fda3912d0ea7cfd" title="View this email in your browser." >View this email in your browser.</a></span>
+</p>
+
+        </td>
+    </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+    <tr>
+         <td width="20" valign="middle" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; font-weight:bold; padding:20px 0;">&nbsp;</td>
+         <td width="600" valign="middle" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; font-weight:bold; padding:20px 0;">
+
+<img src="http://image.email.microsoftonline.com/lib/fe95157074600c7e7c/m/1/33520_LogoColor_Microsoft_200.png" width="160" height="34" alt="Microsoft" border="0">
+
+<h1 style="color:#000000; font-family:'Segoe UI Light','Segoe UI',Arial,sans-serif; font-size:38px; font-weight:100; line-height:38px; margin-bottom:12px; padding:0;" class="h1Header">
+    A user account has been created or modified. You can now distribute this information to your user.
+</h1>
+
+         </td>
+         <td width="20" valign="middle" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; font-weight:bold; padding:20px 0;">&nbsp;</td>
+    </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+    <tr>
+        <td width="20" valign="middle" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; padding:0 0 30px;">&nbsp;</td>
+        <td width="600" align="left" valign="top" style="font-family:'Segoe UI',Arial,sans-serif; font-size:13px; line-height:16px; padding:0 0 30px;">
+
+<p>
+    The following list contains temporary passwords for newly created or modified user accounts.
+</p>
+<p>
+    Please note:
+</p>
+<ul>
+    <li>When distributing IDs and passwords to individual users, be sure to do so in a safe and secure manner.</li>
+    <li>Temporary passwords are valid for 90 days</li>
+</ul>
+<!-- START AMPSCRIPT 
+-->
+
+<!---->
+<p>
+    <strong>User Name: </strong> $username<br>
+    <!---->
+<!---->
+    <strong>Temporary Password: </strong> <a style="color:#000;text-decoration:none;" href="">$password</a><!---->
+<!---->
+<!---->
+<!---->
+</p>
+<!-- END AMPSCRIPT -->
+<p>
+    Once your end users have successfully signed in with their temporary passwords, they can create new passwords by following the instructions on the sign in page.
+</p>
+<p>
+    Go to the sign-in page, <a href="https://click.email.microsoftonline.com/?qs=39787bba1a5c17aabbb462a94dcb3747d4f3906f0b0fdc3d02204fa4f69b9bc8b818073b8a2586562366fac686d3ee2a07994884598856871d30df7433fcba60" title="https://portal.office.com"  style="color:#0044cc;">https://portal.office.com</a>
+</p>
+<p>
+    Thank you for choosing to host your IT solutions with Microsoft.
+</p>
+<p>
+    Sincerely, <br>The Microsoft Office 365 Team
+</p>
+
+        </td>
+        <td width="20" valign="middle" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; padding:0 0 30px;">&nbsp;</td>
+    </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+    <tr>
+        <td width="640" valign="middle" bgcolor="#f2f2f2" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; padding:20px 0;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                    <td width="20" valign="middle" bgcolor="#f2f2f2" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; padding:0;">&nbsp;</td>
+                    <td width="460" colspan="2" align="left" valign="bottom" bgcolor="#f2f2f2" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; line-height:16px; padding:0;" class="mobileBlock">
+
+                        
+
+<p>
+	This is a mandatory service communication. To set your contact preferences for other communications, visit the <a href="https://click.email.microsoftonline.com/?qs=bb3b4eec6adc4461634ffd4e9ef0a51d322cfb5f65871dd3c696963c4d72dc6688ee07c331d6bfe14914aef64f8320fdebcca283e7833c2990572cc42012a823" title="Promotional Communications Manager"  style="color:#0072c6; text-decoration:underline;">Promotional Communications Manager</a>.
+</p>
+<p>
+	This message was sent from an unmonitored e-mail address. Please do not reply to this message.<a href="https://click.email.microsoftonline.com/?qs=0a2d8cfeb66b29539bd5010b8d2359809578c7844a712a632866cc3c5b0b54c07a56b83d2c7120061bb6af315347ef03ea86351094b7668b" title=""  style="color:#0072c6; text-decoration:underline;"></a><br>
+	<a href="https://click.email.microsoftonline.com/?qs=016419c8f9f6799b150a35a6d32a0134d9da9b1f54c7dd9566def3632b036079548650ea6b6e5dc1c2039a914aaddcc739f62f3ef2447fb61b7c0ec11636a63a" title="Privacy"  style="color:#0072c6; text-decoration:underline;">Privacy</a> | <a href="https://click.email.microsoftonline.com/?qs=e761a45334ae8ed6c6d7d2c03b5198f1a08835bca5ccaaa02b35d6dd5e39da0fef79abbdd5a55b21e4c3e1a8a596d09038c28ae5b7ddafb4f1f35f8f5d2a8fab" title="Legal"  style="color:#0072c6; text-decoration:underline;">Legal</a>
+</p>
+<p>
+	<span dir="ltr">Microsoft Office<br>One Microsoft Way<br>Redmond, WA<br>98052-6399 USA</span>
+</p>
+
+                    </td>
+                    <td width="40" valign="middle" bgcolor="#f2f2f2" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; padding:0;" class="mobileHidden">&nbsp;</td>
+                    <td width="100" align="left" valign="bottom" bgcolor="#f2f2f2" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; line-height:16px; padding:0;" class="mobileBlock">
+                        <p>
+                            <img src="http://image.email.microsoftonline.com/lib/fe95157074600c7e7c/m/1/33520_Logo_Microsoft_Grey_100x22.png" width="100" height="22" alt="Microsoft" border="0">
+                        </p>
+                    </td>
+                    <td width="20" valign="middle" bgcolor="#f2f2f2" style="color:#000000; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; padding:0;">&nbsp;</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+
+
+        </td>
+    </tr>
+</table>
+
+<img src="http://click.email.microsoftonline.com/open.aspx?ffcb10-fecb12707364067b-fdfc15727d67007970177474-fe96157074600c7e7d-ff6615707d-fdf915707365017d7c177870-fe92177470670c7b75&d=40053" width="1" height="1">
+</body>
+</html>

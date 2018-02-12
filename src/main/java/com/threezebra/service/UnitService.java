@@ -32,7 +32,7 @@ public class UnitService {
 	public Unit update(String name, BaseLocation baselocation) {
        
 		Unit unitobj = unitRepository.findByNameContainingIgnoreCase(name);
-		if (unitobj!=null) {
+		if (null!=unitobj) {
 			unitobj.setBaselocation(baselocation);
 			unitobj.setName(name);
 			unitRepository.save(unitobj);

@@ -24,7 +24,7 @@ public class DeptDocPrivilegeService {
 
 	public DeptDocPrivilege findByName(String deptdoc) {
 		// TODO Auto-generated method stub
-		return deptDocRepository.findByNameContainingIgnoreCase(deptdoc);
+		return deptDocRepository.findByName(deptdoc);
 	} 
 	
 	public DeptDocPrivilege findById(long deptdocId) {

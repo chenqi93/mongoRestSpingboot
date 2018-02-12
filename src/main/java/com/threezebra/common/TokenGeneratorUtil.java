@@ -20,19 +20,22 @@ public class TokenGeneratorUtil {
 	private final static String CLIENT_SECRET = "+2lD7X/pCWOm684RN3XhD1OpXMhCLKEoTATN2pkLbd8=";
 
 	public static String getAccessTokenForResource(String resource, String userAccessToken) throws Exception {
-		if (userAccessToken.startsWith("Bearer")) {
-			 userAccessToken = userAccessToken.substring(OAuth2AccessToken.BEARER_TYPE.length()).trim();
-		 }
+		
 		AuthenticationContext context = null;
 		AuthenticationResult result = null;
 		ExecutorService service = null;
-		ClientCredential credential = new ClientCredential(CLIENT_ID, CLIENT_SECRET);
-		ClientAssertion clientAssertion = new ClientAssertion(userAccessToken);
-		
+		Future<AuthenticationResult> future = null;
 		try {
+			ClientCredential credential = new ClientCredential(CLIENT_ID, CLIENT_SECRET);
 			service = Executors.newFixedThreadPool(1);
 			context = new AuthenticationContext(AUTHORITY, false, service);
-			Future<AuthenticationResult> future = context.acquireToken(resource,clientAssertion, credential, null);
+			if (userAccessToken != null && !userAccessToken.equalsIgnoreCase("") && userAccessToken.startsWith("Bearer")) {
+				userAccessToken = userAccessToken.substring(OAuth2AccessToken.BEARER_TYPE.length()).trim();
+				ClientAssertion clientAssertion = new ClientAssertion(userAccessToken);
+				future = context.acquireToken(resource, clientAssertion, credential, null);
+			}else {
+				future = context.acquireToken(resource, credential, null);
+			}
 			result = future.get();
 		} finally {
 			service.shutdown();
@@ -42,7 +45,5 @@ public class TokenGeneratorUtil {
 		}
 		return result.getAccessToken();
 	}
-	
-	
 
 }

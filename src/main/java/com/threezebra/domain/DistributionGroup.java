@@ -34,12 +34,13 @@ public class DistributionGroup implements Serializable {
 	private List<UserType> userType;
 	private  UserType userTypeObj;
 	private String employeeListflag;
-	private String isActive;
-	public String getIsActive() {
-		return isActive;
+	private String distroActive;
+	
+	public String getDistroActive() {
+		return distroActive;
 	}
-	public void setIsActive(String isActive) {
-		this.isActive = isActive;
+	public void setDistroActive(String distroActive) {
+		this.distroActive = distroActive;
 	}
 	public String getEmployeeListflag() {
 		return employeeListflag;

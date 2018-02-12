@@ -35,9 +35,24 @@ public class BaseLocation implements Serializable {
 	private Date modifiedDate;
 
 	private String name;
+	private String desc;
 
 	//bi-directional many-to-one association to AdditionalLocation
 	
+	public String getDesc() {
+		return desc;
+	}
+
+
+
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+
+
+
 	private List<AdditionalLocation> additionalLocations;
 
 	public BaseLocation() {

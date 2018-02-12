@@ -1,17 +1,18 @@
 package com.threezebra.configuration.security.jwt;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.GenericFilterBean;
+import java.io.IOException;
 
-import com.threezebra.exception.ThreeZebraException;
-
-import org.springframework.security.core.Authentication;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.GenericFilterBean;
+
+import com.threezebra.exception.ThreeZebraException;
 
 public class JWTAuthenticationFilter extends GenericFilterBean {
 
@@ -20,15 +21,18 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
 		System.out.println("Inside JWTAuthenticationFilter");
 		Authentication authentication = null;
 		try {
-			authentication = new TokenAuthenticationService().getAuthentication((HttpServletRequest) request);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+			//authentication = new TokenAuthenticationService().getAuthentication((HttpServletRequest) request);
+			//SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			filterChain.doFilter(request, response);
-		} catch (IOException | ServletException | ThreeZebraException e) {
+		} catch (IOException | ServletException e) {
 
 			e.printStackTrace();
 
+		//} catch (ThreeZebraException e) { 
+		//	e.printStackTrace();
 		}
+
 	}
 
 }

@@ -28,7 +28,7 @@ public class ApplicationService {
 
 	public Application findByName(String name) {
 		// TODO Auto-generated method stub
-		return applicationRepository.findByNameContainingIgnoreCase(name);
+		return applicationRepository.findByName(name);
 	}
 	
 

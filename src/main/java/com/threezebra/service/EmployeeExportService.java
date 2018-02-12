@@ -87,6 +87,7 @@ public class EmployeeExportService {
 		List<EmpDetail> employeeList = employeeService.findAll();
 
 		for (EmpDetail employee : employeeList) {
+			if(employee.getSaveFlag().equals("0")) {
 			Row empRow = ((org.apache.poi.ss.usermodel.Sheet) sheet1).createRow(rowCount++);
 			empRow.createCell(0).setCellValue(employee.getId());
 			empRow.createCell(1).setCellValue(employee.getFirstName());
@@ -102,30 +103,35 @@ public class EmployeeExportService {
 			empRow.createCell(9).setCellValue(employee.getWorkEmail());
 			empRow.createCell(10).setCellValue(employee.getPersonalEmail());
 			empRow.createCell(11).setCellValue(employee.getPersonalPhoneNum());
+		
 			if (!((employee.getDepartment().getName()).equals("Xternal"))) {
-				if (!((employee.getJobRole().getName()).equals("Daily"))) {
+				if (!((employee.getJobRole().getName()).equals("Daily") || !(employee.getJobRole().getName()).equalsIgnoreCase("InfoRecipient"))) {
 					List<DistributionGroup> distrogroup = employee.getDistributionGroup();
+				if(null!=distrogroup) {
 					StringBuilder distributiongroup = new StringBuilder();
 					for (DistributionGroup distGroup : distrogroup) {
 						distributiongroup.append(distGroup.getName()).append("|");
 					}
 					empRow.createCell(12).setCellValue(distributiongroup.toString());
+					}
+     				empRow.createCell(13).setCellValue(employee.getPermissionGroup().getName());
 				} else {
 					DailyDistributionGroup distrgroup = employee.getDialyDistributionGroup();
+					if(null!=distrgroup) {
 					empRow.createCell(12).setCellValue(distrgroup.toString());
+					}
 				}
 			} else {
 				XternalDistributionGroup distrgroup = employee.getXternalDistributionGroup();
+				if(null!=distrgroup) {
 				empRow.createCell(12).setCellValue(distrgroup.toString());
-			}
-
-			if (!((employee.getJobRole().getName()).equals("Daily"))) {
-				empRow.createCell(13).setCellValue(employee.getPermissionGroup().getName());
+				}
 			}
 			empRow.createCell(14).setCellValue(employee.getIsActive());
 			empRow.createCell(15).setCellValue(employee.getBaseLocation().getName());
 			empRow.createCell(16).setCellValue(employee.getAccessStartDate());
 			empRow.createCell(17).setCellValue(employee.getPermittedNumDevices());
+		}
 		}
 
 		try {

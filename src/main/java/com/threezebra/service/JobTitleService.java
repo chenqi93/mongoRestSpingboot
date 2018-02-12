@@ -16,12 +16,14 @@ public class JobTitleService {
 	
 	public JobTitle save(String name,Department department) {
 		JobTitle jobTitle=jobTitleRepository.findByName(name);
-		JobTitle jobTitleobj = new JobTitle();
-		jobTitleobj.setId(System.nanoTime());
-		jobTitleobj.setName(name);
-		jobTitleobj.setDepartment(department);
-		jobTitleobj.setDepartmentName(department.getName());
-		jobTitleRepository.save(jobTitleobj);
+		if(jobTitle==null ||!(jobTitle.getDepartment().getName().equals(department.getName()))) {
+	        jobTitle = new JobTitle();
+			jobTitle.setId(System.nanoTime());
+			jobTitle.setName(name);
+			jobTitle.setDepartment(department);
+			jobTitle.setDepartmentName(department.getName());
+		jobTitleRepository.save(jobTitle);
+		}
 		return jobTitle;
 	}
 

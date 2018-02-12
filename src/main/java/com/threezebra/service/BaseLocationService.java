@@ -19,16 +19,14 @@ public class BaseLocationService {
 
 	public BaseLocation save(String name) {
 		BaseLocation baselocation = baseLocationRepository
-				.findByNameContainingIgnoreCase(name);	
-			if (null != baselocation) {
-				baselocation.setName(baselocation.getName());
-				return baseLocationRepository.save(baselocation);
-			} else {
+				.findByName(name);	
+			if (null==baselocation) {
 				BaseLocation loc=new BaseLocation();
 				loc.setId(System.nanoTime());
 				loc.setName(name);
-				return baseLocationRepository.save(loc);
+				baselocation=baseLocationRepository.save(loc);
 			}
+			return baselocation;
 		
 	}
 
@@ -36,7 +34,7 @@ public class BaseLocationService {
 		return baseLocationRepository.findAll();
 	}
 	public BaseLocation findByName(String name) {
-		return baseLocationRepository.findByNameContainingIgnoreCase(name);
+		return baseLocationRepository.findByName(name);
 	}
 
 	public BaseLocation findbyId(long baseLocation) {

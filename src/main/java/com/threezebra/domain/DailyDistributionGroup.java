@@ -24,7 +24,15 @@ public class DailyDistributionGroup {
 	private List<Department> deptlist;
 	private List<UserType> userType;
 	private UserType userTypeObj;
-	
+	private String distroActive;
+	public String getDistroActive() {
+		return distroActive;
+	}
+
+	public void setDistroActive(String distroActive) {
+		this.distroActive = distroActive;
+	}
+
 	public UserType getUserTypeObj() {
 		return userTypeObj;
 	}

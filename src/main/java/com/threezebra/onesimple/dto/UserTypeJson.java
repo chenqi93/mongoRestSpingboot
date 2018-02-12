@@ -3,8 +3,15 @@ package com.threezebra.onesimple.dto;
 public class UserTypeJson {
 	private String[] unit;
 	private String[] usertype;
+	private String[] usertypeDesc;
 	
 	
+	public String[] getUsertypeDesc() {
+		return usertypeDesc;
+	}
+	public void setUsertypeDesc(String[] usertypeDesc) {
+		this.usertypeDesc = usertypeDesc;
+	}
 	public String[] getUnit() {
 		return unit;
 	}

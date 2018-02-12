@@ -5,6 +5,7 @@ public class XternalListJson {
 	private String xuserType;
 	private String xdepartment;
 	private String xjobrole;
+	private String xuserTypeDesc;
 	public String getXuserType() {
 		return xuserType;
 	}
@@ -22,6 +23,12 @@ public class XternalListJson {
 	}
 	public void setXjobrole(String xjobrole) {
 		this.xjobrole = xjobrole;
+	}
+	public String getXuserTypeDesc() {
+		return xuserTypeDesc;
+	}
+	public void setXuserTypeDesc(String xuserTypeDesc) {
+		this.xuserTypeDesc = xuserTypeDesc;
 	}
 	
 

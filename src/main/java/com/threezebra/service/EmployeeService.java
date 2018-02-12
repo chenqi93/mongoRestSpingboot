@@ -1,11 +1,13 @@
 package com.threezebra.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -28,14 +30,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.threezebra.common.TokenGeneratorUtil;
 import com.threezebra.configuration.ApplicationConfigurationProperties;
 import com.threezebra.domain.AdditionalLocation;
 import com.threezebra.domain.BaseLocation;
-import com.threezebra.domain.Department;
 import com.threezebra.domain.EmpDetail;
 import com.threezebra.domain.JobRole;
+import com.threezebra.onesimple.common.CommonUtil;
 import com.threezebra.onesimple.dto.EmployeeJson;
 import com.threezebra.repository.EmployeeRepository;
 
@@ -157,19 +157,21 @@ public class EmployeeService {
 		 return employeeRepository.findByBaseLocation(baseLocation);
 	}
 	
-	public String createUserInAD(String accessToken, EmpDetail empDetail){
+	public String createUserInAD(String graphResourceToken, String exchangeResourceToken, EmpDetail empDetail){
 		HttpClient httpclient = HttpClients.createDefault();
 		StringEntity entity = null;
 		String responseString = null;
 		String userObjectID = null;
+		int statusCode = 0;
 		try {
+			String password = CommonUtil.newPassword();
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("accountEnabled", true);
 			jsonObject.put("displayName",empDetail.getFirstName()+""+empDetail.getLastName());
 			jsonObject.put("mailNickname", empDetail.getFirstName());
 			JSONObject passwordProfileObj = new JSONObject();
-			passwordProfileObj.put("password", "Welcome@123");
-			passwordProfileObj.put("forceChangePasswordNextLogin", false);
+			passwordProfileObj.put("password", password);
+			passwordProfileObj.put("forceChangePasswordNextLogin", true);
 			jsonObject.put("passwordProfile",passwordProfileObj);
 			jsonObject.put("userPrincipalName", empDetail.getWorkEmail());
 			jsonObject.put("usageLocation", "US");
@@ -181,15 +183,19 @@ public class EmployeeService {
 			URI uri = builder.build();
 			HttpPost request = new HttpPost(uri);
 			request.addHeader("Content-Type","application/json");
-			request.addHeader("Authorization", accessToken);
+			request.addHeader("Authorization", "Bearer "+graphResourceToken);
 			request.setEntity(entity);
 			HttpResponse response = httpclient.execute(request);
 			if (response != null) {
 				responseString = EntityUtils.toString(response.getEntity());
+				statusCode = response.getStatusLine().getStatusCode();
 			}
 			System.out.println(responseString);
-			JSONObject jsonResObject = new JSONObject(responseString);
-			userObjectID = jsonResObject.getString("objectId");
+			if(statusCode != 0 && statusCode == 201) {
+				JSONObject jsonResObject = new JSONObject(responseString);
+				userObjectID = jsonResObject.getString("objectId");
+				this.userNotification(exchangeResourceToken,empDetail.getWorkEmail(),password,empDetail.getPersonalEmail());
+			}
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		} catch (JSONException e1) {
@@ -214,7 +220,7 @@ public class EmployeeService {
 			
 			URI uri = builder.build();
 			HttpGet request = new HttpGet(uri);
-			request.addHeader("Authorization", accessToken);
+			request.addHeader("Authorization", "Bearer "+accessToken);
 			HttpResponse response = httpclient.execute(request);
 			HttpEntity entity = response.getEntity();
 			if (entity != null) {
@@ -271,7 +277,7 @@ public class EmployeeService {
 			URI uri = builder.build();
 			HttpPost request = new HttpPost(uri);
 			request.addHeader("Content-Type","application/json");
-			request.addHeader("Authorization", accessToken);
+			request.addHeader("Authorization", "Bearer "+accessToken);
 			request.setEntity(entity);
 			HttpResponse response = httpclient.execute(request);
 			statusCode = response.getStatusLine().getStatusCode();
@@ -317,7 +323,7 @@ public class EmployeeService {
 			URI uri = builder.build();
 			HttpPost request = new HttpPost(uri);
 			request.addHeader("Content-Type","application/json");
-			request.addHeader("Authorization", accessToken);
+			request.addHeader("Authorization", "Bearer "+accessToken);
 			request.setEntity(entity);
 			HttpResponse response = httpclient.execute(request);
 			statusCode = response.getStatusLine().getStatusCode();
@@ -348,16 +354,15 @@ public class EmployeeService {
 		StringBuilder htmlBuilder = new StringBuilder();
 		
 		if (empList != null) {
-			htmlBuilder.append("<table border='0'><tbody>");
-			htmlBuilder.append("<tr><th>Name &amp; Email Address</th><th>Job Title</th><th>Location</th></tr><tr>");
+			htmlBuilder.append("<table border='0' style='border:1px solid; border-collapse: collapse'><tbody>");
+			htmlBuilder.append("<tr style = 'font-size : 18px; color: white'><th style = 'background: blue; border: 1px solid black; padding: 5px 10px;'>Name &amp; Email Address</th><th style = 'background: blue; border: 1px solid black; padding: 5px 10px;'>Job Title</th><th style = 'background: blue; border: 1px solid black; padding: 5px 10px;'>Location</th></tr>");
 			for (EmpDetail empDetail : empList) {
-				htmlBuilder.append("<tr><td>" + empDetail.getFirstName() + " " + empDetail.getLastName() + "("
-						+ empDetail.getPersonalEmail() + ")</td><td>" + empDetail.getJobTitle().getName() + "</td><td>"
+				htmlBuilder.append("<tr><td style = 'border: 1px solid black; border-collapse: collapse; padding: 5px 10px;'>" + empDetail.getFirstName() + " " + empDetail.getLastName() + "("
+						+ empDetail.getPersonalEmail() + ")</td><td style = 'border: 1px solid black; border-collapse: collapse; padding: 5px 10px;'>" + empDetail.getJobTitle().getName() + "</td><td style = 'border: 1px solid black; border-collapse: collapse; padding: 5px 10px;'>"
 						+ empDetail.getBaseLocation().getName() + "</td></tr>");
 			}
 			htmlBuilder.append("</tbody></table>");
 		}
-		
 		try {
 			JSONObject rootObj = new JSONObject();
 			JSONObject messageObj = new JSONObject();
@@ -366,7 +371,132 @@ public class EmployeeService {
 			emailBody.put("Content",htmlBuilder.toString());			
 			JSONArray ToRecipients = new JSONArray();
 			JSONObject toObject = new JSONObject();
-			toObject.put("EmailAddress", new JSONObject().put("Address", "pramod.chandra@valuelabs.com"));
+			toObject.put("EmailAddress", new JSONObject().put("Address", "inviteadmin@DemonstrationOneSimple.onmicrosoft.com"));
+			ToRecipients.put(toObject);
+			messageObj.put("Subject","Pending users list");
+			messageObj.put("Body", emailBody);
+			messageObj.put("ToRecipients", ToRecipients);
+			rootObj.put("Message", messageObj);
+			entity = new StringEntity(rootObj.toString());
+			URIBuilder builder = new URIBuilder("https://outlook.office.com/api/v2.0/me/sendmail");
+			URI uri = builder.build();
+			HttpPost request = new HttpPost(uri);
+			request.addHeader("Content-Type","application/json");
+			request.addHeader("Authorization", "Bearer "+accessToken);
+			request.setEntity(entity);
+			HttpResponse response = httpclient.execute(request);
+			statusCode = response.getStatusLine().getStatusCode();
+			System.out.println(EntityUtils.toString(response.getEntity()));
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return statusCode;
+	}
+	
+	public int userNotification(String accessToken,String username,String password,String alternateEmail) {
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource("file/notificationmail").getFile());
+		StringBuilder result = new StringBuilder("");
+		String emailContent = null;
+		try (Scanner scanner = new Scanner(file)) {
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				result.append(line).append("\n");
+			}
+			scanner.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		emailContent = result.toString();
+		emailContent = emailContent.replace("$username", username).replace("$password", password);
+		HttpClient httpclient = HttpClients.createDefault();
+		StringEntity entity = null;
+		int statusCode = 0;
+		try {
+			JSONObject rootObj = new JSONObject();
+			JSONObject messageObj = new JSONObject();
+			JSONObject emailBody = new JSONObject();
+			emailBody.put("ContentType","HTML");
+			emailBody.put("Content",emailContent);			
+			JSONArray ToRecipients = new JSONArray();
+			JSONObject toObject = new JSONObject();
+			toObject.put("EmailAddress", new JSONObject().put("Address", alternateEmail));
+			ToRecipients.put(toObject);
+			messageObj.put("Subject","New or modified user account information");
+			messageObj.put("Body", emailBody);
+			messageObj.put("ToRecipients", ToRecipients);
+			rootObj.put("Message", messageObj);
+			entity = new StringEntity(rootObj.toString());
+			System.out.println("Send Email Request = "+ rootObj.toString());
+			URIBuilder builder = new URIBuilder("https://outlook.office.com/api/v2.0/me/sendmail");
+			URI uri = builder.build();
+			HttpPost request = new HttpPost(uri);
+			request.addHeader("Content-Type","application/json");
+			request.addHeader("Authorization", "Bearer "+accessToken);
+			request.setEntity(entity);
+			HttpResponse response = httpclient.execute(request);
+			statusCode = response.getStatusLine().getStatusCode();
+			System.out.println("Send Email status code = "+ statusCode);
+			System.out.println("Send Email Response == "+EntityUtils.toString(response.getEntity()));
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return statusCode;
+	}
+	
+	public int sendCurrentUserInfo(String accessToken,EmployeeJson employeeJson) {
+		HttpClient httpclient = HttpClients.createDefault();
+		StringEntity entity = null;
+		int statusCode = 0;
+		Query query = new Query();
+		query.addCriteria(Criteria.where("firstName").is(employeeJson.getFirstName()));
+		query.addCriteria(Criteria.where("lastName").is(employeeJson.getLastName()));
+		query.addCriteria(Criteria.where("personalEmail").is(employeeJson.getPersonalEmail()));
+		query.addCriteria(Criteria.where("personalPhoneNum").is(employeeJson.getPersonalPhoneNum()));
+		query.addCriteria(Criteria.where("isInvited").is("0"));
+		query.addCriteria(Criteria.where("saveFlag").is("0"));
+		List<EmpDetail> empList = mongoTemplate.find(query, EmpDetail.class);
+		StringBuilder htmlBuilder = new StringBuilder();
+		
+		if (empList != null) {
+			htmlBuilder.append("<table border='0' style='border:1px solid; border-collapse: collapse'><tbody>");
+			htmlBuilder.append("<tr style = 'font-size : 18px; color: white'><th style = 'background: blue; border: 1px solid black; padding: 5px 10px;'>Name &amp; Email Address</th><th style = 'background: blue; border: 1px solid black; padding: 5px 10px;'>Job Title</th><th style = 'background: blue; border: 1px solid black; padding: 5px 10px;'>Location</th></tr>");
+			for (EmpDetail empDetail : empList) {
+				htmlBuilder.append("<tr><td style = 'border: 1px solid black; border-collapse: collapse; padding: 5px 10px;'>" + empDetail.getFirstName() + " " + empDetail.getLastName() + "("
+						+ empDetail.getPersonalEmail() + ")</td><td style = 'border: 1px solid black; border-collapse: collapse; padding: 5px 10px;'>" + empDetail.getJobTitle().getName() + "</td><td style = 'border: 1px solid black; border-collapse: collapse; padding: 5px 10px;'>"
+						+ empDetail.getBaseLocation().getName() + "</td></tr>");
+			}
+			htmlBuilder.append("</tbody></table>");
+		}
+		try {
+			JSONObject rootObj = new JSONObject();
+			JSONObject messageObj = new JSONObject();
+			JSONObject emailBody = new JSONObject();
+			emailBody.put("ContentType","HTML");
+			emailBody.put("Content",htmlBuilder.toString());			
+			JSONArray ToRecipients = new JSONArray();
+			JSONObject toObject = new JSONObject();
+			toObject.put("EmailAddress", new JSONObject().put("Address", "inviteadmin@DemonstrationOneSimple.onmicrosoft.com"));
 			ToRecipients.put(toObject);
 			messageObj.put("Subject","Pending users list");
 			messageObj.put("Body", emailBody);

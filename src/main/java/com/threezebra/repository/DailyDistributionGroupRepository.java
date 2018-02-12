@@ -12,6 +12,6 @@ import com.threezebra.domain.DailyDistributionGroup;
  *
  */
 public interface DailyDistributionGroupRepository extends MongoRepository<DailyDistributionGroup, String> {
-    DailyDistributionGroup findByNameContainingIgnoreCase(String name);
+    DailyDistributionGroup findByName(String name);
 
 }

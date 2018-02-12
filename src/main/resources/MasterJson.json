@@ -1,1444 +1,1350 @@
 {
-	"unitsDepartments": [
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"1st Unit",
-				"2nd Unit",
-				"All Production Units"
-			],
-			"department": [
-				"Animals-Livestock",
-				"Art",
-				"Camera",
-				"Cast",
-				"Catering-Craft Services",
-				"Child Welfare",
-				"Construction-Scenics",
-				"Costumes",
-				"Electric",
-				"Extras & Standins",
-				"Facilities-Stages",
-				"First Aid",
-				"Greens",
-				"Information Management",
-				"Locations",
-				"Locations-Services",
-				"Makeup & Hair",
-				"Picture-Action Vehicles",
-				"Production",
-				"Production Services",
-				"Production-Accounting",
-				"Production-Safety",
-				"Production-Set",
-				"Props",
-				"Set Decoration",
-				"Set Operations-Grip",
-				"Sound-Production",
-				"Special Effects",
-				"Stunts",
-				"Transportation",
-				"Utility Workers"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"1st Unit",
-				"2nd Unit",
-				"All Production Units",
-				"Animation"
-			],
-			"department": [
-				"Direction"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"1st Unit"
-			],
-			"department": [
-				"Art-Subcontractor"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"All Production Units"
-			],
-			"department": [
-				"Product Placement"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"All Production Units",
-				"All Units",
-				"Post",
-				"Studio"
-			],
-			"department": [
-				"Producers"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"1st Unit",
-				"2nd Unit",
-				"All Production Units",
-				"All Units",
-				"VFX"
-			],
-			"department": [
-				"Visual Effects"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"Animation"
-			],
-			"department": [
-				"Animation"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"1st Unit",
-				"2nd Unit",
-				"Publicity"
-			],
-			"department": [
-				"Publicity"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"All Units"
-			],
-			"department": [
-				"Production Legal",
-				"Producers"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"Development",
-				"Script"
-			],
-			"department": [
-				"Writing"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"Financing"
-			],
-			"department": [
-				"Financiers"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"Marketing"
-			],
-			"department": [
-				"Marketing Trailer"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"Post"
-			],
-			"department": [
-				"Cast",
-				"Music",
-				"Post Production",
-				"Editorial-Music",
-				"Editorial-Picture",
-				"Editorial-Sound",
-				"Post Production-Accounting",
-				"Projection",
-				"Sound-Post Production",
-				"Titles-Screen Credits"
-			]
-		},
-		{
-			"baseLocation": "US-AK",
-			"unit": [
-				"Studio"
-			],
-			"department": [
-				"Story",
-				"Studio Business Affairs",
-				"Studio Creative Staff",
-				"Studio C-Suite",
-				"Studio Finance",
-				"Studio Marketing",
-				"Studio Physical Production Staff",
-				"Studio Post Production Staff",
-				"Studio Safety"
-			]
-		}
-	],
-	"unitUserTypes": [
-		{
-			"unit": [
-				"Studio"
-			],
-			"usertype": [
-				"Studio Employee",
-				"Production hire"
-			]
-		},
-		{
-			"unit": [
-				"Financing"
-			],
-			"usertype": [
-				"Financier Employee"
-			]
-		},
-		{
-			"unit": [
-				"1st Unit",
-				"2nd Unit",
-				"Animation",
-				"Development",
-				"Script",
-				"All Units",
-				"VFX",
-				"Publicity",
-				"Post",
-				"All Production Units",
-				"Marketing"
-			],
-			"usertype": [
-				"Subcontractor",
-				"Production hire"
-			]
-		},
-		{
-			"unit": [
-				"Marketing"
-			],
-			"usertype": [
-				"Subcontractor"
-			]
-		}
-	],
-	"jobRoles": [
-		{
-			"usertype": [
-				"Production hire"
-			],
-			"jobRole": [
-				"DeptAdmin",
-				"InfoRecipient",
-				"Daily",
-				"DeptContributor",
-				"ExecutiveMgmt",
-				"KeyContributor"
-			]
-		},
-		{
-			"usertype": [
-				"Subcontractor"
-			],
-			"jobRole": [
-				"Subcontractor-DeptContributor",
-				"Subcontractor-InfoRecipient"
-			]
-		},
-		{
-			"usertype": [
-				"Studio Employee"
-			],
-			"jobRole": [
-				"Studio-DeptContributor",
-				"Studio-Recipient"
-			]
-		},
-		{
-			"usertype": [
-				"Financier Employee"
-			],
-			"jobRole": [
-				"Financier-Recipient"
-			]
-		}
-	],
-	"jobTitles": [
-		{
-			"department": "Animation",
-			"jobTitle": [
-				"Animation Checker",
-				"Animation Stock Librarian",
-				"Animation Writer",
-				"Animator",
-				"Asst. Animator",
-				"Background Artist",
-				"Background Supervisor",
-				"Color Modelist",
-				"Color Stylist",
-				"Head Final Checker",
-				"Head Special Effects",
-				"Ink & Paint Supervisor",
-				"Ink Checker",
-				"Inker",
-				"Key Asst. Animator",
-				"Key Xerox Processor",
-				"Layout Artist",
-				"Layout Supervisor",
-				"Letter Artist",
-				"Model Design Artist",
-				"Paint Checker",
-				"Paint Technician",
-				"Painter",
-				"Picture Set-up",
-				"Production Final Checker",
-				"Special Effects",
-				"Staff Comic Strip Artist",
-				"Supervising Animation Writer",
-				"Supervising Animator",
-				"Supervising Model Designer",
-				"Trainee",
-				"Xerox Checker",
-				"Xerox Processor"
-			]
-		},
-		{
-			"department": "Animals-Livestock",
-			"jobTitle": [
-				"Animal Trainer",
-				"Animal Wrangler",
-				"Asst. Animal Trainer",
-				"Asst. Animal Wrangler",
-				"Daily Animal Trainer",
-				"Daily Animal Wrangler"
-			]
-		},
-		{
-			"department": "Direction",
-			"jobTitle": [
-				"Director",
-				"Asst. to Animation Director",
-				"Asst. to Director",
-				"Director Researcher",
-				"Choreographer",
-				"Casting Director",
-				"Associate Casting Director",
-				"Asst. Casting Director",
-				"Asst. Choreographer",
-				"Casting Scout",
-				"2nd Unit Director",
-				"Asst. to 2nd Unit Director",
-				"Animation Director"
-			]
-		},
-		{
-			"department": "Editorial-Music",
-			"jobTitle": [
-				"Music Editor",
-				"Asst. Music Editor",
-				"Apprentice Music Editor"
-			]
-		},
-		{
-			"department": "Editorial-Picture",
-			"jobTitle": [
-				"Editor",
-				"1st Asst. Editor",
-				"Asst. Editor",
-				"Librarian",
-				"Montage Editor",
-				"Apprentice Editor",
-				"Serial Editor",
-				"Sports Editor",
-				"Trailer Editor"
-			]
-		},
-		{
-			"department": "Editorial-Sound",
-			"jobTitle": [
-				"Supervising Sound Effects Editor",
-				"Sound Effects Editor",
-				"Foley Editor",
-				"Dialogue Editor",
-				"Asst. Sound Effects Editor",
-				"Apprentice Sound Editor",
-				"Asst. Dialogue Editor",
-				"Asst. Foley Editor"
-			]
-		},
-		{
-			"department": "Electric",
-			"jobTitle": [
-				"Gaffer-Chief Lighting Technician",
-				"Asst.  Chief Lighting Technician",
-				"Best Boy Electric",
-				"Electric-Lighting Tech",
-				"Console Programmer",
-				"Lighting Board Technician",
-				"Rigging Best Boy Electric",
-				"Rigging Electric",
-				"Rigging Gaffer-Technician",
-				"Running Repair Technician",
-				"Daily Best Boy Electric",
-				"Daily Electric-Lighting Tech",
-				"Daily Gaffer",
-				"Daily Rigging Best Boy Electric",
-				"Daily Rigging Electric",
-				"Daily Rigging Gaffer-Technician"
-			]
-		},
-		{
-			"department": "Extras & Standins",
-			"jobTitle": [
-				"Actor Standin",
-				"Daily Standin",
-				"Extras Casting Director",
-				"Extras Coordinator",
-				"Asst. Extras Casting Director",
-				"Extras P.A.",
-				"Extras Wrangler",
-				"Asst. Extras Coordinator",
-				"Daily Extras Wrangler"
-			]
-		},
-		{
-			"department": "Set Operations-Grip",
-			"jobTitle": [
-				"Key Grip",
-				"Best Boy Grip",
-				"Dolly Grip",
-				"Grip",
-				"Crane Operator",
-				"Daily Best Boy Grip",
-				"Daily Best Boy Grip",
-				"Daily Crane Operator",
-				"Daily Dolly Grip",
-				"Daily Grip",
-				"Daily Key Grip",
-				"Daily Rigging Grip",
-				"Daily Rigging Key Grip",
-				"Roofer",
-				"Sand Blaster",
-				"Tar Pot Person",
-				"Tool Keeper",
-				"Tool Operator",
-				"Rigging Key Grip",
-				"Rigging Best Boy Grip",
-				"Rigging Grip"
-			]
-		},
-		{
-			"department": "Facilities-Stages",
-			"jobTitle": [
-				"Facility Manager",
-				"Stage Manager",
-				"Facility Staff"
-			]
-		},
-		{
-			"department": "Financiers",
-			"jobTitle": [
-				"Producer (Financier)",
-				"Asst. to Producer (Financier)"
-			]
-		},
-		{
-			"department": "First Aid",
-			"jobTitle": [
-				"Set Medic",
-				"EMT (Emergency Medical Technician)",
-				"Nurse"
-			]
-		},
-		{
-			"department": "First Aid-subcontractor",
-			"jobTitle": [
-				"Ambulance EMT"
-			]
-		},
-		{
-			"department": "Greens",
-			"jobTitle": [
-				"Greens Foreperson",
-				"Greensman",
-				"Daily Greens Foreperson",
-				"Daily Greensman"
-			]
-		},
-		{
-			"department": "Information Management",
-			"jobTitle": [
-				"IT Manager",
-				"IT Asst. Manager",
-				"Data Asset Manager",
-				"IT Assets Coordinator",
-				"IT Support Technician"
-			]
-		},
-		{
-			"department": "Information Management-subcontractor",
-			"jobTitle": [
-				"Content Security Consultant"
-			]
-		},
-		{
-			"department": "Locations",
-			"jobTitle": [
-				"Locations Manager",
-				"Asst. Locations Manager",
-				"Locations Coordinator",
-				"Locations P.A.",
-				"Daily Asst. Locations Manager",
-				"Daily Locations P.A.",
-				"Locations Scout"
-			]
-		},
-		{
-			"department": "Locations-Services",
-			"jobTitle": [
-				"Security Supervisor",
-				"Security Guard",
-				"Fireman",
-				"Policeman"
-			]
-		},
-		{
-			"department": "Makeup & Hair",
-			"jobTitle": [
-				"Key Makeup Artist",
-				"Makeup & Hair Department Head",
-				"Makeup Artist",
-				"Key Hair Stylist",
-				"Hair Stylist",
-				"Apprentice",
-				"Hair Stylist Trainee",
-				"Makeup Trainee",
-				"Daily Hair Stylist",
-				"Daily Makeup Artist",
-				"Prosthetics Designer",
-				"Asst. Prosthetics Makeup Artist",
-				"Prosthetics Makeup Artist",
-				"Daily Asst. Prosthetics Makeup Artist",
-				"Daily Prosthetics Makeup Artist",
-				"Wigmaker"
-			]
-		},
-		{
-			"department": "Marketing Trailer-Subcontractor",
-			"jobTitle": [
-				"Trailer Producer",
-				"Trailer Editor",
-				"Trailer Coordinator",
-				"Trailer Asst. to Producer",
-				"Trailer Asst. Editor"
-			]
-		},
-		{
-			"department": "Music",
-			"jobTitle": [
-				"Composer",
-				"Music Supervisor",
-				"Orchestrator",
-				"Music Coordinator",
-				"Lyricist",
-				"Musician",
-				"Orchestra Musician",
-				"Scoring Manager",
-				"Scoring Engineer",
-				"Score Programmer"
-			]
-		},
-		{
-			"department": "Music-Subcontractor",
-			"jobTitle": [
-				"Composer",
-				"Orchestra"
-			]
-		},
-		{
-			"department": "Picture-Action Vehicles",
-			"jobTitle": [
-				"Picture Car Coordinator",
-				"Asst. Picture Car Coordinator",
-				"Marine Coordinator",
-				"Picture Boat Coordinator",
-				"Asst. Marine Coordinator",
-				"Asst. Picture Boat Coordinator",
-				"Boat Captain",
-				"Train Engineer"
-			]
-		},
-		{
-			"department": "Post Production",
-			"jobTitle": [
-				"Post Supervisor",
-				"Post Production Coordinator",
-				"Post P.A.",
-				"Post Runner"
-			]
-		},
-		{
-			"department": "Post Production-Accounting",
-			"jobTitle": [
-				"Post Production Accountant",
-				"Post Production Asst. Accountant",
-				"Post Production Payroll Accountant"
-			]
-		},
-		{
-			"department": "Producers",
-			"jobTitle": [
-				"Producer",
-				"Producer (Creative)",
-				"Line Producer",
-				"Asst. to Producer (Creative)",
-				"Asst. to Producer",
-				"Post Production Producer",
-				"Asst. to Line Producer",
-				"Production Executive",
-				"Post Production Executive"
-			]
-		},
-		{
-			"department": "Product Placement",
-			"jobTitle": [
-				"Product Placement Manager",
-				"Product Placement Coordinator"
-			]
-		},
-		{
-			"department": "Product Placement-Subcontractor",
-			"jobTitle": [
-				"Product Placement Agent"
-			]
-		},
-		{
-			"department": "Production",
-			"jobTitle": [
-				"Unit Production Manager",
-				"Asst. UPM",
-				"Office P.A.",
-				"Runner",
-				"Production Coordinator",
-				"Asst. Production Coordinator",
-				"Asst. Travel Coordinator",
-				"Travel Coordinator",
-				"Production Secretary"
-			]
-		},
-		{
-			"department": "Production Legal",
-			"jobTitle": [
-				"Production Counsel",
-				"Production Lawyer",
-				"Clearances",
-				"Music Clearance"
-			]
-		},
-		{
-			"department": "Production Services",
-			"jobTitle": [
-				"Co-Producer ",
-				"Local Producer",
-				"Co-Producer Staff",
-				"Local Producer Staff"
-			]
-		},
-		{
-			"department": "Production-Accounting",
-			"jobTitle": [
-				"Production Accountant",
-				"Production Controller",
-				"1st Asst. Production Accountant",
-				"2nd Asst. Production Accountant",
-				"Asst. Accountant",
-				"Asst. Payroll Accountant",
-				"Construction Accountant",
-				"Payroll Accountant",
-				"Accounting Clerk",
-				"Payroll Accounting Clerk"
-			]
-		},
-		{
-			"department": "Production-Safety",
-			"jobTitle": [
-				"Safety Coordinator",
-				"Safety Consultant"
-			]
-		},
-		{
-			"department": "Production-Set",
-			"jobTitle": [
-				"1st Asst. Director",
-				"2nd Asst. Director",
-				"Key 2nd Asst. Director",
-				"2nd 2nd Asst. Director",
-				"3rd Asst. Director",
-				"Key Set P.A.",
-				"Set P.A.",
-				"Daily Asst. Director",
-				"Daily Set P.A.",
-				"Daily Unit Manager",
-				"Script Supervisor",
-				"Asst. Script Supervisor",
-				"Unit Manager",
-				"Asst. Unit Manager"
-			]
-		},
-		{
-			"department": "Projection",
-			"jobTitle": [
-				"Chief Projectionist",
-				"Projection Gang Boss",
-				"Engineer",
-				"Scoring Projectionist",
-				"Trainee Projectionist"
-			]
-		},
-		{
-			"department": "Props",
-			"jobTitle": [
-				"Prop Master",
-				"Asst. Props Master",
-				"Props Assistant",
-				"Prop Maker Foreperson",
-				"Prop Maker ",
-				"Checker",
-				"Daily Prop Maker",
-				"Daily Props Assistant"
-			]
-		},
-		{
-			"department": "Publicity",
-			"jobTitle": [
-				"Publicist",
-				"Stills Photographer",
-				"Daily Publicist",
-				"Daily Stills Photographer",
-				"B-Roll Producer",
-				"B-Roll Coordinator",
-				"B-Roll P.A.",
-				"B-Roll Set Crew",
-				"Trailer Supervisor"
-			]
-		},
-		{
-			"department": "Set Decoration",
-			"jobTitle": [
-				"Set Decorator",
-				"Leadman",
-				"Set Dresser",
-				"On-Set Dresser",
-				"Set Dec Coordinator",
-				"Swing Gang",
-				"Set Dec P.A.",
-				"Daily Set Dresser",
-				"Daily Swing Gang",
-				"Draper",
-				"Upholsterer"
-			]
-		},
-		{
-			"department": "Sound-Post Production",
-			"jobTitle": [
-				"Re-Recording Mixer",
-				"Music Mixer",
-				"Supervising Engineer",
-				"Engineer",
-				"Sound Recorder",
-				"Recorder",
-				"Utility Sound Technician"
-			]
-		},
-		{
-			"department": "Sound-Production",
-			"jobTitle": [
-				"Mixer",
-				"Boom Operator",
-				"Cable Person",
-				"Sound Trainee",
-				"Utility Sound Technician"
-			]
-		},
-		{
-			"department": "Special Effects",
-			"jobTitle": [
-				"Special Effects Supervisor",
-				"Special Effects Foreperson",
-				"Special Effects Technician",
-				"Powder Man",
-				"Asst. Powder Man",
-				"Daily SFX Foreperson",
-				"Daily SFX Supervisor",
-				"Daily SFX Technician"
-			]
-		},
-		{
-			"department": "Story",
-			"jobTitle": [
-				"Analyst-Treatment-Synopsis",
-				"Reader"
-			]
-		},
-		{
-			"department": "Stunts",
-			"jobTitle": [
-				"Stunt Coordinator",
-				"Asst. Stunt Coordinator",
-				"Actor Stunt Double",
-				"Stuntman",
-				"Airplane Pilot",
-				"Boat Driver",
-				"Stunt Driver",
-				"Stunt Rigger",
-				"Stunt Safety"
-			]
-		},
-		{
-			"department": "Titles-Screen Credits-Subcontractor",
-			"jobTitle": [
-				"Title Designer"
-			]
-		},
-		{
-			"department": "Transportation",
-			"jobTitle": [
-				"Transportation Coordinator",
-				"Co-Captain",
-				"Transportation Captain",
-				"Dispatcher",
-				"Mechanic",
-				"Driver",
-				"Driver-Craftservice",
-				"Camera Car Driver",
-				"Driver-Crane Op"
-			]
-		},
-		{
-			"department": "Utility Workers",
-			"jobTitle": [
-				"Electrician",
-				"InfoRecipienter",
-				"Plumber"
-			]
-		},
-		{
-			"department": "Visual Effects",
-			"jobTitle": [
-				"Visual Effects Supervisor",
-				"Visual Effects Producer",
-				"Data Wrangler",
-				"Visual Effects Coordinator",
-				"Visual Effects P.A.",
-				"Visual Effects Editor",
-				"Asst. Visual Effects Editor"
-			]
-		},
-		{
-			"department": "Visual Effects-SubContractor",
-			"jobTitle": [
-				"Character Modeller",
-				"Character Rigger",
-				"Colourist",
-				"Compositor",
-				"Creature Animator",
-				"Creature Technical Director",
-				"Cyber Scanning Supervisor",
-				"Cyber Scanning Technician",
-				"Data Manager",
-				"Digital Compositor",
-				"Generalist",
-				"Head of Production",
-				"Lead Lighting Technical Director",
-				"Lead Matchmove Artist",
-				"Lighting Technical Director",
-				"Look Developer",
-				"Matchmove Artist",
-				"Matte Painter",
-				"On-Set Visual Effects Supervisor",
-				"Paint Artist",
-				"Paint Lead",
-				"Pipeline Technical Director",
-				"Pre-visualization Artist",
-				"Pre-visualization Supervisor",
-				"Research & Development",
-				"Roto Artist",
-				"Senior Compositor",
-				"Sequence Supervisor",
-				"Shading & Rendering Artist",
-				"Shading & Rendering Supervisor",
-				"Technical Director",
-				"Texturing & Sculpting Technical Director",
-				"Title Designer",
-				"Tracking Supervisor",
-				"Visual Effects Artist"
-			]
-		},
-		{
-			"department": "Writing",
-			"jobTitle": [
-				"Screenwriter",
-				"Story Editor",
-				"Script Manager-Coordinator",
-				"Clearance Coordinator",
-				"Asst. to Screenwriter",
-				"Researcher"
-			]
-		},
-		{
-			"department": "Xternal",
-			"jobTitle": [
-				"Agent",
-				"Manager",
-				"Prospective Cast",
-				"Prospective Crew",
-				"Insurance Broker"
-			]
-		},
-		{
-			"department": "External",
-			"jobTitle": [
-				"Agent",
-				"Insurance Broker",
-				"Manager",
-				"Prospective Cast",
-				"Prospective Crew"
-			]
-		},
-		{
-			"department": "Art",
-			"jobTitle": [
-				"Production Designer",
-				"Art Director",
-				"Sr. Set Designer",
-				"Supervising Art Director",
-				"Draftsman",
-				"Illustrator",
-				"Matte Artist",
-				"Model Builder",
-				"Set Designer",
-				"Clearance Coordinator",
-				"Asst. Art Director",
-				"Asst. Matte Artist",
-				"Asst. Model Builder",
-				"Art P.A.",
-				"Apprentice",
-				"Consultant"
-			]
-		},
-		{
-			"department": "Camera",
-			"jobTitle": [
-				"Director of Photography",
-				"1st Asst. Cameraman",
-				"Camera Operator",
-				"Steadicam Operator",
-				"2nd Asst. Cameraman",
-				"Camera Technician",
-				"Clapper",
-				"Cable Asst.",
-				"Camera P.A.",
-				"Film Loader",
-				"Digital Utility",
-				"DIT",
-				"Daily 1st Asst. Camera",
-				"Daily 2nd Asst. Camera",
-				"Daily Cable Asst.",
-				"Daily Camera Operator",
-				"Daily Camera P.A.",
-				"Daily Camera Technician",
-				"Daily Clapper",
-				"Daily Digital Utility",
-				"Daily DIT",
-				"Daily Film Loader",
-				"Daily Steadicam Operator"
-			]
-		},
-		{
-			"department": "Cast",
-			"jobTitle": [
-				"Supporting Actor",
-				"Actor Support Staff",
-				"Asst. to Principal Actor",
-				"Asst. to Supporting Actor",
-				"Dancer",
-				"Dayplayer Actor",
-				"Principal Actor",
-				"Puppeteer",
-				"Singer",
-				"Voice Artist"
-			]
-		},
-		{
-			"department": "Catering-Craft Services",
-			"jobTitle": [
-				"Asst. Chef",
-				"Catering P.A.",
-				"Chef",
-				"Craft Service Foreperson",
-				"Craft Service Person",
-				"Daily Craft Service Foreperson",
-				"Daily Craft Service Person"
-			]
-		},
-		{
-			"department": "Child Welfare",
-			"jobTitle": [
-				"Teacher",
-				"Teacher-Welfare Worker",
-				"Welfare Worker"
-			]
-		},
-		{
-			"department": "Construction-Scenics",
-			"jobTitle": [
-				"Apprentice",
-				"Carpenter",
-				"Color Mixer",
-				"Construction Buyer",
-				"Construction Clerk",
-				"Construction Coordinator",
-				"Construction Foreman",
-				"Daily Scenic Artist",
-				"Foreperson Painter",
-				"Head Paint Foreperson",
-				"Lead Carpenter",
-				"Lead Scenic Artist",
-				"On-set Carpenter",
-				"On-set Scenic Painter",
-				"Painter-Scenic",
-				"Paperhanger",
-				"Scenic Artist",
-				"Scenic artist Trainee",
-				"Shop Person",
-				"Sign Writer",
-				"Standby Painter",
-				"Supv. Sign Writer"
-			]
-		},
-		{
-			"department": "Costumes",
-			"jobTitle": [
-				"Alteration Fitter",
-				"Apprentice",
-				"Asst. Costume Designer",
-				"Beader",
-				"Cleaner",
-				"Costume Designer",
-				"Costume Sketch Artist",
-				"Costume Stock Clerk",
-				"Costumer",
-				"Costumer Checker",
-				"Costumes Mfg Foreperson",
-				"Cutter",
-				"Daily Costumer",
-				"Draper",
-				"Dyer",
-				"Figure Maker",
-				"Finisher",
-				"Helper",
-				"Key Costumer",
-				"Milliner",
-				"Pattern Maker",
-				"Seamstress",
-				"Table Person",
-				"Tailor",
-				"Tailor Fitter",
-				"Wardrobe Foreperson",
-				"Wardrobe Supervisor"
-			]
-		},
-		{
-			"department": "Direction",
-			"jobTitle": [
-				"2nd Unit Director",
-				"Animation Director",
-				"Associate Casting Director",
-				"Asst. Casting Director",
-				"Asst. Choreographer",
-				"Asst. to 2nd Unit Director",
-				"Asst. to Animation Director",
-				"Asst. to Director",
-				"Casting Director",
-				"Casting Scout",
-				"Choreographer",
-				"Director",
-				"Director Researcher"
-			]
-		},
-		{
-			"department": "Writing",
-			"jobTitle": [
-				"Asst. to Screenwriter",
-				"Screenwriter",
-				"Story Editor",
-				"Clearance Coordinator",
-				"Researcher",
-				"Script Manager-Coordinator"
-			]
-		},
-		{
-			"department": "Financiers",
-			"jobTitle": [
-				"Producer (Financier)",
-				"Asst. to Producer (Financier)"
-			]
-		},
-		{
-			"department": "Marketing Trailer",
-			"jobTitle": [
-				"Trailer Editor",
-				"Trailer Asst. Editor",
-				"Trailer Asst. to Producer",
-				"Trailer Coordinator",
-				"Trailer Producer"
-			]
-		},
-		{
-			"department": "Publicity",
-			"jobTitle": [
-				"Daily Publicist",
-				"Daily Stills Photographer",
-				"Publicist",
-				"Stills Photographer",
-				"B-Roll Coordinator",
-				"B-Roll P.A.",
-				"B-Roll Producer",
-				"B-Roll Set Crew",
-				"Trailer Supervisor"
-			]
-		},
-		{
-			"department": "Producers",
-			"jobTitle": [
-				"Asst. to Line Producer",
-				"Asst. to Producer",
-				"Asst. to Producer (Creative)",
-				"Line Producer",
-				"Post Production Executive",
-				"Post Production Producer",
-				"Producer",
-				"Producer (Creative)",
-				"Production Executive"
-			]
-		},
-		{
-			"department": "Story",
-			"jobTitle": [
-				"Analyst-Treatment-Synopsis",
-				"Reader"
-			]
-		},
-		{
-			"department": "Studio Marketing",
-			"jobTitle": [
-				"Asst. to EVP Marketing",
-				"Asst. to Marketing Executive",
-				"Asst. to SVP Marketing",
-				"Asst. to VP Marketing",
-				"EVP Marketing",
-				"Marketing Executive",
-				"SVP Marketing",
-				"VP Marketing"
-			]
-		},
-		{
-			"department": "Studio Safety",
-			"jobTitle": [
-				"Studio Safety Manager"
-			]
-		},
-		{
-			"department": "Visual Effects",
-			"jobTitle": [
-				"Asst. Visual Effects Editor",
-				"Character Modeller",
-				"Character Rigger",
-				"Colourist",
-				"Compositor",
-				"Creature Animator",
-				"Creature Technical Director",
-				"Cyber Scanning Supervisor",
-				"Cyber Scanning Technician",
-				"Data Manager",
-				"Data Wrangler",
-				"Digital Compositor",
-				"Generalist",
-				"Head of Production",
-				"Lead Lighting Technical Director",
-				"Lead Matchmove Artist",
-				"Lighting Technical Director",
-				"Look Developer",
-				"Matchmove Artist",
-				"Matte Painter",
-				"On-Set Visual Effects Supervisor",
-				"Paint Artist",
-				"Paint Lead",
-				"Pipeline Technical Director",
-				"Pre-visualization Artist",
-				"Pre-visualization Supervisor",
-				"Research & Development",
-				"Roto Artist",
-				"Senior Compositor",
-				"Sequence Supervisor",
-				"Shading & Rendering Artist",
-				"Shading & Rendering Supervisor",
-				"Technical Director",
-				"Texturing & Sculpting Technical Director",
-				"Title Designer",
-				"Tracking Supervisor",
-				"Visual Effects Artist",
-				"Visual Effects P.A.",
-				"Visual Effects Producer",
-				"Visual Effects Coordinator",
-				"Visual Effects Supervisor"
-			]
-		},
-		{
-			"department": "Music",
-			"jobTitle": [
-				"Composer",
-				"Lyricist",
-				"Music Coordinator",
-				"Music Supervisor",
-				"Musician",
-				"Orchestra Musician",
-				"Orchestrator",
-				"Score Programmer",
-				"Scoring Engineer",
-				"Scoring Manager",
-				"Composer",
-				"Orchestra"
-			]
-		},
-		{
-			"department": "Production Legal",
-			"jobTitle": [
-				"Clearances",
-				"Music Clearance",
-				"Production Counsel",
-				"Production Lawyer"
-			]
-		},
-		{
-			"department": "Xternal",
-			"jobTitle": [
-				"Agent",
-				"Insurance Broker",
-				"Manager",
-				"Prospective Cast",
-				"Prospective Crew"
-			]
-		},
-		{
-			"department": "Studio Business Affairs",
-			"jobTitle": [
-				"Asst. to Business Affairs Executive",
-				"Asst. to EVP Business Affairs",
-				"Asst. to EVP General Counsel",
-				"Asst. to General Counsel",
-				"Asst. to SVP Business Affairs",
-				"Asst. to SVP General Counsel",
-				"Asst. to VP Business Affairs",
-				"Asst. to VP General Counsel",
-				"Asst. to VP InfoRecipient Counsel",
-				"Business Affairs Executive",
-				"EVP Business Affairs",
-				"EVP General Counsel",
-				"General Counsel",
-				"SVP Business Affairs",
-				"SVP General Counsel",
-				"VP Business Affairs",
-				"VP General Counsel"
-			]
-		},
-		{
-			"department": "Studio C-Suite",
-			"jobTitle": [
-				"Asst. to Chief Executive Officer",
-				"Asst. to Chief Financial Officer",
-				"Asst. to Chief Information Officer",
-				"Asst. to Chief Information Security Officer",
-				"Asst. to Chief Marketing Officer",
-				"Asst. to Chief Operating Officer",
-				"Asst. to Chief Technology Officer",
-				"Chief Executive Officer",
-				"Chief Financial Officer",
-				"Chief Information Officer",
-				"Chief Information Security Officer",
-				"Chief Marketing Officer",
-				"Chief Operating Officer",
-				"Chief Technology Officer"
-			]
-		},
-		{
-			"department": "Studio Creative Staff",
-			"jobTitle": [
-				"Asst. to Creative Production Executive",
-				"Asst. to Development Executive",
-				"Asst. to EVP of Production",
-				"Asst. to President of Production",
-				"Asst. to SVP of Production",
-				"Asst. to VP of Production",
-				"Creative Interns",
-				"Creative Production Executive",
-				"Development Executive",
-				"EVP of Production",
-				"President of Production",
-				"Story Department",
-				"SVP of Production",
-				"VP of Production"
-			]
-		},
-		{
-			"department": "Studio Finance",
-			"jobTitle": [
-				"Asst. to Controller",
-				"Asst. to Production Funding Executive",
-				"Controller",
-				"Production Funding Executive"
-			]
-		},
-		{
-			"department": "Studio Physical Production Staff",
-			"jobTitle": [
-				"Asst. to EVP of Physical Production",
-				"Asst. to Physical Production Executive",
-				"Asst. to SVP of Physical Production",
-				"Asst. to VP of Physical Production",
-				"EVP of Physical Production",
-				"Physical Production Executive",
-				"SVP of Physical Production",
-				"VP of Physical Production"
-			]
-		},
-		{
-			"department": "Studio Post Production Staff",
-			"jobTitle": [
-				"Asst. to EVP of Post Production",
-				"Asst. to Post Production Executive",
-				"Asst. to SVP of Post Production",
-				"Asst. to VP of Post Production",
-				"EVP of Post Production",
-				"Post Production Executive",
-				"SVP of Post Production",
-				"VP of Post Production"
-			]
-		}
-	],
-	"additionalLocationJson": {
-		"additionallocation": [
-			"GB-ENG",
-			"GB-NIR",
-			"GB-SCT",
-			"GB-WLS"
-		],
-		"additionallocationDesc": [
-			"GB-ENG",
-			"GB-NIR",
-			"GB-SCT",
-			"GB-WLS"
-		]
-	},
-	"applications": {
-		"appName": [
-			"Office-365",
-			"EMS",
-			"Livetiles",
-			"Egynte"
-		]
-	},
-	"deptDocPrivilegeJson": {
-		"deptdocname": [
-			"On-Line View Only",
-			"Off-Line View Only",
-			"On-Line View & Print",
-			"Off-Line View & Print",
-			"Default:  On-Line View, Print, Edit",
-			"Off-Line View, Print, Edit"
-		],
-		"deptdocdesc": [
-			"On-Line View Only",
-			"Off-Line View Only",
-			"On-Line View & Print",
-			"Off-Line View & Print",
-			"Default:  On-Line View, Print, Edit",
-			"Off-Line View, Print, Edit"
-		]
-	},
-	"xternalListJson": [
-		{
-			"xdepartment": "Xternal",
-			"xjobrole": "ProspectiveHire-InfoRecipient",
-			"xuserType": "Prospective Hire"
-		},
-		{
-			"xdepartment": "Xternal",
-			"xjobrole": "TalentRep-InfoRecipient",
-			"xuserType": "Talent-Representative"
-		},
-		{
-			"xdepartment": "Xternal",
-			"xjobrole": "Vendor-InfoRecipient",
-			"xuserType": "Vendor-Employee"
-		},
-		{
-			"xdepartment": "Xternal",
-			"xjobrole": "TalentRep-InfoRecipient",
-			"xuserType": "Talent-Representative"
-		}
-	],
-	"sharedDocPrivilegeJson": {
-		"sharedDocPrivileges": [
-			"On-Line View Only",
-			"Off-Line View Only",
-			"On-Line View & Print",
-			"Off-Line View & Print",
-			"On-Line View, Print, Edit",
-			"Off-Line View, Print, Edit"
-		]
-	},
-	"otherDocPreveligesJson": {
-		"otherDocPreveligesname": [
-			"On-Line View Only",
-			"Off-Line View Only",
-			"On-Line View & Print",
-			"Off-Line View & Print",
-			"On-Line View, Print, Edit",
-			"Off-Line View, Print, Edit"
-		],
-		"otherDocPreveligesdesc": [
-			"On-Line View Only",
-			"Off-Line View Only",
-			"On-Line View & Print",
-			"Off-Line View & Print",
-			"On-Line View, Print, Edit",
-			"Off-Line View, Print, Edit"
-		]
-	},
-	"specialJobRoleJson": {
-		"baseLocation": "US-AK",
-		"specialJobRole": [
-			"ScriptManager",
-			"Clearances"
-		],
-		"roleDescription": [
-			"Person(s) in charge of script distribution",
-			"Person(s) in charge of clearances management or tracking"
-		]
-	}
+  "unitsDepartments": [
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "1st Unit",
+        "2nd Unit",
+        "All Production Units"
+      ],
+      "department": [
+        "Animals-Livestock",
+        "Art",
+        "Camera",
+        "Cast",
+        "Catering-Craft Services",
+        "Child Welfare",
+        "Construction-Scenics",
+        "Costumes",
+        "Electric",
+        "Extras & Standins",
+        "Facilities-Stages",
+        "First Aid",
+        "Greens",
+        "Information Management",
+        "Locations",
+        "Locations-Services",
+        "Makeup & Hair",
+        "Picture-Action Vehicles",
+        "Production",
+        "Production Services",
+        "Production-Accounting",
+        "Production-Safety",
+        "Production-Set",
+        "Props",
+        "Set Decoration",
+        "Set Operations-Grip",
+        "Sound-Production",
+        "Special Effects",
+        "Stunts",
+        "Transportation",
+        "Utility Workers"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "1st Unit",
+        "2nd Unit",
+        "All Production Units",
+        "Animation"
+      ],
+      "department": [
+        "Direction"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "1st Unit"
+      ],
+      "department": [
+        "Art-Subcontractor"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "All Production Units"
+      ],
+      "department": [
+        "Product Placement"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "All Production Units",
+        "All Units",
+        "Post",
+        "Studio"
+      ],
+      "department": [
+        "Producers"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "1st Unit",
+        "2nd Unit",
+        "All Production Units",
+        "All Units",
+        "VFX"
+      ],
+      "department": [
+        "Visual Effects"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "Animation"
+      ],
+      "department": [
+        "Animation"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "1st Unit",
+        "2nd Unit",
+        "Publicity"
+      ],
+      "department": [
+        "Publicity"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "All Units"
+      ],
+      "department": [
+        "Production-Legal",
+        "Producers"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "Development",
+        "Script"
+      ],
+      "department": [
+        "Writing"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "Financing"
+      ],
+      "department": [
+        "Financiers"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "Marketing"
+      ],
+      "department": [
+        "Marketing Trailer"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "Post"
+      ],
+      "department": [
+        "Cast",
+        "Music",
+        "Post Production",
+        "Editorial-Music",
+        "Editorial-Picture",
+        "Editorial-Sound",
+        "Post Production-Accounting",
+        "Projection",
+        "Sound-Post Production",
+        "Titles-Screen Credits"
+      ]
+    },
+    {
+      "baseLocation": "US-AK",
+      "unit": [
+        "Studio"
+      ],
+      "department": [
+        "Story",
+        "Studio Business Affairs",
+        "Studio Creative Staff",
+        "Studio C-Suite",
+        "Studio Finance",
+        "Studio Marketing",
+        "Studio Physical Production Staff",
+        "Studio Post Production Staff",
+        "Studio Safety"
+      ]
+    }
+  ],
+  "unitUserTypes": [
+    {
+      "unit": [
+        "Studio"
+      ],
+      "usertype": [
+        "Studio Employee"
+      ],
+      "usertypeDesc": [
+        "'Studio Employee' is anyone working for the parent company not directly engaged on the production"
+      ]
+    },
+    {
+      "unit": [
+        "Financing"
+      ],
+      "usertype": [
+        "Financier Employee"
+      ],
+      "usertypeDesc": [
+        "'Financier Employee' would be a financial partner not directly engaged on the production - e.g. Loan Officer, Financing Producer"
+      ]
+    },
+    {
+      "unit": [
+        "1st Unit",
+        "2nd Unit",
+        "Animation",
+        "Development",
+        "Script",
+        "All Units",
+        "VFX",
+        "Publicity",
+        "Post",
+        "All Production Units",
+        "Marketing"
+      ],
+      "usertype": [
+        "Subcontractor",
+        "Production hire"
+      ],
+      "usertypeDesc": [
+        "'Subcontractor' is anyone engaged on the production while working for a service provider  - e.g. vfx producer at a VFX Vendor",
+        "'Production Hire' is anyone directly engaged on the production including loan-outs"
+      ]
+    },
+    {
+      "unit": [
+        "Marketing"
+      ],
+      "usertype": [
+        "Subcontractor"
+      ],
+      "usertypeDesc": [
+        "'Subcontractor' is anyone engaged on the production while working for a service provider  - e.g. vfx producer at a VFX Vendor"
+      ]
+    }
+  ],
+  "jobRoles": [
+    {
+      "usertype": [
+        "Production hire"
+      ],
+      "jobRole": [
+        "DeptAdmin",
+        "InfoRecipient",
+        "Daily",
+        "DeptContributor",
+        "ExecutiveMgmt",
+        "KeyContributor"
+      ]
+    },
+    {
+      "usertype": [
+        "Subcontractor"
+      ],
+      "jobRole": [
+        "Subcontractor-DeptContributor",
+        "Subcontractor-InfoRecipient"
+      ]
+    },
+    {
+      "usertype": [
+        "Studio Employee"
+      ],
+      "jobRole": [
+        "Studio-DeptContributor",
+        "Studio-Recipient"
+      ]
+    },
+    {
+      "usertype": [
+        "Financier Employee"
+      ],
+      "jobRole": [
+        "Financier-Recipient"
+      ]
+    }
+  ],
+  "xternalListJson": [
+    {
+      "xdepartment": "Xternal",
+      "xjobrole": "ProspectiveHire-InfoRecipient",
+      "xuserType": "Prospective Hire",
+      "xuserTypeDesc": "'Prospective Hire' is a person under consideration for engagement on the production"
+    },
+    {
+      "xdepartment": "Xternal",
+      "xjobrole": "TalentRep-InfoRecipient",
+      "xuserType": "Talent-Representative",
+      "xuserTypeDesc": "'Vendor Employee' is a 3rd party representative doing business with the production - e.g. insurance broker or completion bond rep"
+    },
+    {
+      "xdepartment": "Xternal",
+      "xjobrole": "Vendor-InfoRecipient",
+      "xuserType": "Vendor-Employee",
+      "xuserTypeDesc": "'Talent Representative' is an agent, manager or legal counsel to talent"
+    }
+  ],
+  "jobTitles": [
+    {
+      "department": "Animation",
+      "jobTitle": [
+        "Animation Checker",
+        "Animation Stock Librarian",
+        "Animation Writer",
+        "Animator",
+        "Asst. Animator",
+        "Background Artist",
+        "Background Supervisor",
+        "Color Modelist",
+        "Color Stylist",
+        "Head Final Checker",
+        "Head Special Effects",
+        "Ink & Paint Supervisor",
+        "Ink Checker",
+        "Inker",
+        "Key Asst. Animator",
+        "Key Xerox Processor",
+        "Layout Artist",
+        "Layout Supervisor",
+        "Letter Artist",
+        "Model Design Artist",
+        "Paint Checker",
+        "Paint Technician",
+        "Painter",
+        "Picture Set-up",
+        "Production Final Checker",
+        "Special Effects",
+        "Staff Comic Strip Artist",
+        "Supervising Animation Writer",
+        "Supervising Animator",
+        "Supervising Model Designer",
+        "Trainee",
+        "Xerox Checker",
+        "Xerox Processor"
+      ]
+    },
+    {
+      "department": "Animals-Livestock",
+      "jobTitle": [
+        "Animal Trainer",
+        "Animal Wrangler",
+        "Asst. Animal Trainer",
+        "Asst. Animal Wrangler",
+        "Daily Animal Trainer",
+        "Daily Animal Wrangler"
+      ]
+    },
+    {
+      "department": "Direction",
+      "jobTitle": [
+        "Director",
+        "Asst. to Animation Director",
+        "Asst. to Director",
+        "Director Researcher",
+        "Choreographer",
+        "Casting Director",
+        "Associate Casting Director",
+        "Asst. Casting Director",
+        "Asst. Choreographer",
+        "Casting Scout",
+        "2nd Unit Director",
+        "Asst. to 2nd Unit Director",
+        "Animation Director"
+      ]
+    },
+    {
+      "department": "Editorial-Music",
+      "jobTitle": [
+        "Music Editor",
+        "Asst. Music Editor",
+        "Apprentice Music Editor"
+      ]
+    },
+    {
+      "department": "Editorial-Picture",
+      "jobTitle": [
+        "Editor",
+        "1st Asst. Editor",
+        "Asst. Editor",
+        "Librarian",
+        "Montage Editor",
+        "Apprentice Editor",
+        "Serial Editor",
+        "Sports Editor",
+        "Trailer Editor"
+      ]
+    },
+    {
+      "department": "Editorial-Sound",
+      "jobTitle": [
+        "Supervising Sound Effects Editor",
+        "Sound Effects Editor",
+        "Foley Editor",
+        "Dialogue Editor",
+        "Asst. Sound Effects Editor",
+        "Apprentice Sound Editor",
+        "Asst. Dialogue Editor",
+        "Asst. Foley Editor"
+      ]
+    },
+    {
+      "department": "Electric",
+      "jobTitle": [
+        "Gaffer-Chief Lighting Technician",
+        "Asst.  Chief Lighting Technician",
+        "Best Boy Electric",
+        "Electric-Lighting Tech",
+        "Console Programmer",
+        "Lighting Board Technician",
+        "Rigging Best Boy Electric",
+        "Rigging Electric",
+        "Rigging Gaffer-Technician",
+        "Running Repair Technician",
+        "Daily Best Boy Electric",
+        "Daily Electric-Lighting Tech",
+        "Daily Gaffer",
+        "Daily Rigging Best Boy Electric",
+        "Daily Rigging Electric",
+        "Daily Rigging Gaffer-Technician"
+      ]
+    },
+    {
+      "department": "Extras & Standins",
+      "jobTitle": [
+        "Actor Standin",
+        "Daily Standin",
+        "Extras Casting Director",
+        "Extras Coordinator",
+        "Asst. Extras Casting Director",
+        "Extras P.A.",
+        "Extras Wrangler",
+        "Asst. Extras Coordinator",
+        "Daily Extras Wrangler"
+      ]
+    },
+    {
+      "department": "Set Operations-Grip",
+      "jobTitle": [
+        "Key Grip",
+        "Best Boy Grip",
+        "Dolly Grip",
+        "Grip",
+        "Crane Operator",
+        "Daily Best Boy Grip",
+        "Daily Best Boy Grip",
+        "Daily Crane Operator",
+        "Daily Dolly Grip",
+        "Daily Grip",
+        "Daily Key Grip",
+        "Daily Rigging Grip",
+        "Daily Rigging Key Grip",
+        "Roofer",
+        "Sand Blaster",
+        "Tar Pot Person",
+        "Tool Keeper",
+        "Tool Operator",
+        "Rigging Key Grip",
+        "Rigging Best Boy Grip",
+        "Rigging Grip"
+      ]
+    },
+    {
+      "department": "Facilities-Stages",
+      "jobTitle": [
+        "Facility Manager",
+        "Stage Manager",
+        "Facility Staff"
+      ]
+    },
+    {
+      "department": "Financiers",
+      "jobTitle": [
+        "Producer (Financier)",
+        "Asst. to Producer (Financier)"
+      ]
+    },
+    {
+      "department": "First Aid",
+      "jobTitle": [
+        "Set Medic",
+        "Ambulance EMT",
+        "EMT (Emergency Medical Technician)",
+        "Nurse"
+      ]
+    },
+    {
+      "department": "Greens",
+      "jobTitle": [
+        "Greens Foreperson",
+        "Greensman",
+        "Daily Greens Foreperson",
+        "Daily Greensman"
+      ]
+    },
+    {
+      "department": "Information Management",
+      "jobTitle": [
+        "IT Manager",
+        "IT Asst. Manager",
+        "Data Asset Manager",
+        "IT Assets Coordinator",
+        "IT Support Technician",
+        "Content Security Consultant"
+      ]
+    },
+    {
+      "department": "Locations",
+      "jobTitle": [
+        "Locations Manager",
+        "Asst. Locations Manager",
+        "Locations Coordinator",
+        "Locations P.A.",
+        "Daily Asst. Locations Manager",
+        "Daily Locations P.A.",
+        "Locations Scout"
+      ]
+    },
+    {
+      "department": "Locations-Services",
+      "jobTitle": [
+        "Security Supervisor",
+        "Security Guard",
+        "Fireman",
+        "Policeman"
+      ]
+    },
+    {
+      "department": "Makeup & Hair",
+      "jobTitle": [
+        "Key Makeup Artist",
+        "Makeup & Hair Department Head",
+        "Makeup Artist",
+        "Key Hair Stylist",
+        "Hair Stylist",
+        "Apprentice",
+        "Hair Stylist Trainee",
+        "Makeup Trainee",
+        "Daily Hair Stylist",
+        "Daily Makeup Artist",
+        "Prosthetics Designer",
+        "Asst. Prosthetics Makeup Artist",
+        "Prosthetics Makeup Artist",
+        "Daily Asst. Prosthetics Makeup Artist",
+        "Daily Prosthetics Makeup Artist",
+        "Wigmaker"
+      ]
+    },
+    {
+      "department": "Music",
+      "jobTitle": [
+        "Composer",
+        "Music Supervisor",
+        "Orchestrator",
+        "Music Coordinator",
+        "Lyricist",
+        "Musician",
+        "Orchestra Musician",
+        "Scoring Manager",
+        "Scoring Engineer",
+        "Score Programmer"
+      ]
+    },
+    {
+      "department": "Picture-Action Vehicles",
+      "jobTitle": [
+        "Picture Car Coordinator",
+        "Asst. Picture Car Coordinator",
+        "Marine Coordinator",
+        "Picture Boat Coordinator",
+        "Asst. Marine Coordinator",
+        "Asst. Picture Boat Coordinator",
+        "Boat Captain",
+        "Train Engineer"
+      ]
+    },
+    {
+      "department": "Post Production",
+      "jobTitle": [
+        "Post Supervisor",
+        "Post Production Coordinator",
+        "Post P.A.",
+        "Post Runner"
+      ]
+    },
+    {
+      "department": "Post Production-Accounting",
+      "jobTitle": [
+        "Post Production Accountant",
+        "Post Production Asst. Accountant",
+        "Post Production Payroll Accountant"
+      ]
+    },
+    {
+      "department": "Producers",
+      "jobTitle": [
+        "Producer",
+        "Producer (Creative)",
+        "Line Producer",
+        "Asst. to Producer (Creative)",
+        "Asst. to Producer",
+        "Post Production Producer",
+        "Asst. to Line Producer",
+        "Production Executive",
+        "Post Production Executive"
+      ]
+    },
+    {
+      "department": "Product Placement",
+      "jobTitle": [
+        "Product Placement Agent",
+        "Product Placement Manager",
+        "Product Placement Coordinator"
+      ]
+    },
+    {
+      "department": "Production",
+      "jobTitle": [
+        "Unit Production Manager",
+        "Asst. UPM",
+        "Office P.A.",
+        "Runner",
+        "Production Coordinator",
+        "Asst. Production Coordinator",
+        "Asst. Travel Coordinator",
+        "Travel Coordinator",
+        "Production Secretary"
+      ]
+    },
+    {
+      "department": "Production-Legal",
+      "jobTitle": [
+        "Production Counsel",
+        "Production Lawyer",
+        "Clearances",
+        "Music Clearance"
+      ]
+    },
+    {
+      "department": "Production Services",
+      "jobTitle": [
+        "Co-Producer ",
+        "Local Producer",
+        "Co-Producer Staff",
+        "Local Producer Staff"
+      ]
+    },
+    {
+      "department": "Production-Accounting",
+      "jobTitle": [
+        "Production Accountant",
+        "Production Controller",
+        "1st Asst. Production Accountant",
+        "2nd Asst. Production Accountant",
+        "Asst. Accountant",
+        "Asst. Payroll Accountant",
+        "Construction Accountant",
+        "Payroll Accountant",
+        "Accounting Clerk",
+        "Payroll Accounting Clerk"
+      ]
+    },
+    {
+      "department": "Production-Safety",
+      "jobTitle": [
+        "Safety Coordinator",
+        "Safety Consultant"
+      ]
+    },
+    {
+      "department": "Production-Set",
+      "jobTitle": [
+        "1st Asst. Director",
+        "2nd Asst. Director",
+        "Key 2nd Asst. Director",
+        "2nd 2nd Asst. Director",
+        "3rd Asst. Director",
+        "Key Set P.A.",
+        "Set P.A.",
+        "Daily Asst. Director",
+        "Daily Set P.A.",
+        "Daily Unit Manager",
+        "Script Supervisor",
+        "Asst. Script Supervisor",
+        "Unit Manager",
+        "Asst. Unit Manager"
+      ]
+    },
+    {
+      "department": "Projection",
+      "jobTitle": [
+        "Chief Projectionist",
+        "Projection Gang Boss",
+        "Engineer",
+        "Scoring Projectionist",
+        "Trainee Projectionist"
+      ]
+    },
+    {
+      "department": "Props",
+      "jobTitle": [
+        "Prop Master",
+        "Asst. Props Master",
+        "Props Assistant",
+        "Prop Maker Foreperson",
+        "Prop Maker ",
+        "Checker",
+        "Daily Prop Maker",
+        "Daily Props Assistant"
+      ]
+    },
+    {
+      "department": "Publicity",
+      "jobTitle": [
+        "Publicist",
+        "Stills Photographer",
+        "Daily Publicist",
+        "Daily Stills Photographer",
+        "B-Roll Producer",
+        "B-Roll Coordinator",
+        "B-Roll P.A.",
+        "B-Roll Set Crew",
+        "Trailer Supervisor"
+      ]
+    },
+    {
+      "department": "Set Decoration",
+      "jobTitle": [
+        "Set Decorator",
+        "Leadman",
+        "Set Dresser",
+        "On-Set Dresser",
+        "Set Dec Coordinator",
+        "Swing Gang",
+        "Set Dec P.A.",
+        "Daily Set Dresser",
+        "Daily Swing Gang",
+        "Draper",
+        "Upholsterer"
+      ]
+    },
+    {
+      "department": "Sound-Post Production",
+      "jobTitle": [
+        "Re-Recording Mixer",
+        "Music Mixer",
+        "Supervising Engineer",
+        "Engineer",
+        "Sound Recorder",
+        "Recorder",
+        "Utility Sound Technician"
+      ]
+    },
+    {
+      "department": "Sound-Production",
+      "jobTitle": [
+        "Mixer",
+        "Boom Operator",
+        "Cable Person",
+        "Sound Trainee",
+        "Utility Sound Technician"
+      ]
+    },
+    {
+      "department": "Special Effects",
+      "jobTitle": [
+        "Special Effects Supervisor",
+        "Special Effects Foreperson",
+        "Special Effects Technician",
+        "Powder Man",
+        "Asst. Powder Man",
+        "Daily SFX Foreperson",
+        "Daily SFX Supervisor",
+        "Daily SFX Technician"
+      ]
+    },
+    {
+      "department": "Story",
+      "jobTitle": [
+        "Analyst-Treatment-Synopsis",
+        "Reader"
+      ]
+    },
+    {
+      "department": "Stunts",
+      "jobTitle": [
+        "Stunt Coordinator",
+        "Asst. Stunt Coordinator",
+        "Actor Stunt Double",
+        "Stuntman",
+        "Airplane Pilot",
+        "Boat Driver",
+        "Stunt Driver",
+        "Stunt Rigger",
+        "Stunt Safety"
+      ]
+    },
+    {
+      "department": "Transportation",
+      "jobTitle": [
+        "Transportation Coordinator",
+        "Co-Captain",
+        "Transportation Captain",
+        "Dispatcher",
+        "Mechanic",
+        "Driver",
+        "Driver-Craftservice",
+        "Camera Car Driver",
+        "Driver-Crane Op"
+      ]
+    },
+    {
+      "department": "Utility Workers",
+      "jobTitle": [
+        "Electrician",
+        "InfoRecipienter",
+        "Plumber"
+      ]
+    },
+    {
+      "department": "Visual Effects",
+      "jobTitle": [
+        "Visual Effects Supervisor",
+        "Visual Effects Producer",
+        "Data Wrangler",
+        "Visual Effects Coordinator",
+        "Visual Effects P.A.",
+        "Visual Effects Editor",
+        "Asst. Visual Effects Editor"
+      ]
+    },
+    {
+      "department": "Writing",
+      "jobTitle": [
+        "Screenwriter",
+        "Story Editor",
+        "Script Manager-Coordinator",
+        "Clearance Coordinator",
+        "Asst. to Screenwriter",
+        "Researcher"
+      ]
+    },
+    {
+      "department": "Xternal",
+      "jobTitle": [
+        "Agent",
+        "Manager",
+        "Prospective Cast",
+        "Prospective Crew",
+        "Insurance Broker"
+      ]
+    },
+    {
+      "department": "Art",
+      "jobTitle": [
+        "Production Designer",
+        "Art Director",
+        "Sr. Set Designer",
+        "Supervising Art Director",
+        "Draftsman",
+        "Illustrator",
+        "Matte Artist",
+        "Model Builder",
+        "Set Designer",
+        "Clearance Coordinator",
+        "Asst. Art Director",
+        "Asst. Matte Artist",
+        "Asst. Model Builder",
+        "Art P.A.",
+        "Apprentice",
+        "Consultant",
+        "Coordinator"
+      ]
+    },
+    {
+      "department": "Art-Subcontractor",
+      "jobTitle": ["Consultant"]
+    },
+    {
+      "department": "Camera",
+      "jobTitle": [
+        "Director of Photography",
+        "1st Asst. Cameraman",
+        "Camera Operator",
+        "Steadicam Operator",
+        "2nd Asst. Cameraman",
+        "Camera Technician",
+        "Clapper",
+        "Cable Asst.",
+        "Camera P.A.",
+        "Film Loader",
+        "Digital Utility",
+        "DIT",
+        "Daily 1st Asst. Camera",
+        "Daily 2nd Asst. Camera",
+        "Daily Cable Asst.",
+        "Daily Camera Operator",
+        "Daily Camera P.A.",
+        "Daily Camera Technician",
+        "Daily Clapper",
+        "Daily Digital Utility",
+        "Daily DIT",
+        "Daily Film Loader",
+        "Daily Steadicam Operator"
+      ]
+    },
+    {
+      "department": "Cast",
+      "jobTitle": [
+        "Supporting Actor",
+        "Actor Support Staff",
+        "Asst. to Principal Actor",
+        "Asst. to Supporting Actor",
+        "Dancer",
+        "Dayplayer Actor",
+        "Principal Actor",
+        "Puppeteer",
+        "Singer",
+        "Voice Artist"
+      ]
+    },
+    {
+      "department": "Catering-Craft Services",
+      "jobTitle": [
+        "Asst. Chef",
+        "Catering P.A.",
+        "Chef",
+        "Craft Service Foreperson",
+        "Craft Service Person",
+        "Daily Craft Service Foreperson",
+        "Daily Craft Service Person"
+      ]
+    },
+    {
+      "department": "Child Welfare",
+      "jobTitle": [
+        "Teacher",
+        "Teacher-Welfare Worker",
+        "Welfare Worker"
+      ]
+    },
+    {
+      "department": "Construction-Scenics",
+      "jobTitle": [
+        "Apprentice",
+        "Carpenter",
+        "Color Mixer",
+        "Construction Buyer",
+        "Construction Clerk",
+        "Construction Coordinator",
+        "Construction Foreman",
+        "Daily Scenic Artist",
+        "Foreperson Painter",
+        "Head Paint Foreperson",
+        "Lead Carpenter",
+        "Lead Scenic Artist",
+        "On-set Carpenter",
+        "On-set Scenic Painter",
+        "Painter-Scenic",
+        "Paperhanger",
+        "Scenic Artist",
+        "Scenic artist Trainee",
+        "Shop Person",
+        "Sign Writer",
+        "Standby Painter",
+        "Supv. Sign Writer"
+      ]
+    },
+    {
+      "department": "Costumes",
+      "jobTitle": [
+        "Alteration Fitter",
+        "Apprentice",
+        "Asst. Costume Designer",
+        "Beader",
+        "Cleaner",
+        "Costume Designer",
+        "Costume Sketch Artist",
+        "Costume Stock Clerk",
+        "Costumer",
+        "Costumer Checker",
+        "Costumes Mfg Foreperson",
+        "Cutter",
+        "Daily Costumer",
+        "Draper",
+        "Dyer",
+        "Figure Maker",
+        "Finisher",
+        "Helper",
+        "Key Costumer",
+        "Milliner",
+        "Pattern Maker",
+        "Seamstress",
+        "Table Person",
+        "Tailor",
+        "Tailor Fitter",
+        "Wardrobe Foreperson",
+        "Wardrobe Supervisor"
+      ]
+    },
+    {
+      "department": "Direction",
+      "jobTitle": [
+        "2nd Unit Director",
+        "Animation Director",
+        "Associate Casting Director",
+        "Asst. Casting Director",
+        "Asst. Choreographer",
+        "Asst. to 2nd Unit Director",
+        "Asst. to Animation Director",
+        "Asst. to Director",
+        "Casting Director",
+        "Casting Scout",
+        "Choreographer",
+        "Director",
+        "Director Researcher"
+      ]
+    },
+    {
+      "department": "Writing",
+      "jobTitle": [
+        "Asst. to Screenwriter",
+        "Screenwriter",
+        "Story Editor",
+        "Clearance Coordinator",
+        "Researcher",
+        "Script Manager-Coordinator"
+      ]
+    },
+    {
+      "department": "Financiers",
+      "jobTitle": [
+        "Producer (Financier)",
+        "Asst. to Producer (Financier)"
+      ]
+    },
+    {
+      "department": "Marketing Trailer",
+      "jobTitle": [
+        "Trailer Editor",
+        "Trailer Asst. Editor",
+        "Trailer Asst. to Producer",
+        "Trailer Coordinator",
+        "Trailer Producer"
+      ]
+    },
+    {
+      "department": "Publicity",
+      "jobTitle": [
+        "Daily Publicist",
+        "Daily Stills Photographer",
+        "Publicist",
+        "Stills Photographer",
+        "B-Roll Coordinator",
+        "B-Roll P.A.",
+        "B-Roll Producer",
+        "B-Roll Set Crew",
+        "Trailer Supervisor"
+      ]
+    },
+    {
+      "department": "Producers",
+      "jobTitle": [
+        "Asst. to Line Producer",
+        "Asst. to Producer",
+        "Asst. to Producer (Creative)",
+        "Line Producer",
+        "Post Production Executive",
+        "Post Production Producer",
+        "Producer",
+        "Producer (Creative)",
+        "Production Executive"
+      ]
+    },
+    {
+      "department": "Story",
+      "jobTitle": [
+        "Analyst-Treatment-Synopsis",
+        "Reader"
+      ]
+    },
+    {
+      "department": "Studio Marketing",
+      "jobTitle": [
+        "Asst. to EVP Marketing",
+        "Asst. to Marketing Executive",
+        "Asst. to SVP Marketing",
+        "Asst. to VP Marketing",
+        "EVP Marketing",
+        "Marketing Executive",
+        "SVP Marketing",
+        "VP Marketing"
+      ]
+    },
+    {
+      "department": "Studio Safety",
+      "jobTitle": [
+        "Studio Safety Manager"
+      ]
+    },
+    {
+      "department": "Visual Effects",
+      "jobTitle": [
+        "Asst. Visual Effects Editor",
+        "Character Modeller",
+        "Character Rigger",
+        "Colourist",
+        "Compositor",
+        "Creature Animator",
+        "Creature Technical Director",
+        "Cyber Scanning Supervisor",
+        "Cyber Scanning Technician",
+        "Data Manager",
+        "Data Wrangler",
+        "Digital Compositor",
+        "Generalist",
+        "Head of Production",
+        "Lead Lighting Technical Director",
+        "Lead Matchmove Artist",
+        "Lighting Technical Director",
+        "Look Developer",
+        "Matchmove Artist",
+        "Matte Painter",
+        "On-Set Visual Effects Supervisor",
+        "Paint Artist",
+        "Paint Lead",
+        "Pipeline Technical Director",
+        "Pre-visualization Artist",
+        "Pre-visualization Supervisor",
+        "Research & Development",
+        "Roto Artist",
+        "Senior Compositor",
+        "Sequence Supervisor",
+        "Shading & Rendering Artist",
+        "Shading & Rendering Supervisor",
+        "Technical Director",
+        "Texturing & Sculpting Technical Director",
+        "Title Designer",
+        "Tracking Supervisor",
+        "Visual Effects Artist",
+        "Visual Effects P.A.",
+        "Visual Effects Producer",
+        "Visual Effects Coordinator",
+        "Visual Effects Supervisor"
+      ]
+    },
+    {
+      "department": "Xternal",
+      "jobTitle": [
+        "Agent",
+        "Insurance Broker",
+        "Manager",
+        "Prospective Cast",
+        "Prospective Crew"
+      ]
+    },
+    {
+      "department": "Studio Business Affairs",
+      "jobTitle": [
+        "VP InfoRecipient Counsel",
+        "VP General Counsel",
+        "VP Business Affairs",
+        "SVP InfoRecipient Counsel",
+        "SVP General Counsel",
+        "SVP Business Affairs",
+        "InfoRecipient Counsel",
+        "General Counsel",
+        "EVP InfoRecipient Counsel",
+        "EVP General Counsel",
+        "EVP Business Affairs",
+        "Business Affairs Executive",
+        "Asst. to VP InfoRecipient Counsel",
+        "Asst. to VP General Counsel",
+        "Asst. to VP Business Affairs",
+        "Asst. to SVP InfoRecipient Counsel",
+        "Asst. to SVP General Counsel",
+        "Asst. to SVP Business Affairs",
+        "Asst. to InfoRecipient Counsel",
+        "Asst. to General Counsel",
+        "Asst. to EVP InfoRecipient Counsel",
+        "Asst. to EVP General Counsel",
+        "Asst. to EVP Business Affairs",
+        "Asst. to Business Affairs Executive"
+      ]
+    },
+    {
+      "department": "Studio C-Suite",
+      "jobTitle": [
+        "Asst. to Chief Executive Officer",
+        "Asst. to Chief Financial Officer",
+        "Asst. to Chief Information Officer",
+        "Asst. to Chief Information Security Officer",
+        "Asst. to Chief Marketing Officer",
+        "Asst. to Chief Operating Officer",
+        "Asst. to Chief Technology Officer",
+        "Chief Executive Officer",
+        "Chief Financial Officer",
+        "Chief Information Officer",
+        "Chief Information Security Officer",
+        "Chief Marketing Officer",
+        "Chief Operating Officer",
+        "Chief Technology Officer"
+      ]
+    },
+    {
+      "department": "Studio Creative Staff",
+      "jobTitle": [
+        "Asst. to Creative Production Executive",
+        "Asst. to Development Executive",
+        "Asst. to EVP of Production",
+        "Asst. to President of Production",
+        "Asst. to SVP of Production",
+        "Asst. to VP of Production",
+        "Creative Interns",
+        "Creative Production Executive",
+        "Development Executive",
+        "EVP of Production",
+        "President of Production",
+        "Story Department",
+        "SVP of Production",
+        "VP of Production"
+      ]
+    },
+    {
+      "department": "Studio Finance",
+      "jobTitle": [
+        "Asst. to Controller",
+        "Asst. to Production Funding Executive",
+        "Controller",
+        "Production Funding Executive"
+      ]
+    },
+    {
+      "department": "Studio Physical Production Staff",
+      "jobTitle": [
+        "Asst. to EVP of Physical Production",
+        "Asst. to Physical Production Executive",
+        "Asst. to SVP of Physical Production",
+        "Asst. to VP of Physical Production",
+        "EVP of Physical Production",
+        "Physical Production Executive",
+        "SVP of Physical Production",
+        "VP of Physical Production"
+      ]
+    },
+    {
+      "department": "Studio Post Production Staff",
+      "jobTitle": [
+        "Asst. to EVP of Post Production",
+        "Asst. to Post Production Executive",
+        "Asst. to SVP of Post Production",
+        "Asst. to VP of Post Production",
+        "EVP of Post Production",
+        "Post Production Executive",
+        "SVP of Post Production",
+        "VP of Post Production"
+      ]
+    }
+  ],
+  "additionalLocationJson": {
+    "additionallocation": [
+      "GB-ENG",
+      "GB-NIR",
+      "GB-SCT",
+      "GB-WLS"
+    ],
+    "additionallocationDesc": [
+      "GB-ENG",
+      "GB-NIR",
+      "GB-SCT",
+      "GB-WLS"
+    ]
+  },
+  "applications": {
+    "appName": [
+      "Office-365",
+      "Egynte"
+    ]
+  },
+  "deptDocPrivilegeJson": {
+    "deptdocname": [
+      "On-Line View Only",
+      "Off-Line View Only",
+      "On-Line View & Print",
+      "Off-Line View & Print",
+      "On-Line View, Print, Edit",
+      "Off-Line View, Print, Edit"
+    ],
+    "deptdocdesc": [
+      "On-Line View Only",
+      "Off-Line View Only",
+      "On-Line View & Print",
+      "Off-Line View & Print",
+      "On-Line View, Print, Edit",
+      "Off-Line View, Print, Edit"
+    ]
+  },
+  "sharedDocPrivilegeJson": {
+    "sharedDocPrivileges": [
+      "On-Line View Only",
+      "Off-Line View Only",
+      "On-Line View & Print",
+      "Off-Line View & Print",
+      "On-Line View, Print, Edit",
+      "Off-Line View, Print, Edit"
+    ]
+  },
+  "otherDocPreveligesJson": {
+    "otherDocPreveligesname": [
+      "On-Line View Only",
+      "Off-Line View Only",
+      "On-Line View & Print",
+      "Off-Line View & Print",
+      "On-Line View, Print, Edit",
+      "Off-Line View, Print, Edit"
+    ],
+    "otherDocPreveligesdesc": [
+      "On-Line View Only",
+      "Off-Line View Only",
+      "On-Line View & Print",
+      "Off-Line View & Print",
+      "On-Line View, Print, Edit",
+      "Off-Line View, Print, Edit"
+    ]
+  },
+  "specialJobRoleJson": {
+    "baseLocation": "US-AK",
+    "specialJobRole": [
+      "ScriptManager",
+      "Clearances"
+    ],
+    "roleDescription": [
+      "Person(s) in charge of script distribution",
+      "Person(s) in charge of clearances management or tracking"
+    ]
+  }
 }

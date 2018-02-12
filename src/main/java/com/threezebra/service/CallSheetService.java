@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.threezebra.domain.CallSheet;
+import com.threezebra.domain.Department;
+import com.threezebra.domain.JobRole;
+import com.threezebra.domain.Unit;
+import com.threezebra.domain.UserType;
 import com.threezebra.repository.CallSheetRepository;
 
 @Service
@@ -26,6 +30,12 @@ public class CallSheetService {
 
 	public List<CallSheet> findAll() {
 		return callSheetRepository.findAll();
+	}
+
+	public void createCallSheet(Unit unit, List<Department> departmentlist, List<UserType> usertypeList,
+			List<JobRole> jobRoleList) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

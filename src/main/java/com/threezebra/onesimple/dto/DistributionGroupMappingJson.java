@@ -9,7 +9,8 @@ public class DistributionGroupMappingJson {
 	private long[] unit;
 	private String defaultvalue;
 	private long[] usertype; 
-	private String employeeListflag;
+	private String employeeListflag; 
+	private   String isActive;
 	
 	
 	public String getEmployeeListflag() {
@@ -59,6 +60,12 @@ public class DistributionGroupMappingJson {
 	}
 	public void setDefaultvalue(String defaultvalue) {
 		this.defaultvalue = defaultvalue;
+	}
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 	
 }

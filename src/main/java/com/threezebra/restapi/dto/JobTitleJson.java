@@ -4,6 +4,7 @@ public class JobTitleJson {
 	
 	public String department;
 	public String[] jobTitle;
+	
 	public String getDepartment() {
 		return department;
 	}

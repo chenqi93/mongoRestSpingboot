@@ -1,6 +1,7 @@
 package com.threezebra.onesimple.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +31,7 @@ import com.threezebra.domain.DeviceInfo;
 import com.threezebra.domain.DistributionGroup;
 import com.threezebra.domain.DistributionGroupMapping;
 import com.threezebra.domain.EmpDetail;
+import com.threezebra.domain.EmployeeScreen;
 import com.threezebra.domain.JobRole;
 import com.threezebra.domain.JobTitle;
 import com.threezebra.domain.OtherDocPrivilege;
@@ -42,6 +44,7 @@ import com.threezebra.domain.Unit;
 import com.threezebra.domain.UserType;
 import com.threezebra.domain.XternalDistributionGroup;
 import com.threezebra.onesimple.dto.EmployeeJson;
+import com.threezebra.onesimple.dto.EmployeeScreenJson;
 import com.threezebra.onesimple.dto.FindLocationJson;
 import com.threezebra.onesimple.dto.JobRoleFinderJson;
 import com.threezebra.restapi.ValidatingUserRepositoryDecorator;
@@ -55,6 +58,7 @@ import com.threezebra.service.DeptDocPrivilegeService;
 import com.threezebra.service.DeviceInfoService;
 import com.threezebra.service.DistributionGroupAssignmentService;
 import com.threezebra.service.DistributionGroupService;
+import com.threezebra.service.EmployeeScreenService;
 import com.threezebra.service.EmployeeService;
 import com.threezebra.service.JobRoleService;
 import com.threezebra.service.JobTitleService;
@@ -141,6 +145,8 @@ public class EmpDetailController {
 	private String userTypeflag;
 	@Autowired
 	private ValidatingUserRepositoryDecorator validatingUserRepositoryDecorator;
+	@Autowired
+	private EmployeeScreenService employeeScreenService;
 
 	// @PreAuthorize(USER)
 
@@ -225,18 +231,15 @@ public class EmpDetailController {
 			}
 			if (!(jobRole.getName().equals("Daily"))) {
 				StringBuilder distributionGroupname = new StringBuilder();
-
+				distributionGroupname.append(distroname);
 				if (deptflag.equals("TRUE")) {
 					distributionGroupname.append(department.getName()).append("-Dept-");
 				}
 				if (unitflag.equals("TRUE")) {
 					distributionGroupname.append(unit.getName()).append(".");
 				}
-				if (userTypeflag.equals("TRUE")) {
-					distributionGroupname.append(userType.getName());
-				}
 				if (blocationFlag.equals("TRUE")) {
-					distributionGroupname.append(".").append(blocation.getName());
+					distributionGroupname.append(blocation.getName());
 				}
 				/*
 				 * distroGroup.append("Distro-").append(department.getName()).append("-Dept-").
@@ -258,7 +261,7 @@ public class EmpDetailController {
 					distributionGroupname.append(unit.getName()).append(dailydistroname);
 				}
 				if (blocationFlag.equals("TRUE")) {
-					distributionGroupname.append(".").append(blocation.getName());
+					distributionGroupname.append(blocation.getName());
 				}
 				/*
 				 * distributionGroupname.append("Daily.").append(department.getName()).append(
@@ -359,12 +362,13 @@ public class EmpDetailController {
 	@RequestMapping(value = "/findJobRoleByUnitAndUserType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<JobRole>> findJobRoleByUnitAndUserType(@RequestBody JobRoleFinderJson jobRolefinder) {
 		List<JobRole> jbRoleList = new ArrayList<>();
-		List<UserType> userTypeList=jobRolefinder.getUserTypeList();
+		List<UserType> userTypeList = jobRolefinder.getUserTypeList();
 		for (UserType userType : userTypeList) {
 			List<JobRole> jobRoleList = jobRoleService.findByUserType(userType);
 			for (JobRole jobRole : jobRoleList) {
 				List<Unit> unitList = jobRole.getUnit();
-				if (containsName(unitList, jobRolefinder.getUnit().getName()) == true  && userType.getCheckFlag().equals("TRUE")) {
+				if (containsName(unitList, jobRolefinder.getUnit().getName()) == true
+						&& userType.getCheckFlag().equals("TRUE")) {
 					jbRoleList.add(jobRoleService.updateFlag(jobRole, "TRUE"));
 
 				} else {
@@ -374,17 +378,18 @@ public class EmpDetailController {
 		}
 		return new ResponseEntity<>(jbRoleList, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/findJobRoleByUserType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<JobRole>> findJobRoleByUserType(@RequestBody JobRoleFinderJson jobRolefinder) {
 		List<JobRole> jbRoleList = new ArrayList<>();
-		List<UserType> userTypeList=jobRolefinder.getUserTypeList();
+		List<UserType> userTypeList = jobRolefinder.getUserTypeList();
 		for (UserType userType : userTypeList) {
 			List<JobRole> jobRoleList = jobRoleService.findByUserType(userType);
-			logger.info("Get job role object size"+jobRoleList.size());
+			logger.info("Get job role object size" + jobRoleList.size());
 			for (JobRole jobRole : jobRoleList) {
 				List<Unit> unitList = jobRole.getUnit();
-				if (containsName(unitList, jobRolefinder.getUnit().getName()) == true  && userType.getCheckFlag().equals("TRUE")) {
+				if (containsName(unitList, jobRolefinder.getUnit().getName()) == true
+						&& userType.getCheckFlag().equals("TRUE")) {
 					jbRoleList.add(jobRoleService.updateFlag(jobRole, "TRUE"));
 
 				} else {
@@ -394,7 +399,6 @@ public class EmpDetailController {
 		}
 		return new ResponseEntity<>(jbRoleList, HttpStatus.OK);
 	}
-	
 
 	@RequestMapping(value = "/jobTitle/{departmentId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<JobTitle>> getAllJobTitle(@PathVariable String departmentId) {
@@ -494,9 +498,44 @@ public class EmpDetailController {
 	}
 
 	@RequestMapping(value = "/inviteUser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity savePermissionGroupDetails(@RequestBody List<EmpDetail> EmpDetailList) {
+	public ResponseEntity inviteUser(@RequestBody List<EmpDetail> EmpDetailList) {
 		for (EmpDetail emp : EmpDetailList) {
 			EmpDetail empDetailobj = empDetailService.findById(emp.getId());
+			List<DistributionGroup> distrogrpoup = emp.getDistributionGroup();
+			DailyDistributionGroup dialyDistributionGroup = emp.getDialyDistributionGroup();
+			XternalDistributionGroup xternalgroup = emp.getXternalDistributionGroup();
+			List<DistributionGroup> distrogroup = new ArrayList<>();
+			if (null != distrogrpoup) {
+				if (distrogrpoup.size() > 0) {
+					Iterator<DistributionGroup> itr = distrogrpoup.iterator();
+					while (itr.hasNext()) {
+						DistributionGroup distroGroup = (DistributionGroup) itr.next();
+						logger.info("#############" + distroGroup.getDistroActive() + "#############"
+								+ distroGroup.getName());
+						DistributionGroup dist = distributionGroupService.findByName(distroGroup.getName());
+						dist.setDistroActive(distroGroup.getDistroActive());
+						logger.info("#############" + dist.getDistroActive() + "#############" + dist.getName());
+						distrogroup.add(distributionGroupService.save(dist));
+
+					}
+					empDetailobj.setDistributionGroup(distrogroup);
+				}
+			}
+			if (null != xternalgroup) {
+				XternalDistributionGroup dist = xterlDistributionGroupService.findByName(xternalgroup.getName());
+				dist.setDistroActive(xternalgroup.getDistroActive());
+				dist = xterlDistributionGroupService.save(dist);
+				empDetailobj.setXternalDistributionGroup(dist);
+			}
+
+			if (null != dialyDistributionGroup) {
+				DailyDistributionGroup dist = dailydDistributionGroupService
+						.findByName(dialyDistributionGroup.getName());
+				dist.setDistroActive(dialyDistributionGroup.getDistroActive());
+				dist = dailydDistributionGroupService.save(dist);
+				empDetailobj.setDialyDistributionGroup(dist);
+			}
+
 			empDetailobj.setIsInvited(emp.getIsInvited());
 			empDetailobj.setIsActive(emp.getIsActive());
 			empDetailService.save(empDetailobj);
@@ -509,17 +548,17 @@ public class EmpDetailController {
 	public ResponseEntity<List<UserType>> getUserType(@PathVariable String unitId) {
 		long id = Long.parseLong(unitId);
 		Unit unit = unitService.findbyId(id);
-		List<UserType> userTypesLst=new ArrayList<>();
+		List<UserType> userTypesLst = new ArrayList<>();
 		List<UserType> userTypesList = userTypeService.findByUnit(unit);
 		for (UserType userType : userTypesList) {
 			List<Unit> unitList = userType.getUnit();
-				if (containsName(unitList, unit.getName()) == true) {
-					userTypesLst.add(userTypeService.updateFlag(userType, "TRUE"));
-				} else {
-					userTypesLst.add(userTypeService.updateFlag(userType, "FALSE"));
-				}
+			if (containsName(unitList, unit.getName()) == true) {
+				userTypesLst.add(userTypeService.updateFlag(userType, "TRUE"));
+			} else {
+				userTypesLst.add(userTypeService.updateFlag(userType, "FALSE"));
 			}
-		
+		}
+
 		return new ResponseEntity<>(userTypesLst, HttpStatus.OK);
 	}
 
@@ -617,11 +656,11 @@ public class EmpDetailController {
 					empDetails.setAdditionalLocation(addloclist);
 				}
 			}
-			long[] deviceIssuedarr = employeeJson.getAdditionalLocation();
+			String[] deviceIssuedarr = employeeJson.getDeviceIssued();
 			List<DeviceInfo> deviceIssued = new ArrayList<>();
 			if (null != deviceIssuedarr) {
 				for (int i = 0; i < deviceIssuedarr.length; i++) {
-					DeviceInfo deviceInfo = deviceInfoService.findByName(deviceIssuedarr[i]);
+					DeviceInfo deviceInfo = deviceInfoService.save(deviceIssuedarr[i]);
 					deviceIssued.add(deviceInfo);
 				}
 			}
@@ -692,7 +731,7 @@ public class EmpDetailController {
 				}
 				if (jobRoleFlag.equals("TRUE")) {
 					permissiongroupname.append(".").append(jobRole.getName());
-					;
+					
 				}
 				/*
 				 * permissiongroupname =
@@ -706,23 +745,23 @@ public class EmpDetailController {
 					empDetail.setPermissionGroup(permissionGroup);
 				}
 				if (!(jobRole.getName().equals("Daily"))) {
-					StringBuilder distroGroup = new StringBuilder();
-
-					distroGroup.append(distroname);
+					StringBuilder distributionGroupname = new StringBuilder();
+					distributionGroupname.append(distroname);
 					if (deptflag.equals("TRUE")) {
-						distroGroup.append(department.getName()).append("-Dept-");
+						distributionGroupname.append(department.getName()).append("-Dept-");
 					}
 					if (unitflag.equals("TRUE")) {
-						distroGroup.append(unit.getName());
+						distributionGroupname.append(unit.getName()).append(".");
 					}
 					if (blocationFlag.equals("TRUE")) {
-						distroGroup.append(".").append(blocation.getName());
+						distributionGroupname.append(blocation.getName());
 					}
 					/*
 					 * distroGroup.append("Distro-").append(department.getName()).append("-Dept-").
 					 * append(unit.getName()) .append(".").append(blocation.getName());
 					 */
-					DistributionGroup distroGroupObj = distributionGroupService.findByName(distroGroup.toString());
+					DistributionGroup distroGroupObj = distributionGroupService
+							.findByName(distributionGroupname.toString());
 					if (null != distroGroupObj) {
 						distroGroupList.add(distroGroupObj);
 						empDetail.setDistributionGroup(distroGroupList);
@@ -730,79 +769,72 @@ public class EmpDetailController {
 				} else {
 					StringBuilder distributionGroupname = new StringBuilder();
 					distributionGroupname.append(distroname);
-
-					if (!(jobRole.getName().equals("Daily"))) {
-
-						if (deptflag.equals("TRUE")) {
-							distributionGroupname.append(department.getName()).append("-Dept-");
-						}
-						if (unitflag.equals("TRUE")) {
-							distributionGroupname.append(unit.getName()).append(".");
-						}
-						if (userTypeflag.equals("TRUE")) {
-							distributionGroupname.append(userType.getName());
-						}
-						if (blocationFlag.equals("TRUE")) {
-							distributionGroupname.append(".").append(blocation.getName());
-						}
-						/*
-						 * distributionGroupname.append("Daily.").append(department.getName()).append(
-						 * "-DAILYHIRES-")
-						 * .append(unit.getName()).append(".").append(blocation.getName());
-						 */
-						DailyDistributionGroup distroGroupObj = dailydDistributionGroupService
-								.findByName(distributionGroupname.toString());
-						if (null != distroGroupObj) {
-							empDetail.setDialyDistributionGroup(distroGroupObj);
-						}
+					if (deptflag.equals("TRUE")) {
+						distributionGroupname.append(department.getName()).append("-Dept-");
 					}
-					if (department.getName().equals("Xternal")) {
-						StringBuilder xternaldistributionGroupname = new StringBuilder();
-						xternaldistributionGroupname.append("Distro-Xternal").append(jobRole.getName());
-						XternalDistributionGroup xdistroGroupObj = xterlDistributionGroupService
-								.findByName(xternaldistributionGroupname.toString());
-						if (null != xdistroGroupObj) {
-							empDetail.setXternalDistributionGroup(xdistroGroupObj);
-						}
+					if (unitflag.equals("TRUE")) {
+						distributionGroupname.append(unit.getName()).append(dailydistroname);
 					}
-					empDetail.setUnit(unit);
-					empDetail.setDepartment(department);
-					long[] additionalarr = employeeJson.getAdditionalLocation();
-					if (null != additionalarr) {
-						for (int i = 0; i < additionalarr.length; i++) {
-							AdditionalLocation addloc = additionalLocationService.findByName(additionalarr[i]);
-							List<AdditionalLocation> addloclist = new ArrayList<>();
-							addloclist.add(addloc);
-							empDetail.setAdditionalLocation(addloclist);
-						}
+					if (blocationFlag.equals("TRUE")) {
+						distributionGroupname.append(blocation.getName());
 					}
-					long[] deviceIssuedarr = employeeJson.getAdditionalLocation();
-					List<DeviceInfo> deviceIssued = new ArrayList<>();
-					if (null != deviceIssuedarr) {
-						for (int i = 0; i < deviceIssuedarr.length; i++) {
-							DeviceInfo deviceInfo = deviceInfoService.findByName(deviceIssuedarr[i]);
-							deviceIssued.add(deviceInfo);
-						}
+					/*
+					 * distributionGroupname.append("Daily.").append(department.getName()).append(
+					 * "-DAILYHIRES-")
+					 * .append(unit.getName()).append(".").append(blocation.getName());
+					 */
+					DailyDistributionGroup distroGroupObj = dailydDistributionGroupService
+							.findByName(distributionGroupname.toString());
+					if (null != distroGroupObj) {
+						empDetail.setDialyDistributionGroup(distroGroupObj);
 					}
-					empDetail.setDeviceIssued(deviceIssued);
-					empDetail.setIsActive("1");
-					SpecialRole specialRole = specialRoleService.findById(employeeJson.getSpecialRole());
-					empDetail.setSpecialRole(specialRole);
-					empDetail.setUserType(userType);
-					empDetail.setDeleted(employeeJson.getDeleted());
-					empDetail.setIsInvited(employeeJson.getIsInvited());
-					JobTitle jobTitle = jobTitleService.findById(employeeJson.getJobTitle());
-					empDetail.setJobTitle(jobTitle);
-					empDetail.setPermittedNumDevices(employeeJson.getPermittedNumDevices());
-					empDetail.setPersonalEmail(employeeJson.getPersonalEmail());
-					empDetail.setPersonalPhoneNum(employeeJson.getPersonalPhoneNum());
-					empDetail.setUniqueId(employeeJson.getUniqueId());
-					empDetail.setWorkEmail(employeeJson.getWorkEmail());
-					empDetailService.save(empDetail);
-					response = new BaseResponse("200", "SUCCESS");
-					validationStatus = true;
-
 				}
+				if (department.getName().equals("Xternal")) {
+					StringBuilder xternaldistributionGroupname = new StringBuilder();
+					xternaldistributionGroupname.append("Distro-Xternal").append(jobRole.getName());
+					XternalDistributionGroup xdistroGroupObj = xterlDistributionGroupService
+							.findByName(xternaldistributionGroupname.toString());
+					if (null != xdistroGroupObj) {
+						empDetail.setXternalDistributionGroup(xdistroGroupObj);
+					}
+				}
+
+				empDetail.setUnit(unit);
+				empDetail.setDepartment(department);
+				long[] additionalarr = employeeJson.getAdditionalLocation();
+				if (null != additionalarr) {
+					for (int i = 0; i < additionalarr.length; i++) {
+						AdditionalLocation addloc = additionalLocationService.findByName(additionalarr[i]);
+						List<AdditionalLocation> addloclist = new ArrayList<>();
+						addloclist.add(addloc);
+						empDetail.setAdditionalLocation(addloclist);
+					}
+				}
+				String[] deviceIssuedarr = employeeJson.getDeviceIssued();
+				List<DeviceInfo> deviceIssued = new ArrayList<>();
+				if (null != deviceIssuedarr) {
+					for (int i = 0; i < deviceIssuedarr.length; i++) {
+						DeviceInfo deviceInfo = deviceInfoService.save(deviceIssuedarr[i]);
+						deviceIssued.add(deviceInfo);
+					}
+				}
+				empDetail.setDeviceIssued(deviceIssued);
+				empDetail.setIsActive("1");
+				SpecialRole specialRole = specialRoleService.findById(employeeJson.getSpecialRole());
+				empDetail.setSpecialRole(specialRole);
+				empDetail.setUserType(userType);
+				empDetail.setDeleted(employeeJson.getDeleted());
+				empDetail.setIsInvited(employeeJson.getIsInvited());
+				JobTitle jobTitle = jobTitleService.findById(employeeJson.getJobTitle());
+				empDetail.setJobTitle(jobTitle);
+				empDetail.setPermittedNumDevices(employeeJson.getPermittedNumDevices());
+				empDetail.setPersonalEmail(employeeJson.getPersonalEmail());
+				empDetail.setPersonalPhoneNum(employeeJson.getPersonalPhoneNum());
+				empDetail.setUniqueId(employeeJson.getUniqueId());
+				empDetail.setWorkEmail(employeeJson.getWorkEmail());
+				empDetailService.save(empDetail);
+				response = new BaseResponse("200", "SUCCESS");
+				validationStatus = true;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -814,7 +846,7 @@ public class EmpDetailController {
 	public ResponseEntity findByAdditionalLocation(@RequestBody FindLocationJson findLocation) {
 		BaseResponse response = null;
 		List<AdditionalLocation> additionalLocationList = findLocation.getAdditionalLocation();
-		String employeeflag=findLocation.getEmployeeListflag();
+		String employeeflag = findLocation.getEmployeeListflag();
 		List<Unit> unitlist = new ArrayList<>();
 		List<Department> deptlist = new ArrayList<>();
 		List<UserType> usertypeList = new ArrayList<>();
@@ -832,7 +864,7 @@ public class EmpDetailController {
 					}
 					DistributionGroup distrogroup = distributionGroupService.createDistributionGroup(
 							findLocation.getDefaultvalue(), locationlist, findLocation.getDistributionGroup(), unitlist,
-							deptlist, usertypeList, jobRolelist,employeeflag,findLocation.getIsActive());
+							deptlist, usertypeList, jobRolelist, employeeflag, findLocation.getIsActive());
 					for (EmpDetail empdetailObj : empDetailList) {
 						List<DistributionGroup> distributionGroupList = empdetailObj.getDistributionGroup();
 						distributionGroupList.add(distrogroup);
@@ -848,7 +880,7 @@ public class EmpDetailController {
 				List<EmpDetail> empDetailList = empDetailService.findAll();
 				DistributionGroup distrogroup = distributionGroupService.createDistributionGroup(
 						findLocation.getDefaultvalue(), locationlist, findLocation.getDistributionGroup(), unitlist,
-						deptlist, usertypeList, jobRolelist,employeeflag,findLocation.getIsActive());
+						deptlist, usertypeList, jobRolelist, employeeflag, findLocation.getIsActive());
 				if (null != empDetailList) {
 					for (EmpDetail empdetail : empDetailList) {
 						List<DistributionGroup> distributionGroupList = empdetail.getDistributionGroup();
@@ -923,92 +955,193 @@ public class EmpDetailController {
 	}
 
 	@RequestMapping(value = "/createADUser/{employeeID}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity createADUser(@RequestHeader(value="Authorization") String authorization_token,@PathVariable String employeeID) {
+	public ResponseEntity createADUser(@RequestHeader(value = "Authorization") String authorization_token,
+			@PathVariable String employeeID) {
+		PermissionGroup groupObject = null;
 		try {
-			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://graph.windows.net",authorization_token);
+			String graphResourceToken = TokenGeneratorUtil.getAccessTokenForResource("https://graph.windows.net", null);
+			String exchangeResourceToken = TokenGeneratorUtil.getAccessTokenForResource("https://outlook.office.com",
+					authorization_token);
 			EmpDetail empDetail = empDetailService.findById(Long.parseLong(employeeID));
-			String empAzureObjID = empDetailService.createUserInAD(authorization_token, empDetail);
-			if(empDetail != null) {
-				List<PermissionGroup> groupObjects = permissionGroupService.getADGroups(authorization_token);
-				if(groupObjects != null) {
-					for(PermissionGroup groupObject : groupObjects) {
-						 if(empDetail.getPermissionGroup().getName().equals(groupObject.getName())) {
-							 empDetailService.mapUserAndGroup(empAzureObjID, groupObject.getAadObjectId(), authorization_token);
-							 break;
-						 }
-					}
+			String empAzureObjID = empDetailService.createUserInAD(graphResourceToken, exchangeResourceToken,
+					empDetail);
+			if (empDetail != null) {
+				List<PermissionGroup> groupObjects = permissionGroupService.getADGroups(graphResourceToken,
+						empDetail.getPermissionGroup().getName());
+				if (groupObjects != null && groupObjects.size() > 0) {
+					groupObject = groupObjects.get(0);
+					empDetailService.mapUserAndGroup(empAzureObjID, groupObject.getAadObjectId(), graphResourceToken);
+				} else {
+					groupObject = permissionGroupService.crateADGroup(empDetail.getPermissionGroup(),
+							graphResourceToken);
+					empDetailService.mapUserAndGroup(empAzureObjID, groupObject.getAadObjectId(), graphResourceToken);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		BaseResponse response = new BaseResponse("200","SUCCESS");
+		BaseResponse response = new BaseResponse("200", "SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/assignLicense/{user}/{application}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity assignAppLicense(@RequestHeader(value="Authorization") String authorization_token,@PathVariable("user")String userAccount,@PathVariable("application") String application) {
+	public ResponseEntity assignAppLicense(@RequestHeader(value = "Authorization") String authorization_token,
+			@PathVariable("user") String userAccount, @PathVariable("application") String application) {
+		BaseResponse response = null;
 		int statusCode = 0;
 		try {
-			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://graph.windows.net",authorization_token);
-			statusCode = empDetailService.assignUserLicense(userAccount,application,authorization_token);
+			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://graph.windows.net", null);
+			statusCode = empDetailService.assignUserLicense(userAccount, application, authorization_token);
+			if (statusCode == 200) {
+				response = new BaseResponse(String.valueOf(statusCode), "SUCCESS");
+			} else {
+				response = new BaseResponse(String.valueOf(statusCode), "O365 License not assigned");
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		BaseResponse response = new BaseResponse(String.valueOf(statusCode),"SUCCESS");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-	
-	
+
 	@RequestMapping(value = "/createADGroups", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity createADGroups(@RequestHeader(value="Authorization") String authorization_token) {
+	public ResponseEntity createADGroups(@RequestHeader(value = "Authorization") String authorization_token) {
 		try {
-			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://graph.windows.net",authorization_token);
+			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://graph.windows.net", null);
 			List<PermissionGroup> permissionGroups = permissionGroupService.findAll();
-			if(permissionGroups != null) {
-				for(PermissionGroup permissionGroup : permissionGroups) {
+			if (permissionGroups != null) {
+				for (PermissionGroup permissionGroup : permissionGroups) {
 					permissionGroupService.crateADGroup(permissionGroup, authorization_token);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		BaseResponse response = new BaseResponse("200","SUCCESS");
-		return new ResponseEntity<>(response,HttpStatus.OK);
+		BaseResponse response = new BaseResponse("200", "SUCCESS");
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/deleteGroups", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity deleteADGroups(@RequestHeader(value="Authorization") String authorization_token) {
+	public ResponseEntity deleteADGroups(@RequestHeader(value = "Authorization") String authorization_token) {
 		try {
-			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://graph.windows.net",authorization_token);
-			List<PermissionGroup> groupObjects = permissionGroupService.getADGroups(authorization_token);
-			if(groupObjects != null) {
-				for(PermissionGroup groupObject : groupObjects) {
-					int statusCode = permissionGroupService.deleteADGroup(groupObject.getAadObjectId(), authorization_token);
+			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://graph.windows.net",
+					authorization_token);
+			List<PermissionGroup> groupObjects = permissionGroupService.getADGroups(authorization_token, "");
+			if (groupObjects != null) {
+				for (PermissionGroup groupObject : groupObjects) {
+					int statusCode = permissionGroupService.deleteADGroup(groupObject.getAadObjectId(),
+							authorization_token);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		BaseResponse response = new BaseResponse("200","SUCCESS");
-		return new ResponseEntity<>(response,HttpStatus.OK);
+
+		BaseResponse response = new BaseResponse("200", "SUCCESS");
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/inviteToManager", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity inviteToManager(@RequestHeader(value="Authorization")String userAccessToken) {
+	public ResponseEntity inviteToManager(@RequestHeader(value = "Authorization") String userAccessToken) {
 		String authorization_token;
 		int statusCode = 0;
 		try {
-			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://outlook.office.com",userAccessToken);
+			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://outlook.office.com",
+					userAccessToken);
 			statusCode = empDetailService.inviteToManager(authorization_token);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		BaseResponse response = new BaseResponse(String.valueOf(statusCode),"SUCCESS");
-		return new ResponseEntity<>(response,HttpStatus.OK);
+		BaseResponse response = new BaseResponse(String.valueOf(statusCode), "SUCCESS");
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/notification", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity notification(@RequestHeader(value = "Authorization") String userAccessToken) {
+		String authorization_token;
+		int statusCode = 0;
+		try {
+			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://outlook.office.com",
+					userAccessToken);
+			statusCode = empDetailService.userNotification(authorization_token,
+					"ArjunR@DemonstrationOneSimple.onmicrosoft.com", "EUtSm12ukN", "pramod.chandra@valuelabs.com");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		BaseResponse response = new BaseResponse(String.valueOf(statusCode), "SUCCESS");
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/screenSaver", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity employeeScreenSaver(@RequestBody EmployeeScreenJson employeeSceeenJson) {
+
+		EmployeeScreen employeeScreen = employeeScreenService.findByName("ScreenSaver1");
+		if (null != employeeScreen) {
+			employeeScreen.setAccessStartDate(employeeSceeenJson.getAccessStartDate());
+			employeeScreen.setBaseLocation(employeeSceeenJson.getBaseLocation());
+			employeeScreen.setDepartment(employeeSceeenJson.getDepartment());
+			employeeScreen.setDistributionGroup(employeeSceeenJson.getDistributionGroup());
+			employeeScreen.setFirstName(employeeSceeenJson.getFirstName());
+			employeeScreen.setJobRole(employeeSceeenJson.getJobRole());
+			employeeScreen.setIsInvited(employeeSceeenJson.getIsInvited());
+			employeeScreen.setLastName(employeeSceeenJson.getLastName());
+			employeeScreen.setPermissionGroup(employeeSceeenJson.getPermissionGroup());
+			employeeScreen.setPermittedNumDevices(employeeSceeenJson.getPermittedNumDevices());
+			employeeScreen.setSpecialRole(employeeSceeenJson.getSpecialRole());
+			employeeScreen.setPersonalPhoneNum(employeeSceeenJson.getPersonalPhoneNum());
+			employeeScreen.setWorkEmail(employeeSceeenJson.getWorkEmail());
+			employeeScreen.setUnit(employeeSceeenJson.getUnit());
+			employeeScreen.setUserType(employeeSceeenJson.getUserType());
+			employeeScreen.setPersonalEmail(employeeSceeenJson.getPersonalEmail());
+			employeeScreen.setJobTitle(employeeSceeenJson.getJobTitle());
+			employeeScreenService.save(employeeScreen);
+		} else {
+			employeeScreen = new EmployeeScreen();
+			employeeScreen.setId(System.nanoTime());
+			employeeScreen.setName("ScreenSaver1");
+			employeeScreen.setAccessStartDate(employeeSceeenJson.getAccessStartDate());
+			employeeScreen.setBaseLocation(employeeSceeenJson.getBaseLocation());
+			employeeScreen.setDepartment(employeeSceeenJson.getDepartment());
+			employeeScreen.setDistributionGroup(employeeSceeenJson.getDistributionGroup());
+			employeeScreen.setFirstName(employeeSceeenJson.getFirstName());
+			employeeScreen.setJobRole(employeeSceeenJson.getJobRole());
+			employeeScreen.setIsInvited(employeeSceeenJson.getIsInvited());
+			employeeScreen.setLastName(employeeSceeenJson.getLastName());
+			employeeScreen.setPermissionGroup(employeeSceeenJson.getPermissionGroup());
+			employeeScreen.setPermittedNumDevices(employeeSceeenJson.getPermittedNumDevices());
+			employeeScreen.setSpecialRole(employeeSceeenJson.getSpecialRole());
+			employeeScreen.setPersonalPhoneNum(employeeSceeenJson.getPersonalPhoneNum());
+			employeeScreen.setWorkEmail(employeeSceeenJson.getWorkEmail());
+			employeeScreen.setUnit(employeeSceeenJson.getUnit());
+			employeeScreen.setUserType(employeeSceeenJson.getUserType());
+			employeeScreen.setPersonalEmail(employeeSceeenJson.getPersonalEmail());
+			employeeScreen.setJobTitle(employeeSceeenJson.getJobTitle());
+			employeeScreenService.save(employeeScreen);
+		}
+		BaseResponse response = new BaseResponse("200", "SUCCESS");
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/getScreenSaver", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<EmployeeScreen> getScreenSaver() {
+		EmployeeScreen employeeScreen = employeeScreenService.findByName("ScreenSaver1");
+		BaseResponse response = new BaseResponse("200", "SUCCESS");
+		return new ResponseEntity<>(employeeScreen, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/senduserinfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity sendCurrentUserInfo(@RequestHeader(value = "Authorization") String userAccessToken,
+			@RequestBody EmployeeJson employeeJson) {
+		String authorization_token;
+		int statusCode = 0;
+		try {
+			authorization_token = TokenGeneratorUtil.getAccessTokenForResource("https://outlook.office.com",
+					userAccessToken);
+			statusCode = empDetailService.sendCurrentUserInfo(authorization_token, employeeJson);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		BaseResponse response = new BaseResponse(String.valueOf(statusCode), "SUCCESS");
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 }

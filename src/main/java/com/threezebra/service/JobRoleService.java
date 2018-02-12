@@ -68,7 +68,7 @@ public class JobRoleService {
 	}
 
 	public JobRole findByName(String jobRole) {
-		return jobRoleRepository.findByNameContainingIgnoreCase(jobRole);
+		return jobRoleRepository.findByName(jobRole);
 	}
 
 	public JobRole findById(long jobRole) {
@@ -83,6 +83,11 @@ public class JobRoleService {
 	public JobRole updateFlag(JobRole jobRole, String flag) {
 		jobRole.setCheckFlag(flag);
 		return jobRoleRepository.save(jobRole);
+	}
+
+	public List<JobRole> findByUnit(Unit unit) {
+		// TODO Auto-generated method stub
+		return jobRoleRepository.findByUnit(unit);
 	}
 
 }
